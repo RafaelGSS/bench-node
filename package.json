@@ -1,0 +1,29 @@
+{
+  "name": "node-benchmark",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RafaelGSS/node-benchmark.git"
+  },
+  "keywords": [
+    "benchmark",
+    "nodejs"
+  ],
+  "author": "RafaelGSS",
+  "contributors": [
+    {
+      "name": "H4ad",
+      "author": true
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RafaelGSS/node-benchmark/issues"
+  },
+  "homepage": "https://github.com/RafaelGSS/node-benchmark#readme"
+}

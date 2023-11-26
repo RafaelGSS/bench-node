@@ -1,10 +1,10 @@
-import { Suite } from '../../lib/index.mjs';
+const { Suite } = require('../../lib');
 
 const suite = new Suite();
 
 suite
-  .add('single with matcher', async function (timer) {
-    const assert = await import('node:assert');
+  .add('single with matcher', function (timer) {
+    const assert = require('node:assert');
 
     const pattern = /[123]/g
     const replacements = { 1: 'a', 2: 'b', 3: 'c' }
@@ -21,8 +21,8 @@ suite
 
     assert.ok(r);
   })
-  .add('multiple replaces', async function (timer) {
-    const assert = await import('node:assert');
+  .add('multiple replaces', function (timer) {
+    const assert = require('node:assert');
 
     const subject = '123123123123123123123123123123123123123123123123'
 

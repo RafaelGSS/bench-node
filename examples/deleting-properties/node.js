@@ -1,4 +1,4 @@
-import { Suite } from '../../lib/index.mjs';
+const { Suite } = require('../../lib');
 
 const suite = new Suite();
 

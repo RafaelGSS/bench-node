@@ -1,10 +1,10 @@
-import { Suite } from '../../lib/index.mjs';
+const { Suite } = require('../../lib');
 
 const suite = new Suite();
 
 suite
-  .add('Using includes', async function (timer) {
-    const assert = await import('node:assert');
+  .add('Using includes', function (timer) {
+    const assert = require('node:assert');
 
     const text = 'text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8';
 
@@ -18,8 +18,8 @@ suite
 
     assert.ok(r);
   })
-  .add('Using indexof', async function (timer) {
-    const assert = await import('node:assert');
+  .add('Using indexof', function (timer) {
+    const assert = require('node:assert');
 
     const text = 'text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8';
 
@@ -33,8 +33,8 @@ suite
 
     assert.ok(r);
   })
-  .add('Using cached RegExp.test', async function (timer) {
-    const assert = await import('node:assert');
+  .add('Using cached RegExp.test', function (timer) {
+    const assert = require('node:assert');
 
     const regex = /application\/json/;
     const text = 'text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8';

@@ -1,6 +1,6 @@
 {
-  "name": "node-benchmark",
-  "version": "0.0.1",
+  "name": "bench-node",
+  "version": "0.0.1-beta.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RafaelGSS/node-benchmark.git"
+    "url": "git+https://github.com/RafaelGSS/bench-node.git"
   },
   "keywords": [
     "benchmark",
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RafaelGSS/node-benchmark/issues"
+    "url": "https://github.com/RafaelGSS/bench-node/issues"
   },
-  "homepage": "https://github.com/RafaelGSS/node-benchmark#readme"
+  "homepage": "https://github.com/RafaelGSS/bench-node#readme"
 }

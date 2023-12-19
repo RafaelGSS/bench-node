@@ -4,17 +4,17 @@
 
 > Stability: 1.1 - Active Development
 
-<!-- source_link=lib/benchmark.js -->
+<!-- source_link=lib/index.js -->
 
-The `node:benchmark` module gives the ability to measure
+The `bench-node` module gives the ability to measure
 performance of JavaScript code. To access it:
 
 ```mjs
-import benchmark from 'node:benchmark';
+import benchmark from 'bench-node';
 ```
 
 ```cjs
-const benchmark = require('node:benchmark');
+const benchmark = require('bench-node');
 ```
 
 This module is only available under the `node:` scheme. The following will not
@@ -32,7 +32,7 @@ The following example illustrates how benchmarks are written using the
 `benchmark` module.
 
 ```mjs
-import { Suite } from 'node:benchmark';
+import { Suite } from 'bench-node';
 
 const suite = new Suite();
 
@@ -49,7 +49,7 @@ suite.run();
 ```
 
 ```cjs
-const { Suite } = require('node:benchmark');
+const { Suite } = require('bench-node');
 
 const suite = new Suite();
 
@@ -100,12 +100,12 @@ added: REPLACEME
 If no `reporter` is provided, the results will printed to the console.
 
 ```mjs
-import { Suite } from 'node:benchmark';
+import { Suite } from 'bench-node';
 const suite = new Suite();
 ```
 
 ```cjs
-const { Suite } = require('node:benchmark');
+const { Suite } = require('bench-node');
 const suite = new Suite();
 ```
 
@@ -158,7 +158,7 @@ the stored benchmarks and obtain the corresponding results.
 You can customize the data reporting by passing an function to the `reporter` argument while creating your `Suite`:
 
 ```mjs
-import { Suite } from 'node:benchmark';
+import { Suite } from 'bench-node';
 
 function reporter(bench, result) {
   console.log(`Benchmark: ${bench.name} - ${result.opsSec} ops/sec`);
@@ -179,7 +179,7 @@ suite.run();
 ```
 
 ```cjs
-const { Suite } = require('node:benchmark');
+const { Suite } = require('bench-node');
 
 function reporter(bench, result) {
   console.log(`Benchmark: ${bench.name} - ${result.opsSec} ops/sec`);
@@ -210,7 +210,7 @@ The benchmark function has a special handling when you pass an argument,
 for example:
 
 ```cjs
-const { Suite } = require('node:benchmark');
+const { Suite } = require('bench-node');
 const { readFileSync, writeFileSync, rmSync } = require('node:fs');
 
 const suite = new Suite();
@@ -237,7 +237,7 @@ you should run your function to achieve the `benchmark.minTime`,
 see the following example:
 
 ```mjs
-import { Suite } from 'node:benchmark';
+import { Suite } from 'bench-node';
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 
 const suite = new Suite();
@@ -262,7 +262,7 @@ suite.run();
 ```
 
 ```cjs
-const { Suite } = require('node:benchmark');
+const { Suite } = require('bench-node');
 const { readFileSync, writeFileSync, rmSync } = require('node:fs');
 
 const suite = new Suite();

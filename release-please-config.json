@@ -1,0 +1,73 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "bump-minor-pre-major": false,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false,
+      "draft-pull-request": true,
+      "include-component-in-tag": false,
+      "include-v-in-tag": true,
+      "separate-pull-requests": false,
+      "skip-github-release": false,
+      "versioning": "default",
+      "pull-request-header": ":robot: I have created a release *beep* *boop*",
+      "pull-request-title-pattern": "chore${scope}: release${component} ${version}",
+      "changelog-path": "CHANGELOG.md",
+      "changelog-host": "https://github.com",
+      "changelog-type": "default",
+      "changelog-sections": [
+        {
+          "type": "feat",
+          "section": "Features"
+        },
+        {
+          "type": "feature",
+          "section": "Features"
+        },
+        {
+          "type": "fix",
+          "section": "Bug Fixes"
+        },
+        {
+          "type": "perf",
+          "section": "Performance Improvements"
+        },
+        {
+          "type": "revert",
+          "section": "Reverts"
+        },
+        {
+          "type": "docs",
+          "section": "Documentation"
+        },
+        {
+          "type": "style",
+          "section": "Styles"
+        },
+        {
+          "type": "chore",
+          "section": "Miscellaneous Chores"
+        },
+        {
+          "type": "refactor",
+          "section": "Code Refactoring"
+        },
+        {
+          "type": "test",
+          "section": "Tests"
+        },
+        {
+          "type": "build",
+          "section": "Build System"
+        },
+        {
+          "type": "ci",
+          "section": "Continuous Integration"
+        }
+      ]
+    }
+  },
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}

@@ -21,7 +21,7 @@ This module is only available under the `node:` scheme. The following will not
 work:
 
 ```mjs
-import benchmark from 'benchmark';
+import benchmark from 'bench-node';
 ```
 
 ```cjs

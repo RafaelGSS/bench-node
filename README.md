@@ -25,7 +25,7 @@ import benchmark from 'bench-node';
 ```
 
 ```cjs
-const benchmark = require('benchmark');
+const benchmark = require('bench-node');
 ```
 
 The following example illustrates how benchmarks are written using the
@@ -67,8 +67,6 @@ suite.run();
 
 ```console
 $ node my-benchmark.js
-(node:14165) ExperimentalWarning: The benchmark module is an experimental feature and might change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
 Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..max=(169ns ... 171ns) p75=170ns p99=171ns
 ```
 
@@ -76,18 +74,10 @@ Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..ma
 
 > Stability: 1.1 Active Development
 
-<!-- YAML
-added: REPLACEME
--->
-
 An `Suite` is responsible for managing and executing
 benchmark functions. It provides two methods: `add()` and `run()`.
 
 ### `new Suite([options])`
-
-<!-- YAML
-added: REPLACEME
--->
 
 * `options` {Object} Configuration options for the suite. The following
   properties are supported:
@@ -110,10 +100,6 @@ const suite = new Suite();
 ```
 
 ### `suite.add(name[, options], fn)`
-
-<!-- YAML
-added: REPLACEME
--->
 
 * `name` {string} The name of the benchmark, which is displayed when reporting
   benchmark results.
@@ -143,10 +129,6 @@ Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..ma
   * `opsSec` {number} The amount of operations per second
   * `iterations` {number} The amount executions of `fn`
   * `histogram` {Histogram} Histogram object used to record benchmark iterations
-
-<!-- YAML
-added: REPLACEME
--->
 
 The purpose of the run method is to run all the benchmarks that have been
 added to the suite using the [`suite.add()`][] function.

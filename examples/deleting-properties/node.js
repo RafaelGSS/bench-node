@@ -64,4 +64,24 @@ suite
     data.y
     data.z
   })
+  .add('[Managed] Using undefined property (cached proto: null)', function (t) {
+    const NullObject = function () { }
+    NullObject.prototype = Object.create(null)
+
+    t.start();
+    for (let i = 0; i < t.count; i++) {
+      const data = new NullObject()
+
+      data.x = 1
+      data.y = 2
+      data.z = 3
+
+      data.y = undefined
+
+      data.x
+      data.y
+      data.z
+    }
+    t.end(t.count);
+  })
   .run();

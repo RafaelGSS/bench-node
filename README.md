@@ -1,54 +1,17 @@
-# Benchmark
-
-<!--introduced_in=REPLACEME-->
-
-> Stability: 1.1 - Active Development
-
-<!-- source_link=lib/index.js -->
+# bench-node
 
 The `bench-node` module gives the ability to measure
-performance of JavaScript code. To access it:
+operations per second of Node.js code block
 
-```mjs
-import benchmark from 'bench-node';
+## Install
+
+```console
+$ npm i bench-node
 ```
 
-```cjs
-const benchmark = require('bench-node');
-```
+## Usage
 
-This module is only available under the `node:` scheme. The following will not
-work:
-
-```mjs
-import benchmark from 'bench-node';
-```
-
-```cjs
-const benchmark = require('bench-node');
-```
-
-The following example illustrates how benchmarks are written using the
-`benchmark` module.
-
-```mjs
-import { Suite } from 'bench-node';
-
-const suite = new Suite();
-
-suite.add('Using delete to remove property from object', function() {
-  const data = { x: 1, y: 2, z: 3 };
-  delete data.y;
-
-  data.x;
-  data.y;
-  data.z;
-});
-
-suite.run();
-```
-
-```cjs
+```js
 const { Suite } = require('bench-node');
 
 const suite = new Suite();
@@ -65,8 +28,11 @@ suite.add('Using delete to remove property from object', function() {
 suite.run();
 ```
 
+This module uses V8 deoptimization to guarantee the code block won't be eliminated producing
+a noop comparisson. See [writting JavasCript Microbenchmark mistakes][] section.
+
 ```console
-$ node my-benchmark.js
+$ node --allow-natives-syntax my-benchmark.js
 Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..max=(169ns ... 171ns) p75=170ns p99=171ns
 ```
 
@@ -89,12 +55,7 @@ benchmark functions. It provides two methods: `add()` and `run()`.
 
 If no `reporter` is provided, the results will printed to the console.
 
-```mjs
-import { Suite } from 'bench-node';
-const suite = new Suite();
-```
-
-```cjs
+```js
 const { Suite } = require('bench-node');
 const suite = new Suite();
 ```
@@ -117,9 +78,7 @@ The `fn` parameter can be either an asynchronous (`async function () {}`) or
 a synchronous (`function () {}`) function.
 
 ```console
-$ node my-benchmark.js
-(node:14165) ExperimentalWarning: The benchmark module is an experimental feature and might change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
+$ node --allow-natives-syntax my-benchmark.js
 Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..max=(169ns ... 171ns) p75=170ns p99=171ns
 ```
 
@@ -139,28 +98,7 @@ the stored benchmarks and obtain the corresponding results.
 
 You can customize the data reporting by passing an function to the `reporter` argument while creating your `Suite`:
 
-```mjs
-import { Suite } from 'bench-node';
-
-function reporter(bench, result) {
-  console.log(`Benchmark: ${bench.name} - ${result.opsSec} ops/sec`);
-}
-
-const suite = new Suite({ reporter });
-
-suite.add('Using delete to remove property from object', () => {
-  const data = { x: 1, y: 2, z: 3 };
-  delete data.y;
-
-  data.x;
-  data.y;
-  data.z;
-});
-
-suite.run();
-```
-
-```cjs
+```js
 const { Suite } = require('bench-node');
 
 function reporter(bench, result) {
@@ -182,7 +120,7 @@ suite.run();
 ```
 
 ```console
-$ node my-benchmark.js
+$ node --allow-natives-syntax my-benchmark.js
 Benchmark: Using delete to remove property from object - 6032212 ops/sec
 ```
 
@@ -218,32 +156,7 @@ that will tell you how much iterations
 you should run your function to achieve the `benchmark.minTime`,
 see the following example:
 
-```mjs
-import { Suite } from 'bench-node';
-import { readFileSync, writeFileSync, rmSync } from 'node:fs';
-
-const suite = new Suite();
-
-suite.add('readFileSync', (timer) => {
-  const randomFile = Date.now();
-  const filePath = `./${randomFile}.txt`;
-  writeFileSync(filePath, Math.random().toString());
-
-  timer.start();
-  for (let i = 0; i < timer.count; i++)
-    readFileSync(filePath, 'utf8');
-  // You must send to the `.end` function the amount of
-  // times you executed the function, by default,
-  // the end will be called with value 1.
-  timer.end(timer.count);
-
-  rmSync(filePath);
-});
-
-suite.run();
-```
-
-```cjs
+```js
 const { Suite } = require('bench-node');
 const { readFileSync, writeFileSync, rmSync } = require('node:fs');
 
@@ -270,6 +183,4 @@ suite.run();
 
 Once your function has at least one argument,
 you must call `.start` and `.end`, if you didn't,
-it will throw the error [ERR\_BENCHMARK\_MISSING\_OPERATION](./errors.md#err_benchmark_missing_operation).
-
-[`suite.add()`]: #suiteaddname-options-fn
+it will throw the error ERR\_BENCHMARK\_MISSING\_OPERATION

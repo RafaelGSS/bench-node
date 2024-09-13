@@ -1,6 +1,8 @@
 const { Suite } = require('../lib/index');
 const { describe, it, todo } = require('node:test');
 const assert = require('node:assert');
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
 
 function noop() {}
 
@@ -150,6 +152,18 @@ describe('throws when a benchmark task throw', async () => {
     throw err;
   });
   assert.rejects(() => bench.run());
+});
+
+describe('when no --allow-natives-syntax', async () => {
+  it('should throw', () => {
+    const file = path.join(__dirname, 'fixtures', 'bench.js');
+    const { status, stderr } = spawnSync(
+      process.execPath,
+      [file],
+    );
+    assert.strictEqual(status, 1);
+    assert.match(stderr.toString(), /bench-node module must be run with --allow-natives-syntax/);
+  });
 });
 
 todo('histogram values', async () => {

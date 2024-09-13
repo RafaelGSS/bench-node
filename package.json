@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node --allow-natives-syntax test/basic.js"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",

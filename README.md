@@ -127,6 +127,8 @@ allows you to extend its functionality by adding custom plugins.
 This documentation explains how to create, validate, and use
 plugins within the benchmarking framework.
 
+[V8NeverOptimizePlugin](#class-v8neveroptimizeplugin) is enabled by default.
+
 ### Structure
 
 Each plugin is expected to follow a specific structure with required methods
@@ -155,11 +157,11 @@ this method ensures the environment supports them.
 
 ### `beforeClockTemplate(varNames)`
 
-* `varNames` Object
-  * `bench` string  - Name for the benchmark variable.
-  * `context` string - Name for the context variable.
-  * `timer` string - Name for the timer variable.
-  * `awaitOrEmpty` string - A string with `await` or empty string (`''`).
+* `varNames` {Object}
+  * `bench` {string}  - Name for the benchmark variable.
+  * `context` {string} - Name for the context variable.
+  * `timer` {string} - Name for the timer variable.
+  * `awaitOrEmpty` {string} - A string with `await` or empty string (`''`).
 
 Some plugins need to modify or prepare the code before the benchmark starts.
 The `beforeClockTemplate()` method allows you to inject code before the timing
@@ -195,11 +197,11 @@ provides it as a wrapper for the benchmark function.
 
 ### `afterClockTemplate(varNames)`
 
-* `varNames` Object
-  * `bench` string  - Name for the benchmark variable.
-  * `context` string - Name for the context variable.
-  * `timer` string - Name for the timer variable.
-  * `awaitOrEmpty` string - A string with `await` or empty string (`''`).
+* `varNames` {Object}
+  * `bench` {string}  - Name for the benchmark variable.
+  * `context` {string} - Name for the context variable.
+  * `timer` {string} - Name for the timer variable.
+  * `awaitOrEmpty` {string} - A string with `await` or empty string (`''`).
 
 After the benchmark runs, this method can inject code to gather performance data
 or reset configurations. It must return an array where:
@@ -213,10 +215,10 @@ after the benchmark is executed.
 
 ### `onCompleteBenchmark(result)`
 
-* `result` Object
-  * `duration` number  - Benchmark duration
-  * `count` number - Number of iterations
-  * `context` object - A object used to store results after the benchmark clock
+* `result` {Object}
+  * `duration` {number}  - Benchmark duration
+  * `count` {number} - Number of iterations
+  * `context` {Object} - A object used to store results after the benchmark clock
 
 This method is called when the benchmark completes. Plugins can collect and
 process data from the benchmark results in this step.

@@ -58,6 +58,8 @@ $ node --allow-natives-syntax my-benchmark.js
 Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..max=(169ns ... 171ns) p75=170ns p99=171ns
 ```
 
+See [examples folder](./examples/) for common usage.
+
 ## Class: `Suite`
 
 > Stability: 1.1 Active Development

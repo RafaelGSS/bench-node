@@ -3,28 +3,6 @@
 The `bench-node` module gives the ability to measure
 operations per second of Node.js code block
 
-1. [Install](#install)
-2. [Usage](#usage)
-3. [class `Suite`](#class-suite)
-    1. [`suite.add()`](#suiteaddname-options-fn)
-    2. [`suite.run()`](#suiterun)
-4. [Plugins](#plugins)
-    1. [Structure](#structure)
-    2. [Plugin Methods](#plugin-methods)
-        * [`isSupported()` (required)](#issupported-required)
-        * [`beforeClockTemplate(varNames)`](#beforeclocktemplatevarnames)
-        * [`afterClockTemplate(varNames)`](#afterclocktemplatevarnames)
-        * [`onCompleteBenchmark(result)`](#oncompletebenchmarkresult)
-        * [`toString()` (required)](#tostring-required)
-    3. [Example Plugins](#example-plugins)
-        * [V8OptimizeOnNextCallPlugin](#class-v8optimizeonnextcallplugin)
-5. [Official Plugins](#official-plugins)
-    * [Class: `V8OptimizeOnNextCallPlugin`](#class-v8optimizeonnextcallplugin-1)
-    * [Class: `V8NeverOptimizePlugin`](#class-v8neveroptimizeplugin)
-    * [Class: `V8GetOptimizationStatus`](#class-v8getoptimizationstatus)
-6. [Using custom reporter](#using-custom-reporter)
-7. [Setup and Teardown](#setup-and-teardown)
-
 ## Install
 
 ```console
@@ -59,6 +37,28 @@ Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..ma
 ```
 
 See [examples folder](./examples/) for common usage.
+
+## Table of Contents
+
+1. [class `Suite`](#class-suite)
+    1. [`suite.add()`](#suiteaddname-options-fn)
+    2. [`suite.run()`](#suiterun)
+2. [Plugins](#plugins)
+    1. [Structure](#structure)
+    2. [Plugin Methods](#plugin-methods)
+        * [`isSupported()` (required)](#issupported-required)
+        * [`beforeClockTemplate(varNames)`](#beforeclocktemplatevarnames)
+        * [`afterClockTemplate(varNames)`](#afterclocktemplatevarnames)
+        * [`onCompleteBenchmark(result)`](#oncompletebenchmarkresult)
+        * [`toString()` (required)](#tostring-required)
+    3. [Example Plugins](#example-plugins)
+        * [V8OptimizeOnNextCallPlugin](#class-v8optimizeonnextcallplugin)
+3. [Official Plugins](#official-plugins)
+    * [Class: `V8OptimizeOnNextCallPlugin`](#class-v8optimizeonnextcallplugin-1)
+    * [Class: `V8NeverOptimizePlugin`](#class-v8neveroptimizeplugin)
+    * [Class: `V8GetOptimizationStatus`](#class-v8getoptimizationstatus)
+4. [Using custom reporter](#using-custom-reporter)
+5. [Setup and Teardown](#setup-and-teardown)
 
 ## Class: `Suite`
 

@@ -16,7 +16,7 @@ const { Suite } = require('bench-node');
 
 const suite = new Suite();
 
-suite.add('Using delete to remove property from object', function() {
+suite.add('Using delete property', function() {
   const data = { x: 1, y: 2, z: 3 };
   delete data.y;
 
@@ -33,7 +33,7 @@ a noop comparisson. See [writting JavasCript Microbenchmark mistakes][] section.
 
 ```console
 $ node --allow-natives-syntax my-benchmark.js
-Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled)     min..max=(169ns ... 171ns) p75=170ns p99=171ns
+Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(0ns ... 0ns) p75=0ns p99=0ns
 ```
 
 See [examples folder](./examples/) for common usage.

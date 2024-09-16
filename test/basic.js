@@ -169,7 +169,3 @@ describe('when no --allow-natives-syntax', async () => {
 todo('histogram values', async () => {
 
 });
-
-todo('async tasks should behave similar to sync tasks', async () => {
-
-});

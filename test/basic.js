@@ -31,6 +31,13 @@ describe('API Interface', () => {
     new Suite({ reporter: () => {} });
   });
 
+  it('reporter can be false or null', () => {
+    [false, null].forEach((r) => {
+      // doesNotThrow
+      new Suite({ reporter: r });
+    });
+  });
+
   describe('suite.add', () => {
     const bench =  new Suite({ reporter: noop });
     it('name should be an string', () => {

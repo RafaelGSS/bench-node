@@ -79,6 +79,13 @@ const { Suite } = require('bench-node');
 const suite = new Suite();
 ```
 
+If you don't want results to be printed to the console, `false` and `null` can be used
+
+```js
+const { Suite } = require('bench-node');
+const suite = new Suite({ reporter: false });
+```
+
 ### `suite.add(name[, options], fn)`
 
 * `name` {string} The name of the benchmark, displayed when reporting results.

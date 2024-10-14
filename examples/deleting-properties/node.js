@@ -3,7 +3,8 @@ const { Suite } = require('../../lib');
 const suite = new Suite();
 
 const NullObject = function NullObject() { }
-NullObject.prototype = Object.create(null)
+NullObject.prototype = Object.create(null);
+%NeverOptimizeFunction(NullObject);
 
 suite
   .add('Using delete property', function () {

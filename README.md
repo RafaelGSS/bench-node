@@ -238,4 +238,10 @@ suite.add('readFileSync', (timer) => {
 suite.run();
 ```
 
+> [!WARNING]
+> When using the `timer`, the setup will also be deoptimized.
+> As a result, if you compare this approach with one that uses functions outside
+> the benchmark function, the results may not match.
+> See: [Deleting Properties Example](./examples/deleting-properties/node.js).
+
 Ensure you call `.start()` and `.end()` methods when using the timer argument, or an `ERR_BENCHMARK_MISSING_OPERATION` error will be thrown.

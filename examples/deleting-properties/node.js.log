@@ -1,24 +1,24 @@
-Using delete property x 7,832,497 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.40ns ... 128.26ns) p75=128.00ns p99=128.26ns
-Using delete property (proto: null) x 23,423,727 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(42.46ns ... 43.18ns) p75=42.99ns p99=43.18ns
-Using delete property (cached proto: null) x 7,367,072 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(134.93ns ... 137.35ns) p75=136.11ns p99=137.35ns
-Using undefined assignment x 132,292,865 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(7.53ns ... 7.60ns) p75=7.56ns p99=7.60ns
-Using undefined assignment (proto: null) x 25,594,832 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(38.90ns ... 39.38ns) p75=39.16ns p99=39.38ns
-Using undefined property (cached proto: null) x 58,328,070 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(17.04ns ... 17.29ns) p75=17.22ns p99=17.29ns
-[Managed] Using undefined property (cached proto: null) x 35,588,926 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(28.01ns ... 28.18ns) p75=28.13ns p99=28.18ns
+Using delete property x 7,763,866 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(128.11ns ... 129.99ns) p75=129.03ns p99=129.99ns
+Using delete property (proto: null) x 22,946,068 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(43.13ns ... 44.11ns) p75=43.74ns p99=44.11ns
+Using delete property (cached proto: null) x 7,331,951 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(135.64ns ... 137.39ns) p75=136.52ns p99=137.39ns
+Using undefined assignment x 133,449,849 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(7.45ns ... 7.56ns) p75=7.53ns p99=7.56ns
+Using undefined assignment (proto: null) x 25,432,632 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(38.72ns ... 40.06ns) p75=39.60ns p99=40.06ns
+Using undefined property (cached proto: null) x 58,871,059 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(16.92ns ... 17.12ns) p75=17.01ns p99=17.12ns
+[Managed] Using undefined property (cached proto: null) x 35,463,712 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(28.05ns ... 28.43ns) p75=28.25ns p99=28.43ns
 ----------------------------------------------------------------------------
-Using delete property x 7,814,608 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.50ns ... 128.30ns) p75=128.25ns p99=128.30ns
-Using delete property (proto: null) x 23,431,652 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(42.51ns ... 42.97ns) p75=42.83ns p99=42.97ns
-Using delete property (cached proto: null) x 7,305,690 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(136.22ns ... 137.59ns) p75=137.37ns p99=137.59ns
-Using undefined assignment x 129,085,327 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(7.72ns ... 7.83ns) p75=7.76ns p99=7.83ns
-Using undefined assignment (proto: null) x 25,629,477 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(38.79ns ... 39.27ns) p75=39.08ns p99=39.27ns
-Using undefined property (cached proto: null) x 58,340,080 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(16.93ns ... 17.45ns) p75=17.12ns p99=17.45ns
-[Managed] Using undefined property (cached proto: null) x 35,547,235 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(27.90ns ... 28.77ns) p75=28.29ns p99=28.77ns
+Using delete property x 6,669,856 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(149.14ns ... 151.02ns) p75=150.12ns p99=151.02ns
+Using delete property (proto: null) x 15,242,131 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(64.77ns ... 66.38ns) p75=66.25ns p99=66.38ns
+Using delete property (cached proto: null) x 5,920,843 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(167.87ns ... 170.33ns) p75=169.07ns p99=170.33ns
+Using undefined assignment x 78,647,245 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(12.62ns ... 12.83ns) p75=12.70ns p99=12.83ns
+Using undefined assignment (proto: null) x 16,278,910 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(60.79ns ... 62.25ns) p75=61.57ns p99=62.25ns
+Using undefined property (cached proto: null) x 27,262,884 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(36.54ns ... 36.65ns) p75=36.62ns p99=36.65ns
+[Managed] Using undefined property (cached proto: null) x 28,068,785 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(35.07ns ... 35.79ns) p75=35.67ns p99=35.79ns
 ----------------------------------------------------------------------------
-Using delete property x 7,767,423 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(128.28ns ... 129.20ns) p75=129.00ns p99=129.20ns
-Using delete property (proto: null) x 23,253,711 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(42.62ns ... 43.55ns) p75=43.22ns p99=43.55ns
-Using delete property (cached proto: null) x 7,260,588 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(136.48ns ... 137.72ns) p75=137.47ns p99=137.72ns
-Using undefined assignment x 125,714,722 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(7.55ns ... 7.61ns) p75=7.59ns p99=7.61ns
-Using undefined assignment (proto: null) x 25,970,526 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(38.33ns ... 38.78ns) p75=38.56ns p99=38.78ns
-Using undefined property (cached proto: null) x 54,970,601 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(17.18ns ... 17.27ns) p75=17.23ns p99=17.27ns
-[Managed] Using undefined property (cached proto: null) x 35,471,223 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(28.04ns ... 28.47ns) p75=28.31ns p99=28.47ns
+Using delete property x 7,632,095 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(129.63ns ... 132.85ns) p75=131.19ns p99=132.85ns
+Using delete property (proto: null) x 23,040,357 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(43.06ns ... 44.20ns) p75=43.56ns p99=44.20ns
+Using delete property (cached proto: null) x 7,222,103 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(137.05ns ... 139.88ns) p75=139.18ns p99=139.88ns
+Using undefined assignment x 133,133,677 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(7.49ns ... 7.53ns) p75=7.52ns p99=7.53ns
+Using undefined assignment (proto: null) x 25,217,884 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(39.24ns ... 40.48ns) p75=39.89ns p99=40.48ns
+Using undefined property (cached proto: null) x 58,899,972 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(16.94ns ... 17.03ns) p75=16.99ns p99=17.03ns
+[Managed] Using undefined property (cached proto: null) x 34,904,120 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(28.34ns ... 29.89ns) p75=28.84ns p99=29.89ns
 ----------------------------------------------------------------------------

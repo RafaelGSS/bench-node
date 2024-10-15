@@ -1,9 +1,9 @@
-new Uint32Array(1024) x 2,825,533 ops/sec (11 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(341.13ns ... 376.43ns) p75=358.46ns p99=376.43ns
-[Managed] new Uint32Array(1024) x 3,004,200 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(326.46ns ... 341.20ns) p75=337.49ns p99=341.20ns
+new Uint32Array(1024) x 2,353,498 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(387.20ns ... 435.11ns) p75=426.25ns p99=435.11ns
+[Managed] new Uint32Array(1024) x 2,295,396 ops/sec (12 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(346.78ns ... 471.27ns) p75=450.57ns p99=471.27ns
 ----------------------------------------------------------------------------
-new Uint32Array(1024) x 2,884,032 ops/sec (11 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(331.65ns ... 371.68ns) p75=352.74ns p99=371.68ns
-[Managed] new Uint32Array(1024) x 2,817,664 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(349.62ns ... 360.14ns) p75=354.75ns p99=360.14ns
+new Uint32Array(1024) x 2,206,492 ops/sec (11 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(413.34ns ... 498.95ns) p75=457.27ns p99=498.95ns
+[Managed] new Uint32Array(1024) x 2,308,235 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(410.95ns ... 472.38ns) p75=444.99ns p99=472.38ns
 ----------------------------------------------------------------------------
-new Uint32Array(1024) x 2,970,389 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(325.26ns ... 347.79ns) p75=336.40ns p99=347.79ns
-[Managed] new Uint32Array(1024) x 2,976,688 ops/sec (10 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(331.68ns ... 345.54ns) p75=339.89ns p99=345.54ns
+new Uint32Array(1024) x 2,765,470 ops/sec (11 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(343.99ns ... 396.13ns) p75=386.55ns p99=396.13ns
+[Managed] new Uint32Array(1024) x 2,773,144 ops/sec (11 runs sampled) v8-opt-status="Optimized, Interpreted, Marked for Optimization, Concurrently Optimizing" min..max=(351.75ns ... 377.92ns) p75=369.54ns p99=377.92ns
 ----------------------------------------------------------------------------

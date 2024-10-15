@@ -1,9 +1,9 @@
-new Uint32Array(1024) x 2,972,791 ops/sec (11 runs sampled) v8-optimize-next-call=enabled min..max=(334.27ns ... 339.62ns) p75=337.85ns p99=339.62ns
-[Managed] new Uint32Array(1024) x 2,908,439 ops/sec (11 runs sampled) v8-optimize-next-call=enabled min..max=(332.80ns ... 358.40ns) p75=348.46ns p99=358.40ns
+new Uint32Array(1024) x 2,812,339 ops/sec (13 runs sampled) v8-optimize-next-call=enabled min..max=(314.34ns ... 373.62ns) p75=359.22ns p99=373.62ns
+[Managed] new Uint32Array(1024) x 2,763,965 ops/sec (11 runs sampled) v8-optimize-next-call=enabled min..max=(348.80ns ... 381.77ns) p75=373.99ns p99=381.77ns
 ----------------------------------------------------------------------------
-new Uint32Array(1024) x 2,982,540 ops/sec (10 runs sampled) v8-optimize-next-call=enabled min..max=(332.85ns ... 336.37ns) p75=335.21ns p99=336.37ns
-[Managed] new Uint32Array(1024) x 2,919,974 ops/sec (9 runs sampled) v8-optimize-next-call=enabled min..max=(335.30ns ... 346.51ns) p75=343.26ns p99=346.51ns
+new Uint32Array(1024) x 2,827,020 ops/sec (11 runs sampled) v8-optimize-next-call=enabled min..max=(298.24ns ... 365.66ns) p75=354.33ns p99=365.66ns
+[Managed] new Uint32Array(1024) x 2,775,090 ops/sec (12 runs sampled) v8-optimize-next-call=enabled min..max=(349.78ns ... 378.17ns) p75=360.17ns p99=378.17ns
 ----------------------------------------------------------------------------
-new Uint32Array(1024) x 2,960,287 ops/sec (11 runs sampled) v8-optimize-next-call=enabled min..max=(333.25ns ... 341.07ns) p75=339.38ns p99=341.07ns
-[Managed] new Uint32Array(1024) x 2,892,614 ops/sec (8 runs sampled) v8-optimize-next-call=enabled min..max=(342.87ns ... 347.34ns) p75=344.64ns p99=347.34ns
+new Uint32Array(1024) x 2,793,090 ops/sec (9 runs sampled) v8-optimize-next-call=enabled min..max=(342.17ns ... 352.58ns) p75=350.66ns p99=352.58ns
+[Managed] new Uint32Array(1024) x 2,751,982 ops/sec (10 runs sampled) v8-optimize-next-call=enabled min..max=(352.72ns ... 385.30ns) p75=367.30ns p99=385.30ns
 ----------------------------------------------------------------------------

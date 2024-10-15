@@ -1,15 +1,15 @@
-single with matcher x 756,264 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.32us ... 1.32us) p75=1.32us p99=1.32us
-multiple replaces x 640,863 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.58us) p75=1.57us p99=1.58us
-[Managed] single with matcher x 772,463 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.29us ... 1.30us) p75=1.30us p99=1.30us
-[Managed] multiple replaces x 643,205 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.58us) p75=1.56us p99=1.58us
+single with matcher x 752,020 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.32us ... 1.34us) p75=1.33us p99=1.34us
+multiple replaces x 642,602 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.54us ... 1.55us) p75=1.55us p99=1.55us
+[Managed] single with matcher x 774,049 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(1.28us ... 1.30us) p75=1.29us p99=1.30us
+[Managed] multiple replaces x 645,958 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(1.54us ... 1.58us) p75=1.55us p99=1.58us
 ----------------------------------------------------------------------------
-single with matcher x 762,839 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.31us ... 1.31us) p75=1.31us p99=1.31us
-multiple replaces x 641,355 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.57us) p75=1.57us p99=1.57us
-[Managed] single with matcher x 776,942 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.28us ... 1.29us) p75=1.29us p99=1.29us
-[Managed] multiple replaces x 642,766 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.57us) p75=1.56us p99=1.57us
+single with matcher x 748,221 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.33us ... 1.35us) p75=1.35us p99=1.35us
+multiple replaces x 639,390 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.57us) p75=1.56us p99=1.57us
+[Managed] single with matcher x 765,396 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(1.30us ... 1.32us) p75=1.31us p99=1.32us
+[Managed] multiple replaces x 644,492 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.55us) p75=1.55us p99=1.55us
 ----------------------------------------------------------------------------
-single with matcher x 759,956 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(1.31us ... 1.32us) p75=1.32us p99=1.32us
-multiple replaces x 640,300 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.55us ... 1.56us) p75=1.56us p99=1.56us
-[Managed] single with matcher x 770,091 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.30us ... 1.30us) p75=1.30us p99=1.30us
-[Managed] multiple replaces x 642,915 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.54us ... 1.57us) p75=1.56us p99=1.57us
+single with matcher x 742,699 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(1.32us ... 1.34us) p75=1.33us p99=1.34us
+multiple replaces x 640,209 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.54us ... 1.57us) p75=1.56us p99=1.57us
+[Managed] single with matcher x 774,824 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.29us ... 1.30us) p75=1.29us p99=1.30us
+[Managed] multiple replaces x 642,062 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.54us ... 1.60us) p75=1.57us p99=1.60us
 ----------------------------------------------------------------------------

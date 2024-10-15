@@ -1,0 +1,15 @@
+readFileSync x 195,080 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(5.04us ... 5.60us) p75=5.09us p99=5.60us
+readFileSync utf-8 x 205,245 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(4.85us ... 4.90us) p75=4.86us p99=4.90us
+[Managed] readFileSync x 194,864 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(5.08us ... 5.28us) p75=5.16us p99=5.28us
+[Managed] readFileSync utf-8 x 201,899 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.92us ... 5.00us) p75=4.97us p99=5.00us
+----------------------------------------------------------------------------
+readFileSync x 194,228 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(5.07us ... 5.29us) p75=5.09us p99=5.29us
+readFileSync utf-8 x 205,275 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(4.84us ... 4.90us) p75=4.88us p99=4.90us
+[Managed] readFileSync x 195,645 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(5.07us ... 5.18us) p75=5.10us p99=5.18us
+[Managed] readFileSync utf-8 x 202,022 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.89us ... 5.02us) p75=4.99us p99=5.02us
+----------------------------------------------------------------------------
+readFileSync x 194,740 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(5.05us ... 5.16us) p75=5.10us p99=5.16us
+readFileSync utf-8 x 205,046 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(4.84us ... 4.92us) p75=4.88us p99=4.92us
+[Managed] readFileSync x 196,632 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(5.05us ... 5.12us) p75=5.08us p99=5.12us
+[Managed] readFileSync utf-8 x 203,879 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.87us ... 4.96us) p75=4.94us p99=4.96us
+----------------------------------------------------------------------------

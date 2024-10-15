@@ -1,0 +1,21 @@
+Using includes x 216,514,984 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(4.52ns ... 5.03ns) p75=4.62ns p99=5.03ns
+Using indexof x 131,207,112 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(7.57ns ... 7.68ns) p75=7.61ns p99=7.68ns
+Using cached RegExp.test x 19,879,400 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(50.18ns ... 50.35ns) p75=50.30ns p99=50.35ns
+[Managed] Using includes x 2,308,493,562 ops/sec (18 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using indexof x 2,321,058,069 ops/sec (18 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using cached RegExp.test x 24,712,159 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(40.25ns ... 40.69ns) p75=40.45ns p99=40.69ns
+----------------------------------------------------------------------------
+Using includes x 216,748,330 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.53ns ... 4.81ns) p75=4.62ns p99=4.81ns
+Using indexof x 130,686,026 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(7.60ns ... 7.82ns) p75=7.64ns p99=7.82ns
+Using cached RegExp.test x 19,915,831 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(50.08ns ... 50.30ns) p75=50.25ns p99=50.30ns
+[Managed] Using includes x 2,312,395,350 ops/sec (17 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using indexof x 2,321,453,259 ops/sec (18 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using cached RegExp.test x 24,858,397 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(40.00ns ... 41.02ns) p75=40.30ns p99=41.02ns
+----------------------------------------------------------------------------
+Using includes x 216,731,820 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.53ns ... 4.80ns) p75=4.63ns p99=4.80ns
+Using indexof x 131,345,255 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(7.57ns ... 7.66ns) p75=7.62ns p99=7.66ns
+Using cached RegExp.test x 19,861,824 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(50.29ns ... 50.44ns) p75=50.33ns p99=50.44ns
+[Managed] Using includes x 2,293,197,582 ops/sec (17 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using indexof x 2,319,938,438 ops/sec (16 runs sampled) v8-never-optimize=true min..max=(0.50ns ... 0.50ns) p75=0.50ns p99=0.50ns
+[Managed] Using cached RegExp.test x 24,785,474 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(39.99ns ... 40.96ns) p75=40.26ns p99=40.96ns
+----------------------------------------------------------------------------

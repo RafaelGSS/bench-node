@@ -38,7 +38,8 @@ suite.run().then(results => {
 });
 ```
 
-This module uses V8 deoptimization to ensure that the code block is not optimized away, producing accurate benchmarks. See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
+This module uses V8 deoptimization to helps that the code block is not optimized away, producing accurate benchmarks -- But, not realistics.
+See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
 
 ```bash
 $ node --allow-natives-syntax my-benchmark.js
@@ -55,6 +56,7 @@ See the [examples folder](./examples/) for more common usage examples.
 2. [Plugins](#plugins)
 3. [Using Custom Reporter](#using-custom-reporter)
 4. [Setup and Teardown](#setup-and-teardown)
+    1. [Managed Benchmarks](#managd-benchmarks)
 
 ## Class: `Suite`
 
@@ -245,3 +247,51 @@ suite.run();
 > See: [Deleting Properties Example](./examples/deleting-properties/node.js).
 
 Ensure you call `.start()` and `.end()` methods when using the timer argument, or an `ERR_BENCHMARK_MISSING_OPERATION` error will be thrown.
+
+### Managed Benchmarks
+
+In regular benchmarks (when `timer` is not used), you run the benchmarked function in a loop,
+and the timing is managed implicitly.
+This means each iteration of the benchmarked function is measured directly.
+The downside is that optimizations like inlining or caching might affect the timing, especially for fast operations.
+
+Example:
+
+```cjs
+suite.add('Using includes', function () {
+  const text = 'text/html,...';
+  const r = text.includes('application/json');
+});
+```
+
+Here, `%DoNotOptimize` is being called inside the loop for regular benchmarks (assuming V8NeverOptimizePlugin is being used),
+ensuring that the operation is not overly optimized within each loop iteration.
+This prevents V8 from optimizing away the operation (e.g., skipping certain steps because the result is not used or the function is too trivial).
+
+Managed benchmarks explicitly handle timing through `start()` and `end()` calls around the benchmarked code.
+This encapsulates the entire set of iterations in one timed block,
+which can result in tighter measurement with less overhead.
+However, it can lead to over-optimistic results, especially if the timer’s start and stop calls are placed outside of the loop,
+allowing V8 to over-optimize the entire block.
+
+Example:
+
+```cjs
+suite.add('[Managed] Using includes', function (timer) {
+  timer.start();
+  for (let i = 0; i < timer.count; i++) {
+    const text = 'text/html,...';
+    const r = text.includes('application/json');
+    assert.ok(r);  // Ensure the result is used so it doesn't get V8 optimized away
+  }
+  timer.end(timer.count);
+});
+```
+
+In this case, `%DoNotOptimize` is being applied outside the loop, so it does not protect each iteration from
+excessive optimization. This can result in higher operation counts because V8 might optimize away repetitive tasks.
+That's why an `assert.ok(r)` has been used. To avoid V8 optimizing the entire block as the `r` var was not being used.
+
+> [!NOTE]
+> V8 assumptions can change any time soon. Therefore, it's crucial to investigate
+> results between versions of V8/Node.js.

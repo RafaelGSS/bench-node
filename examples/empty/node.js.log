@@ -1,9 +1,9 @@
-empty x 219,338,475 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(4.51ns ... 4.65ns) p75=4.59ns p99=4.65ns
-empty async x 22,667,494 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(43.55ns ... 44.19ns) p75=43.95ns p99=44.19ns
+empty x 218,984,985 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(4.53ns ... 4.66ns) p75=4.58ns p99=4.66ns
+empty async x 20,898,403 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(47.46ns ... 48.57ns) p75=48.04ns p99=48.57ns
 ----------------------------------------------------------------------------
-empty x 221,169,832 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(4.51ns ... 4.53ns) p75=4.52ns p99=4.53ns
-empty async x 21,007,759 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(46.85ns ... 50.78ns) p75=47.24ns p99=50.78ns
+empty x 220,571,877 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(4.49ns ... 4.61ns) p75=4.58ns p99=4.61ns
+empty async x 20,925,022 ops/sec (14 runs sampled) v8-never-optimize=true min..max=(37.43ns ... 48.60ns) p75=48.03ns p99=48.60ns
 ----------------------------------------------------------------------------
-empty x 221,155,223 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(4.51ns ... 4.54ns) p75=4.53ns p99=4.54ns
-empty async x 22,406,761 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(41.36ns ... 45.44ns) p75=44.86ns p99=45.44ns
+empty x 218,923,690 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(4.52ns ... 4.64ns) p75=4.59ns p99=4.64ns
+empty async x 20,792,931 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(42.94ns ... 49.45ns) p75=48.54ns p99=49.45ns
 ----------------------------------------------------------------------------

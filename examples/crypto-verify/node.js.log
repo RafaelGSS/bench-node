@@ -1,15 +1,15 @@
-crypto.createVerify('RSA-SHA256') x 10,884 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(89.03us ... 95.09us) p75=92.70us p99=95.09us
-crypto.verify('RSA-SHA256') x 10,879 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(91.15us ... 93.11us) p75=92.38us p99=93.11us
-[Managed] crypto.createVerify('RSA-SHA256') x 10,958 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(88.31us ... 94.01us) p75=93.06us p99=94.01us
-[Managed] crypto.verify('RSA-SHA256') x 10,881 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(90.81us ... 93.01us) p75=92.35us p99=93.01us
+crypto.createVerify('RSA-SHA256') x 11,027 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(87.67us ... 91.64us) p75=91.13us p99=91.64us
+crypto.verify('RSA-SHA256') x 10,779 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(88.53us ... 95.15us) p75=93.88us p99=95.15us
+[Managed] crypto.createVerify('RSA-SHA256') x 10,701 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(92.04us ... 94.72us) p75=94.27us p99=94.72us
+[Managed] crypto.verify('RSA-SHA256') x 10,716 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(91.74us ... 94.90us) p75=93.47us p99=94.90us
 ----------------------------------------------------------------------------
-crypto.createVerify('RSA-SHA256') x 10,900 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(88.63us ... 94.21us) p75=92.22us p99=94.21us
-crypto.verify('RSA-SHA256') x 10,911 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(90.53us ... 92.75us) p75=92.21us p99=92.75us
-[Managed] crypto.createVerify('RSA-SHA256') x 10,922 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(88.33us ... 93.51us) p75=92.43us p99=93.51us
-[Managed] crypto.verify('RSA-SHA256') x 10,925 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(90.91us ... 92.27us) p75=92.04us p99=92.27us
+crypto.createVerify('RSA-SHA256') x 10,975 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(89.66us ... 92.46us) p75=91.28us p99=92.46us
+crypto.verify('RSA-SHA256') x 10,724 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(91.51us ... 95.02us) p75=94.05us p99=95.02us
+[Managed] crypto.createVerify('RSA-SHA256') x 10,905 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(90.14us ... 93.21us) p75=91.97us p99=93.21us
+[Managed] crypto.verify('RSA-SHA256') x 10,655 ops/sec (8 runs sampled) v8-never-optimize=true min..max=(93.30us ... 94.30us) p75=94.00us p99=94.30us
 ----------------------------------------------------------------------------
-crypto.createVerify('RSA-SHA256') x 10,921 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(89.78us ... 93.13us) p75=92.37us p99=93.13us
-crypto.verify('RSA-SHA256') x 10,917 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(90.95us ... 93.00us) p75=92.22us p99=93.00us
-[Managed] crypto.createVerify('RSA-SHA256') x 10,961 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(87.86us ... 92.78us) p75=91.93us p99=92.78us
-[Managed] crypto.verify('RSA-SHA256') x 10,915 ops/sec (10 runs sampled) v8-never-optimize=true min..max=(90.44us ... 93.09us) p75=92.19us p99=93.09us
+crypto.createVerify('RSA-SHA256') x 10,748 ops/sec (9 runs sampled) v8-never-optimize=true min..max=(92.83us ... 94.42us) p75=93.88us p99=94.42us
+crypto.verify('RSA-SHA256') x 10,689 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(90.92us ... 95.82us) p75=94.17us p99=95.82us
+[Managed] crypto.createVerify('RSA-SHA256') x 10,852 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(88.14us ... 94.10us) p75=93.77us p99=94.10us
+[Managed] crypto.verify('RSA-SHA256') x 10,867 ops/sec (12 runs sampled) v8-never-optimize=true min..max=(90.40us ... 94.64us) p75=92.81us p99=94.64us
 ----------------------------------------------------------------------------

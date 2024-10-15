@@ -21,10 +21,19 @@ describe('Same benchmark function', () => {
           const percentageDifference = (difference / Math.min(opsSec1, opsSec2)) * 100;
 
           // Check if the percentage difference is less than or equal to 10%
-          assert.ok(
-            percentageDifference <= 10,
-            `${opsSec1} too different from ${opsSec2} - ${results[i].name}`
-          );
+          if (process.env.CI) {
+            // CI runs in a shared-env so the percentage of difference
+            // must be greather there due to high variance of hardware
+            assert.ok(
+              percentageDifference <= 30,
+              `${opsSec1} too different from ${opsSec2} - ${results[i].name}`
+            );
+          } else {
+            assert.ok(
+              percentageDifference <= 10,
+              `${opsSec1} too different from ${opsSec2} - ${results[i].name}`
+            );
+          }
         }
       }
     }

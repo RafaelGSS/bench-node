@@ -10,17 +10,10 @@ $ npm install bench-node
 
 ## Usage
 
-```js
+```cjs
 const { Suite } = require('bench-node');
 
-const suite = new Suite({
-  reporter: (bench, result) => {
-    console.log(`Benchmark: ${bench.name}`);
-    console.log(`Operations per second: ${result.opsSec}`);
-    console.log(`Iterations: ${result.iterations}`);
-    console.log(`Histogram: ${result.histogram}`);
-  }
-});
+const suite = new Suite();
 
 suite.add('Using delete property', () => {
   const data = { x: 1, y: 2, z: 3 };
@@ -31,20 +24,16 @@ suite.add('Using delete property', () => {
   data.z;
 });
 
-suite.run().then(results => {
-  console.log('Benchmark complete.');
-}).catch(err => {
-  console.error('Error running benchmarks:', err);
-});
+suite.run()
 ```
-
-This module uses V8 deoptimization to helps that the code block is not optimized away, producing accurate benchmarks -- But, not realistics.
-See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
 
 ```bash
 $ node --allow-natives-syntax my-benchmark.js
 Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(0ns ... 0ns) p75=0ns p99=0ns
 ```
+
+This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks—but not realistic ones.
+See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
 
 See the [examples folder](./examples/) for more common usage examples.
 

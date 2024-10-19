@@ -32,7 +32,7 @@ $ node --allow-natives-syntax my-benchmark.js
 Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(0ns ... 0ns) p75=0ns p99=0ns
 ```
 
-This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks—but not realistic ones.
+This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks -- but not realistic.
 See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
 
 See the [examples folder](./examples/) for more common usage examples.

@@ -56,9 +56,9 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
 ### `new Suite([options])`
 
 * `options` {Object} Configuration options for the suite. Supported properties:
-  * `reporter` {Function} Callback function for reporting results. Receives two arguments:
-    * `suite` {Suite} The Suite instance.
-    * `result` {Object} Contains:
+  * `reporter` {Function} Callback function for reporting results. Receives one argument:
+    * `results` {Array<Object>} Contains:
+      * `name` {string} Benchmark name.
       * `opsSec` {string} Operations per second.
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
@@ -155,11 +155,13 @@ Customize data reporting by providing a `reporter` function when creating the `S
 ```js
 const { Suite } = require('bench-node');
 
-function reporter(bench, result) {
-  console.log(`Benchmark: ${bench.name}`);
-  console.log(`Operations per second: ${result.opsSec}`);
-  console.log(`Iterations: ${result.iterations}`);
-  console.log(`Histogram: ${result.histogram}`);
+function reporter(results) {
+  for (const result of results) {
+    console.log(`Benchmark: ${result.name}`);
+    console.log(`Operations per second: ${result.opsSec}`);
+    console.log(`Iterations: ${result.iterations}`);
+    console.log(`Histogram: ${result.histogram}`);
+  }
 }
 
 const suite = new Suite({ reporter });

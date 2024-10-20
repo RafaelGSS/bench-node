@@ -148,7 +148,67 @@ class V8OptimizeOnNextCallPlugin {
 }
 ```
 
-## Using Custom Reporter
+# Using Reporter
+
+This module exports two reporters that control how benchmark results are displayed:
+a detailed `textReport` for statistical analysis, and a visual `chartReport` that
+displays a bar graph in the terminal.
+
+## `textReport` (Default)
+
+The `textReport` is the default reporter, which provides detailed statistical information
+about each benchmark result. It includes the number of operations per second, the number
+of runs sampled, and percentile statistics (`p75`, `p99`). This format is ideal for analyzing
+performance with precision, allowing you to compare the efficiency of different operations
+at a more granular level.
+
+**Example Output**:
+
+```
+Using delete property x 7,736,869 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.65ns ... 129.97ns) p75=129.76ns p99=129.97ns
+Using delete property (proto: null) x 23,849,066 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(41.24ns ... 42.62ns) p75=42.44ns p99=42.62ns
+Using undefined assignment x 114,484,354 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(8.72ns ... 8.78ns) p75=8.76ns p99=8.78ns
+...
+```
+
+Here’s how you can explicitly pass it as a reporter:
+
+```cjs
+const { Suite, textReport } = require('bench-node');
+
+const suite = new Suite({
+  reporter: textReport, // Optional, since this is the default
+});
+```
+
+### `chartReport`
+
+The `chartReport` reporter provides a graphical representation of benchmark
+results in the form of a bar chart, making it easier to visualize the relative
+performance of each benchmark. It scales the bars based on the highest operations
+per second (ops/sec) value, and displays the results incrementally as they are collected.
+
+Example output:
+
+```
+Platform: darwin arm64
+CPU Cores: 8 vCPUs | 16.0GB Mem
+
+single with matcher                           | ██████████████████████████████ | 747215.75 ops/sec
+multiple replaces                             | █████████████████████████----- | 630285.56 ops/sec
+```
+
+Usage:
+
+```cjs
+const { Suite, chartReport } = require('bench-node');
+
+const suite = new Suite({
+  reporter: chartReport,
+});
+```
+
+### Custom Reporter
 
 Customize data reporting by providing a `reporter` function when creating the `Suite`:
 

@@ -43,9 +43,12 @@ See the [examples folder](./examples/) for more common usage examples.
     1. [`suite.add()`](#suiteaddname-options-fn)
     2. [`suite.run()`](#suiterun)
 2. [Plugins](#plugins)
-3. [Using Custom Reporter](#using-custom-reporter)
+3. [Using Reporter](#using-reporter)
+    1. [Text Reporter](#textreport-default)
+    2. [Chart Reporter](#chartreport)
+    3. [Custom Reporter](#custom-reporter) 
 4. [Setup and Teardown](#setup-and-teardown)
-    1. [Managed Benchmarks](#managd-benchmarks)
+    1. [Managed Benchmarks](#managed-benchmarks)
 
 ## Class: `Suite`
 
@@ -55,9 +58,9 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
 
 ### `new Suite([options])`
 
-* `options` {Object} Configuration options for the suite. Supported properties:
+* `options` {Object} Configuration options for the suite.
   * `reporter` {Function} Callback function for reporting results. Receives one argument:
-    * `results` {Array<Object>} Contains:
+    * `results` {Object[]} Array of benchmark results:
       * `name` {string} Benchmark name.
       * `opsSec` {string} Operations per second.
       * `iterations` {Number} Number of iterations.
@@ -148,13 +151,13 @@ class V8OptimizeOnNextCallPlugin {
 }
 ```
 
-# Using Reporter
+## Using Reporter
 
 This module exports two reporters that control how benchmark results are displayed:
 a detailed `textReport` for statistical analysis, and a visual `chartReport` that
 displays a bar graph in the terminal.
 
-## `textReport` (Default)
+### `textReport` (Default)
 
 The `textReport` is the default reporter, which provides detailed statistical information
 about each benchmark result. It includes the number of operations per second, the number

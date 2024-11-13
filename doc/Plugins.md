@@ -7,6 +7,8 @@ plugins within the benchmarking framework.
 
 [V8NeverOptimizePlugin](#class-v8neveroptimizeplugin) is enabled by default.
 
+To observe how a plugin is used, see the `plugin-api-doc.js` file in tests and explore its results.
+
 ## Structure
 
 Each plugin is expected to follow a specific structure with required methods

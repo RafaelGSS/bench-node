@@ -4,7 +4,7 @@ const { describe, it } = require("node:test");
 const assert = require("node:assert");
 
 class ExamplePlugin {
-  #aggregation = 0;
+  #aggregation = {};
   constructor() {}
 
   isSupported() {
@@ -24,21 +24,24 @@ class ExamplePlugin {
     ];
   }
 
-  onCompleteBenchmark([time, iterations, results]) {
-    this.#aggregation += results.example;
+  onCompleteBenchmark([time, iterations, results], { name }) {
+    if (undefined === this.#aggregation[name]) {
+      this.#aggregation[name] = 0;
+    }
+    this.#aggregation[name] += results.example;
   }
 
   toString() {
     return "ExamplePlugin";
   }
 
-  getReport() {
-    return `examplePlugin report`;
+  getReport(name) {
+    return `examplePlugin report for ${name}`;
   }
 
-  getResult() {
+  getResult(name) {
     return {
-      examplePluginAggregation: this.#aggregation,
+      examplePluginAggregation: this.#aggregation[name],
     };
   }
 }
@@ -61,10 +64,11 @@ describe("plugin API", async () => {
     assert.deepStrictEqual(recordedMethodSignatures, [
       "afterClockTemplate({awaitOrEmpty, bench, context, timer})",
       "beforeClockTemplate({awaitOrEmpty, bench, context, timer})",
-      "getReport()",
-      "getResult()",
+      "getReport(string)",
+      "getResult(string)",
       "isSupported()",
-      "onCompleteBenchmark([number, number, object])",
+      "onCompleteBenchmark([number, number, object], {fn, maxTime, minTime, name, plugins})",
+      "toJSON(string)",
       "toString()",
     ]);
   });
@@ -74,7 +78,10 @@ describe("plugin API", async () => {
   it("aggregates results", async () => {
     console.log("Benchmark results plugins field:", bench1.plugins);
     assert(bench1.plugins[0].result.examplePluginAggregation > 1);
-    assert.strictEqual(bench1.plugins[0].report, "examplePlugin report");
+    assert.strictEqual(
+      bench1.plugins[0].report,
+      "examplePlugin report for task1",
+    );
   });
 });
 
@@ -106,7 +113,7 @@ function printExcerptFromHistory(n = 25) {
       ([name, count, args]) =>
         `${name} ${count > 1 ? "x" + count : ""}${
           args ? " with args: " + args : ""
-        }`
+        }`,
     )
     .join("\n| ");
   console.log("+----------------------------------");
@@ -124,9 +131,11 @@ function getSignatures() {
             if (!a) return "";
             if (Array.isArray(a))
               return "[" + a.map((a) => typeof a).join(", ") + "]";
-            return "{" + Object.keys(a).sort().join(", ") + "}";
+            if (typeof a === "object")
+              return "{" + Object.keys(a).sort().join(", ") + "}";
+            return typeof a;
           })
-          .join(", ")})`
+          .join(", ")})`,
     )
     .sort();
 }

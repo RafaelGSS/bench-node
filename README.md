@@ -35,6 +35,13 @@ Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=tr
 This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks -- but not realistic.
 See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
 
+The [`bench-node-cli`](https://github.com/RafaelGSS/bench-node-cli) tool allows you to execute a `bench-node` benchmark
+from any location, eliminating the need to install the `bench-node` package locally.
+Simply use the following command to run your benchmark:
+
+```bash
+npx bench-node-cli my-benchmark.js
+```
 See the [examples folder](./examples/) for more common usage examples.
 
 ## Table of Contents

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmark Visualizer</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      position: relative;
+      width: 400px; /* Reduced width */
+      height: 200px;
+      border: 2px solid #000;
+      background: #fff;
+    }
+
+    .label {
+      position: absolute;
+      left: -120px; /* Place labels outside the box */
+      width: 100px;
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    
+      #label-single-with-matcher {
+        top: 20px;
+      }
+
+      #circle-single-with-matcher {
+        background-color: red;
+        top: 20px;
+      }
+    
+      #label-multiple-replaces {
+        top: 100px;
+      }
+
+      #circle-multiple-replaces {
+        background-color: blue;
+        top: 100px;
+      }
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+      <div id="circle-single-with-matcher" class="circle"></div>
+    
+      <div id="circle-multiple-replaces" class="circle"></div>
+    
+
+    
+      <div id="label-single-with-matcher" class="label">single-with-matcher
+
+      (504,104.31 ops/sec)</div>
+    
+      <div id="label-multiple-replaces" class="label">multiple-replaces
+
+      (358,487.94 ops/sec)</div>
+    
+  </div>
+
+  <script>
+    const durations = [{"name":"single-with-matcher","duration":10,"opsSecFormatted":"504,104.31"},{"name":"multiple-replaces","duration":14.061959795114847,"opsSecFormatted":"358,487.94"}];
+
+    const animateCircles = () => {
+      const boxWidth = 400; // Width of the container box
+      const circles = durations.map((d) => ({
+        id: "circle-" + d.name.toLowerCase(),
+        duration: d.duration,
+        position: 0,
+        direction: 1,
+      }));
+
+      const update = () => {
+        circles.forEach(circle => {
+          const element = document.getElementById(circle.id);
+
+          circle.position += circle.direction * (boxWidth / circle.duration) * 0.5;
+
+          if (circle.position >= boxWidth - 20 || circle.position <= 0) {
+            circle.direction *= -1; // Reverse direction on collision
+          }
+
+          element.style.transform = `translateX(${circle.position}px)`;
+        });
+
+        requestAnimationFrame(update);
+      };
+
+      update();
+    };
+
+    animateCircles();
+  </script>
+</body>
+</html>

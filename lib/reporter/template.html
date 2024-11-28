@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmark Visualizer</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      position: relative;
+      width: 400px; /* Reduced width */
+      height: {{CONTAINER_HEIGHT}}
+      border: 2px solid #000;
+      background: #fff;
+    }
+
+    .label {
+      position: absolute;
+      left: -120px; /* Place labels outside the box */
+      width: 100px;
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    {{CSS}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    {{LABEL_DIV}}
+
+    {{CIRCLE_DIV}}
+  </div>
+
+  <script>
+    const durations = {{DURATIONS}};
+
+    const animateCircles = () => {
+      const boxWidth = 400; // Width of the container box
+      const circles = durations.map((d) => ({
+        id: "circle-" + d.name.toLowerCase(),
+        duration: d.duration,
+        position: 0,
+        direction: 1,
+      }));
+
+      const update = () => {
+        circles.forEach(circle => {
+          const element = document.getElementById(circle.id);
+
+          circle.position += circle.direction * (boxWidth / circle.duration) * 0.5;
+
+          if (circle.position >= boxWidth - 20 || circle.position <= 0) {
+            circle.direction *= -1; // Reverse direction on collision
+          }
+
+          element.style.transform = `translateX(${circle.position}px)`;
+        });
+
+        requestAnimationFrame(update);
+      };
+
+      update();
+    };
+
+    animateCircles();
+  </script>
+</body>
+</html>

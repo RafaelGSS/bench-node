@@ -74,7 +74,7 @@ describe('htmlReport should create a file', async (t) => {
         const r = subject.replace(pattern, m => replacements[m])
         assert.ok(r);
       })
-      .add('multiple replaces', function () {
+      .add('Multiple replaces', function () {
         const subject = '123123123123123123123123123123123123123123123123'
         const r = subject.replace(/1/g, 'a').replace(/2/g, 'b').replace(/3/g, 'c')
         assert.ok(r);
@@ -95,6 +95,11 @@ describe('htmlReport should create a file', async (t) => {
 
   it('htmlContent should not be empty', () => {
     assert.ok(htmlContent.length > 100);
+  });
+
+  it('htmlContent bench suite should be used as class name', () => {
+    assert.ok(htmlContent.includes('circle-Multiple-replaces'));
+    assert.ok(htmlContent.includes('circle-single-with-matcher'));
   });
 
   it('htmlContent should not contain replace tags {{}}', () => {

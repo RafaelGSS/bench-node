@@ -13,7 +13,7 @@ suite
     const r = subject.replace(pattern, m => replacements[m])
     assert.ok(r);
   })
-  .add('multiple replaces', function () {
+  .add('Multiple replaces', function () {
     const subject = '123123123123123123123123123123123123123123123123'
     const r = subject.replace(/1/g, 'a').replace(/2/g, 'b').replace(/3/g, 'c')
     assert.ok(r);

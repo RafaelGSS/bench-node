@@ -44,15 +44,15 @@
       }
 
       #circle-single-with-matcher {
-        background-color: red;
+        background-color: green;
         top: 20px;
       }
     
-      #label-multiple-replaces {
+      #label-Multiple-replaces {
         top: 100px;
       }
 
-      #circle-multiple-replaces {
+      #circle-Multiple-replaces {
         background-color: blue;
         top: 100px;
       }
@@ -64,27 +64,27 @@
     
       <div id="circle-single-with-matcher" class="circle"></div>
     
-      <div id="circle-multiple-replaces" class="circle"></div>
+      <div id="circle-Multiple-replaces" class="circle"></div>
     
 
     
       <div id="label-single-with-matcher" class="label">single-with-matcher
 
-      (504,104.31 ops/sec)</div>
+      (743,310.95 ops/sec)</div>
     
-      <div id="label-multiple-replaces" class="label">multiple-replaces
+      <div id="label-Multiple-replaces" class="label">Multiple-replaces
 
-      (358,487.94 ops/sec)</div>
+      (603,134.34 ops/sec)</div>
     
   </div>
 
   <script>
-    const durations = [{"name":"single-with-matcher","duration":10,"opsSecFormatted":"504,104.31"},{"name":"multiple-replaces","duration":14.061959795114847,"opsSecFormatted":"358,487.94"}];
+    const durations = [{"name":"single-with-matcher","duration":10,"opsSecFormatted":"743,310.95"},{"name":"Multiple-replaces","duration":12.324135789335076,"opsSecFormatted":"603,134.34"}];
 
     const animateCircles = () => {
       const boxWidth = 400; // Width of the container box
       const circles = durations.map((d) => ({
-        id: "circle-" + d.name.toLowerCase(),
+        id: "circle-" + d.name,
         duration: d.duration,
         position: 0,
         direction: 1,

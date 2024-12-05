@@ -100,7 +100,7 @@ Adds a benchmark function to the suite.
 
 ```bash
 $ node --allow-natives-syntax my-benchmark.js
-Using delete property x 5,853,505 ops/sec ± 0.01% (10 runs sampled) min..max=(169ns ... 171ns) p75=170ns p99=171ns
+Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 171ns)
 ```
 
 ### `suite.run()`
@@ -166,18 +166,16 @@ displays a bar graph in the terminal.
 
 ### `textReport` (Default)
 
-The `textReport` is the default reporter, which provides detailed statistical information
+The `textReport` is the default reporter, which provides simple statistical information
 about each benchmark result. It includes the number of operations per second, the number
-of runs sampled, and percentile statistics (`p75`, `p99`). This format is ideal for analyzing
-performance with precision, allowing you to compare the efficiency of different operations
-at a more granular level.
+of runs sampled, min...max, and enabled plugins.
 
 **Example Output**:
 
 ```
-Using delete property x 7,736,869 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.65ns ... 129.97ns) p75=129.76ns p99=129.97ns
-Using delete property (proto: null) x 23,849,066 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(41.24ns ... 42.62ns) p75=42.44ns p99=42.62ns
-Using undefined assignment x 114,484,354 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(8.72ns ... 8.78ns) p75=8.76ns p99=8.78ns
+Using delete property               x   7,736,869 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.65ns ... 129.97ns)
+Using delete property (proto: null) x  23,849,066 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(41.24ns ... 42.62ns)
+Using undefined assignment          x 114,484,354 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(8.72ns ... 8.78ns)
 ...
 ```
 

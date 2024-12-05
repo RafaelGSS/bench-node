@@ -218,6 +218,26 @@ const suite = new Suite({
 });
 ```
 
+### `htmlReport`
+
+The `htmlReport` generates an interactive HTML visualization of benchmark results.
+It transforms benchmark data into a visual format, such as speed circle animations,
+making it easier to interpret and share performance insights.
+
+Example output:
+
+https://github.com/user-attachments/assets/b2b98175-6648-4af4-8319-63f3ebbc729e
+
+Usage:
+
+```cjs
+const { Suite, htmlReport } = require('bench-node');
+
+const suite = new Suite({
+  reporter: htmlReport,
+});
+```
+
 ### Custom Reporter
 
 Customize data reporting by providing a `reporter` function when creating the `Suite`:

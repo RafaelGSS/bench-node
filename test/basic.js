@@ -118,10 +118,10 @@ describe('API Interface', () => {
       bench.add('name', noop);
     });
 
-    it('repetition should be a valid number', () => {
+    it('repeatSuite should be a valid number', () => {
       ['ds', {}, () => {}].forEach((r) => {
         assert.throws(() => {
-          bench.add('name', { repetition: r }, noop);
+          bench.add('name', { repeatSuite: r }, noop);
         }, {
           code: 'ERR_INVALID_ARG_TYPE',
         });

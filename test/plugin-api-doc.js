@@ -67,7 +67,7 @@ describe("plugin API", async () => {
       "getReport(string)",
       "getResult(string)",
       "isSupported()",
-      "onCompleteBenchmark([number, number, object], {fn, maxTime, minTime, name, plugins, repetition})",
+      "onCompleteBenchmark([number, number, object], {fn, maxTime, minTime, name, plugins, repeatSuite})",
       "toJSON(string)",
       "toString()",
     ]);

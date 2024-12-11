@@ -117,6 +117,16 @@ describe('API Interface', () => {
       // doesNotThrow
       bench.add('name', noop);
     });
+
+    it('repeatSuite should be a valid number', () => {
+      ['ds', {}, () => {}].forEach((r) => {
+        assert.throws(() => {
+          bench.add('name', { repeatSuite: r }, noop);
+        }, {
+          code: 'ERR_INVALID_ARG_TYPE',
+        });
+      });
+    });
   });
 });
 

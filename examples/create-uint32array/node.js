@@ -6,6 +6,9 @@ suite
   .add(`new Uint32Array(1024)`, function () {
     return new Uint32Array(1024);
   })
+  .add(`new Uint32Array(1024) with 10 repetitions`,  {repeatSuite: 10}, function () {
+    return new Uint32Array(1024);
+  })
   .add(`[Managed] new Uint32Array(1024)`, function (timer) {
     const assert = require('node:assert');
 

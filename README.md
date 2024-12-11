@@ -93,7 +93,8 @@ const suite = new Suite({ reporter: false });
 * `options` {Object} Configuration options for the benchmark. Supported properties:
   * `minTime` {number} Minimum duration for the benchmark to run. **Default:** `0.05` seconds.
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
-* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous.
+  * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
+* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
 * Returns: {Suite}
 
 Adds a benchmark function to the suite.

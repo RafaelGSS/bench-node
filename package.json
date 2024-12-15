@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/RafaelGSS/bench-node/issues"
   },
-  "homepage": "https://github.com/RafaelGSS/bench-node#readme"
+  "homepage": "https://github.com/RafaelGSS/bench-node#readme",
+  "dependencies": {
+    "piscina": "^4.8.0"
+  }
 }

@@ -237,6 +237,46 @@ const suite = new Suite({
 });
 ```
 
+### `jsonReport`
+
+The `jsonReport` plugin provides benchmark results in **JSON format**.  
+It includes key performance metrics—such as `opsSec`, `runsSampled`, `min`
+and `max` times, and any reporter data from your **plugins**—so you can easily
+store, parse, or share the information.
+
+Example output:
+
+```json
+[
+  {
+    "name": "single with matcher",
+    "opsSec": 180000,
+    "runsSampled": 50,
+    "min": "13.20μs",
+    "max": "82.57μs",
+    "plugins": []
+  },
+  {
+    "name": "Multiple replaces",
+    "opsSec": 170000,
+    "runsSampled": 50,
+    "min": "15.31μs",
+    "max": "77.49μs",
+    "plugins": []
+  }
+]
+```
+
+**Usage:**
+
+```cjs
+const { Suite, jsonReport } = require('bench-node');
+
+const suite = new Suite({
+  reporter: jsonReport,
+});
+```
+
 ### Custom Reporter
 
 Customize data reporting by providing a `reporter` function when creating the `Suite`:

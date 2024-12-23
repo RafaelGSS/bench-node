@@ -375,3 +375,17 @@ That's why an `assert.ok(r)` has been used. To avoid V8 optimizing the entire bl
 > [!NOTE]
 > V8 assumptions can change any time soon. Therefore, it's crucial to investigate
 > results between versions of V8/Node.js.
+
+### Worker Threads
+
+> Stability: 1.0 (Experimental)
+
+`bench-node` provides experimental support for **Worker Threads**. When you set `useWorkers: true`,
+the library runs each benchmark in a separate worker thread, ensuring that one benchmark
+does not affect another. Usage is straightforward:
+
+```cjs
+const suite = new Suite({
+  useWorkers: true,
+});
+```

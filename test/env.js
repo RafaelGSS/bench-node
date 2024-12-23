@@ -1,5 +1,6 @@
 const { describe, it, before } = require('node:test');
 const assert = require('node:assert');
+const { Suite } = require('../lib');
 const copyBench = require('./fixtures/copy');
 const { managedBench, managedOptBench } = require('./fixtures/opt-managed');
 
@@ -68,4 +69,27 @@ describe('Managed can be V8 optimized', () => {
   // it('should be similar when avoiding V8 optimizatio', () => {
   //   assertBenchmarkDifference(results, 50, 30);
   // });
+});
+
+describe('Workers should have parallel context', () => {
+  let results;
+  before(async () => {
+    const bench = new Suite({
+      reporter: () => {},
+      useWorkers: true,
+    });
+
+    bench
+      .add('Import with node: prefix', () => {
+        return import('node:fs');
+      })
+      .add('Import without node: prefix', () => {
+        return import('fs');
+      });
+    results = await bench.run();
+  });
+
+  it('should have a similar result as they will not share import.meta.cache', () => {
+    assertMaxBenchmarkDifference(results, { percentageLimit: 10, ciPercentageLimit: 30 });
+  });
 });

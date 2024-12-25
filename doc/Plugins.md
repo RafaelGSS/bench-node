@@ -167,3 +167,7 @@ optimization.
 
 The `V8GetOptimizationStatus` plugin collects the V8 engine's optimization
 status for a given function after it has been benchmarked.
+
+### Class: `RecordMemorySpikePlugin`
+
+A plugin to record memory allocation spikes in your benchmark's run. It should help you understand the speed vs memory tradeoffs you're making.

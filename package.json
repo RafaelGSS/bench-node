@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node --test --allow-natives-syntax"
+    "test": "node --test --allow-natives-syntax --expose-gc"
   },
   "repository": {
     "type": "git",

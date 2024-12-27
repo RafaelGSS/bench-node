@@ -1,0 +1,23 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+      "style": {
+        "noParameterAssign": "off"
+      }
+		}
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"files": {
+		"ignore": [
+      "examples/deleting-properties/node.js"
+		]
+	}
+}

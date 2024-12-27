@@ -1,5 +1,3 @@
-const { todo } = require('node:test');
+const { todo } = require("node:test");
 
-todo('managed benchmarks', async () => {
-
-});
+todo("managed benchmarks", async () => {});

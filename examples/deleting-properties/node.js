@@ -7,7 +7,36 @@ NullObject.prototype = Object.create(null);
 %NeverOptimizeFunction(NullObject);
 
 suite
-  .add('Using delete property', () => {
+  .add('Using delete property', function () {
+    const data = { x: 1, y: 2, z: 3 }
+    delete data.y
+
+    data.x
+    data.y
+    data.z
+  })
+  .add('Using delete property (proto: null)', function () {
+    const data = { __proto__: null, x: 1, y: 2, z: 3 }
+    delete data.y
+
+    data.x
+    data.y
+    data.z
+  })
+  .add('Using delete property (cached proto: null)', function () {
+    const data = new NullObject()
+
+    data.x = 1
+    data.y = 2
+    data.z = 3
+
+    delete data.y
+
+    data.x
+    data.y
+    data.z
+  })
+  .add('Using undefined assignment', function () {
     const data = { x: 1, y: 2, z: 3 }
     data.y = undefined
 
@@ -15,7 +44,7 @@ suite
     data.y
     data.z
   })
-  .add('Using delete property (proto: null)', () => {
+  .add('Using undefined assignment (proto: null)', function () {
     const data = { __proto__: null, x: 1, y: 2, z: 3 }
     data.y = undefined
 
@@ -23,7 +52,7 @@ suite
     data.y
     data.z
   })
-  .add('Using delete property (cached proto: null)', () => {
+  .add('Using undefined property (cached proto: null)', function () {
     const data = new NullObject()
 
     data.x = 1
@@ -36,37 +65,8 @@ suite
     data.y
     data.z
   })
-  .add('Using undefined assignment', () => {
-    const data = { x: 1, y: 2, z: 3 }
-    data.y = undefined
-
-    data.x
-    data.y
-    data.z
-  })
-  .add('Using undefined assignment (proto: null)', () => {
-    const data = { __proto__: null, x: 1, y: 2, z: 3 }
-    data.y = undefined
-
-    data.x
-    data.y
-    data.z
-  })
-  .add('Using undefined property (cached proto: null)', () => {
-    const data = new NullObject()
-
-    data.x = 1
-    data.y = 2
-    data.z = 3
-
-    data.y = undefined
-
-    data.x
-    data.y
-    data.z
-  })
-  .add('[Managed] Using undefined property (cached proto: null)', (t) => {
-    const NullObject = () => { }
+  .add('[Managed] Using undefined property (cached proto: null)', function (t) {
+    const NullObject = function () { }
     NullObject.prototype = Object.create(null)
 
     t.start();

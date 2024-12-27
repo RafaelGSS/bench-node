@@ -17,7 +17,7 @@
 	},
 	"files": {
 		"ignore": [
-      "examples/deleting-properties/node.js"
+      "examples/*"
 		]
 	}
 }

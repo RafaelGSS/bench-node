@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Run linter
-        run: npm run lint
+        run: npm run lint:ci
 
       - name: Run tests
         run: npm test

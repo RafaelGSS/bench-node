@@ -17,7 +17,7 @@ describe("API Interface", () => {
 					code: "ERR_INVALID_ARG_TYPE",
 				},
 			);
-		};
+		}
 		// doesNotThrow
 		new Suite({});
 	});
@@ -32,7 +32,7 @@ describe("API Interface", () => {
 					code: "ERR_INVALID_ARG_TYPE",
 				},
 			);
-		};
+		}
 		// doesNotThrow
 		new Suite({ reporter: () => {} });
 	});
@@ -41,7 +41,7 @@ describe("API Interface", () => {
 		for (const r of [false, null]) {
 			// doesNotThrow
 			new Suite({ reporter: r });
-		};
+		}
 	});
 
 	describe("suite.add", () => {
@@ -51,7 +51,7 @@ describe("API Interface", () => {
 				assert.throws(() => {
 					bench.add(r);
 				});
-			};
+			}
 			// doesNotThrow
 			bench.add("example", noop);
 		});
@@ -66,11 +66,11 @@ describe("API Interface", () => {
 						code: "ERR_INVALID_ARG_TYPE",
 					},
 				);
-			};
+			}
 		});
 
 		it("minTime should be a valid number", () => {
-      for (const r of ["ds", {}, () => {}]) {
+			for (const r of ["ds", {}, () => {}]) {
 				assert.throws(
 					() => {
 						bench.add("name", { minTime: r }, noop);
@@ -79,7 +79,7 @@ describe("API Interface", () => {
 						code: "ERR_INVALID_ARG_TYPE",
 					},
 				);
-			};
+			}
 			assert.throws(
 				() => {
 					bench.add("name", { minTime: 0 }, noop);
@@ -101,7 +101,7 @@ describe("API Interface", () => {
 		});
 
 		it("maxTime should be a valid number", () => {
-      for (const r of ["ds", {}, () => {}]) {
+			for (const r of ["ds", {}, () => {}]) {
 				assert.throws(
 					() => {
 						bench.add("name", { minTime: r }, noop);
@@ -110,7 +110,7 @@ describe("API Interface", () => {
 						code: "ERR_INVALID_ARG_TYPE",
 					},
 				);
-			};
+			}
 		});
 		it("maxTime should be greater than minTime", () => {
 			assert.throws(
@@ -134,7 +134,7 @@ describe("API Interface", () => {
 		});
 
 		it("fn should be a function", () => {
-      for (const r of ["ds", {}, 42]) {
+			for (const r of ["ds", {}, 42]) {
 				assert.throws(
 					() => {
 						bench.add("name", {}, r);
@@ -143,13 +143,13 @@ describe("API Interface", () => {
 						code: "ERR_INVALID_ARG_TYPE",
 					},
 				);
-      };
+			}
 			// doesNotThrow
 			bench.add("name", noop);
 		});
 
 		it("repeatSuite should be a valid number", () => {
-      for (const r of ["ds", {}, () => {}]) {
+			for (const r of ["ds", {}, () => {}]) {
 				assert.throws(
 					() => {
 						bench.add("name", { repeatSuite: r }, noop);
@@ -158,7 +158,7 @@ describe("API Interface", () => {
 						code: "ERR_INVALID_ARG_TYPE",
 					},
 				);
-      };
+			}
 		});
 	});
 });

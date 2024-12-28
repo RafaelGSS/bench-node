@@ -7,18 +7,15 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-      "style": {
-        "noParameterAssign": "off"
-      }
+			"style": {
+				"noParameterAssign": "off"
+			}
 		}
 	},
 	"formatter": {
 		"enabled": true
 	},
 	"files": {
-		"ignore": [
-      "examples/*",
-      "test/plugin-api-doc.js"
-		]
+		"ignore": ["examples/*", "test/plugin-api-doc.js"]
 	}
 }

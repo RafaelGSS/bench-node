@@ -17,7 +17,8 @@
 	},
 	"files": {
 		"ignore": [
-      "examples/*"
+      "examples/*",
+      "test/plugin-api-doc.js"
 		]
 	}
 }

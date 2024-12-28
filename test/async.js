@@ -1,5 +1,3 @@
-const { todo } = require('node:test');
+const { todo } = require("node:test");
 
-todo('async tasks should behave similar to sync tasks', async () => {
-
-});
+todo("async tasks should behave similar to sync tasks", async () => {});

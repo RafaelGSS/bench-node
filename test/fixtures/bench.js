@@ -1,8 +1,8 @@
-const { Suite } = require('../../lib');
+const { Suite } = require("../../lib");
 
 const suite = new Suite();
 
 suite
-  .add(`empty`, function () {})
-  .add(`empty async`, async function () {})
-  .run();
+	.add("empty", () => {})
+	.add("empty async", async () => {})
+	.run();

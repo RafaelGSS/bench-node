@@ -429,3 +429,21 @@ const suite = new Suite({
   useWorkers: true,
 });
 ```
+
+## Writting JavaScript Mistakes
+
+When working on JavaScript micro-benchmarks, it’s easy to forget that modern engines use
+multiple tiers of Just-In-Time (JIT) compilation and sometimes even entirely different
+optimizations. The results you get from a simple timing loop often aren’t representative
+of how your code will behave under real-world conditions, especially once the browser or
+runtime has adjusted for frequent function calls. Caching, tail call optimizations,
+and hidden class transformations can all distort your measurements, leading to overblown
+claims about performance improvements that might never materialize in production.
+
+That’s why **bench-node** was created—to provide a stable and consistent way to compare
+small snippets of code. By default, it tells V8 to never optimize your code with a
+snippet like `%NeverOptimizeFunction(DoNotOptimize)`, ensuring the JIT compiler doesn’t
+remove dead code. However, even this approach can’t fully replicate real-world scenarios
+in which V8 optimizations and unpredictable workloads impact performance. Think of
+bench-node as a helpful tool for quick comparisons rather than a guarantee of what you’ll
+see in production.

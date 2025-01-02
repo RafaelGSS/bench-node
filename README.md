@@ -33,7 +33,7 @@ Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=tr
 ```
 
 This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks -- but not realistic.
-See the [Writing JavaScript Microbenchmark Mistakes](#TODO) section for more details.
+See the [Writing JavaScript Microbenchmark Mistakes](#writing-javascript-mistakes) section for more details.
 
 The [`bench-node-cli`](https://github.com/RafaelGSS/bench-node-cli) tool allows you to execute a `bench-node` benchmark
 from any location, eliminating the need to install the `bench-node` package locally.
@@ -430,7 +430,7 @@ const suite = new Suite({
 });
 ```
 
-## Writting JavaScript Mistakes
+## Writing JavaScript Mistakes
 
 When working on JavaScript micro-benchmarks, it’s easy to forget that modern engines use
 multiple tiers of Just-In-Time (JIT) compilation and sometimes even entirely different

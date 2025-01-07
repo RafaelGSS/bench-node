@@ -277,6 +277,35 @@ const suite = new Suite({
 });
 ```
 
+### CSV Reporter
+
+The `csvReport` plugin generates benchmark results in CSV format.
+It includes columns for key performance metrics like `ops/sec`, `samples`, `min` and `max` times,
+as well as any reporter data provided by your plugins.
+
+Example output:
+
+```csv
+name,ops/sec,samples,plugins,min,max
+Using delete property,"7,732,517",10,v8-never-optimize=true,127.91ns,129.95ns
+Using delete property (proto: null),"24,636,631",10,v8-never-optimize=true,39.57ns,40.91ns
+Using delete property (cached proto: null),"7,497,893",11,v8-never-optimize=true,132.25ns,134.89ns
+Using undefined assignment,"132,093,600",11,v8-never-optimize=true,7.53ns,7.64ns
+Using undefined assignment (proto: null),"28,231,374",9,v8-never-optimize=true,35.27ns,35.42ns
+Using undefined property (cached proto: null),"60,843,193",10,v8-never-optimize=true,16.24ns,16.65ns
+[Managed] Using undefined property (cached proto: null),"35,394,060",10,v8-never-optimize=true,27.90ns,28.54ns
+```
+
+**Usage:**
+
+```cjs
+const { Suite, csvReport } = require('bench-node');
+
+const suite = new Suite({
+  reporter: csvReport,
+});
+```
+
 ### Custom Reporter
 
 Customize data reporting by providing a `reporter` function when creating the `Suite`:

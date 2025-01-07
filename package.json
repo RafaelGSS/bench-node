@@ -15,7 +15,10 @@
 		"type": "git",
 		"url": "git+https://github.com/RafaelGSS/bench-node.git"
 	},
-	"keywords": ["benchmark", "nodejs"],
+	"keywords": [
+		"benchmark",
+		"nodejs"
+	],
 	"author": "RafaelGSS <rafael.nunu@hotmail.com>",
 	"contributors": [
 		{
@@ -29,6 +32,7 @@
 	},
 	"homepage": "https://github.com/RafaelGSS/bench-node#readme",
 	"dependencies": {
+		"@fast-csv/format": "^5.0.2",
 		"piscina": "^4.8.0"
 	},
 	"devDependencies": {

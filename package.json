@@ -32,7 +32,6 @@
 	},
 	"homepage": "https://github.com/RafaelGSS/bench-node#readme",
 	"dependencies": {
-		"@fast-csv/format": "^5.0.2",
 		"piscina": "^4.8.0"
 	},
 	"devDependencies": {

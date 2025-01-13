@@ -51,6 +51,15 @@ describe("chartReport outputs benchmark results as a bar chart", async (t) => {
 	it("should include ops/sec", () => {
 		assert.ok(output.includes("ops/sec"));
 	});
+
+	it("should include benchmark names", () => {
+		assert.ok(output.includes("single with matcher"));
+		assert.ok(output.includes("multiple replaces"));
+	});
+
+	it("should include sample count", () => {
+		assert.ok(output.includes("samples"));
+	});
 });
 
 describe("htmlReport should create a file", async (t) => {

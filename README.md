@@ -1,4 +1,21 @@
-# `bench-node`
+<h1 align="center">
+  🚀 Bench Node
+</h1>
+
+<p align="center">
+  <a href="#install">Install</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#usage">Usage</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#class-suite">Suite</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#plugins">Plugins</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#using-reporter">Using Reporter</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#setup-and-teardown">Setup and Teardown</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#writing-javascript-mistakes">Writing JavaScript Mistakes</a>
+</p>
+
+[![npm package][npm-img]][npm-url]
+[![Build Status][build-img]][build-url]
+[![Downloads][downloads-img]][downloads-url]
+[![Issues][issues-img]][issues-url]
 
 The `bench-node` module allows you to measure operations per second of Node.js code blocks.
 
@@ -476,3 +493,20 @@ remove dead code. However, even this approach can’t fully replicate real-world
 in which V8 optimizations and unpredictable workloads impact performance. Think of
 bench-node as a helpful tool for quick comparisons rather than a guarantee of what you’ll
 see in production.
+
+
+[build-img]:https://github.com/RafaelGSS/bench-node/actions/workflows/release.yml/badge.svg
+
+[build-url]:https://github.com/RafaelGSS/bench-node/actions/workflows/release.yml
+
+[downloads-img]:https://img.shields.io/npm/dt/bench-node
+
+[downloads-url]:https://www.npmtrends.com/bench-node
+
+[npm-img]:https://img.shields.io/npm/v/bench-node
+
+[npm-url]:https://www.npmjs.com/package/bench-node
+
+[issues-img]:https://img.shields.io/github/issues/RafaelGSS/bench-node
+
+[issues-url]:https://github.com/RafaelGSS/bench-node/issues

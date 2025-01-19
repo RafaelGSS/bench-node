@@ -16,6 +16,6 @@
 		"enabled": true
 	},
 	"files": {
-		"ignore": ["examples/*", "test/plugin-api-doc.js"]
+		"ignore": ["examples/*", "test/plugin-api-doc.js", "package.json"]
 	}
 }

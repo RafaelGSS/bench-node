@@ -1,6 +1,6 @@
 {
 	"name": "bench-node",
-	"version": "0.5.3",
+	"version": "0.5.1",
 	"description": "",
 	"main": "lib/index.js",
 	"scripts": {
@@ -15,7 +15,10 @@
 		"type": "git",
 		"url": "git+https://github.com/RafaelGSS/bench-node.git"
 	},
-	"keywords": ["benchmark", "nodejs"],
+	"keywords": [
+		"benchmark",
+		"nodejs"
+	],
 	"author": "RafaelGSS <rafael.nunu@hotmail.com>",
 	"contributors": [
 		{

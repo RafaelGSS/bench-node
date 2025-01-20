@@ -1,6 +1,6 @@
 {
 	"name": "bench-node",
-	"version": "0.5.3",
+	"version": "0.5.1",
 	"description": "",
 	"main": "lib/index.js",
 	"scripts": {

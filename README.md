@@ -203,8 +203,8 @@ Example output:
 Platform: darwin arm64
 CPU Cores: 8 vCPUs | 16.0GB Mem
 
-single with matcher                           | ██████████████████████████████ | 747215.75 ops/sec
-multiple replaces                             | █████████████████████████----- | 630285.56 ops/sec
+single with matcher                           | ██████████████████████████████ | 397,602 ops/sec | 10 samples
+multiple replaces                             | ███████████████████████████--- | 353,166 ops/sec | 11 samples
 ```
 
 Usage:

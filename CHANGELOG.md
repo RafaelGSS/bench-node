@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.5.1](https://github.com/RafaelGSS/bench-node/compare/v0.5.0...v0.5.1) (2025-01-19)
+
+
+### Features
+
+* create csv reporter ([#38](https://github.com/RafaelGSS/bench-node/issues/38)) ([11be8e5](https://github.com/RafaelGSS/bench-node/commit/11be8e52e8cbb5e17f378a8462dd1c4bf7b35351))
+* **reporter:** polish chart output ([#40](https://github.com/RafaelGSS/bench-node/issues/40)) ([91082b6](https://github.com/RafaelGSS/bench-node/commit/91082b6441cfa6ba7b195d7386d493d689e29454))
+* use biome linter ([#34](https://github.com/RafaelGSS/bench-node/issues/34)) ([11c1108](https://github.com/RafaelGSS/bench-node/commit/11c11088e12d2b77547389eb0a5055ad3ff11427))
+
+
+### Bug Fixes
+
+* ignore package.json due to release-please ([7c95b0a](https://github.com/RafaelGSS/bench-node/commit/7c95b0a4fd41aa81576503ac9444a775ed498eda))
+* lint package.json ([549f6ca](https://github.com/RafaelGSS/bench-node/commit/549f6ca574f4a30915e86dff9cd073b3d90def1e))
+
+
+### Miscellaneous Chores
+
+* **main:** release 0.5.1 ([#44](https://github.com/RafaelGSS/bench-node/issues/44)) ([4e51324](https://github.com/RafaelGSS/bench-node/commit/4e51324ea129c3607229aaec3b8d22ef221d0e7d))
+* **main:** release 0.5.2 ([#45](https://github.com/RafaelGSS/bench-node/issues/45)) ([baf2014](https://github.com/RafaelGSS/bench-node/commit/baf20147c1f09f3e50491845e536c590db0d8aa5))
+* **main:** release 0.5.3 ([4757182](https://github.com/RafaelGSS/bench-node/commit/4757182c015cfbd769ebf3969c8269120271e5b3))
+
+
+### Tests
+
+* add managed basic tests ([#36](https://github.com/RafaelGSS/bench-node/issues/36)) ([c491a32](https://github.com/RafaelGSS/bench-node/commit/c491a328329bc79b2ef8124856b162c8df0e8cfb))
+
+
+### Continuous Integration
+
+* **release:** add support to release via release-please ([#42](https://github.com/RafaelGSS/bench-node/issues/42)) ([5263cc6](https://github.com/RafaelGSS/bench-node/commit/5263cc68a5c854a260b68e1f5b930496153ac7fb))
+
 ## [0.5.3](https://github.com/RafaelGSS/bench-node/compare/v0.5.2...v0.5.3) (2025-01-16)
 
 

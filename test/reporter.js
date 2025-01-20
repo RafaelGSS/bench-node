@@ -60,6 +60,12 @@ describe("chartReport outputs benchmark results as a bar chart", async (t) => {
 	it("should include sample count", () => {
 		assert.ok(output.includes("samples"));
 	});
+
+	it("should include Node.js version", () => {
+		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+
+		assert.ok(output.match(regex));
+	});
 });
 
 describe("htmlReport should create a file", async (t) => {

@@ -1,5 +1,9 @@
 <h1 align="center">
-  🚀 Bench Node
+  <img
+    src="https://raw.githubusercontent.com/RafaelGSS/bench-node/refs/heads/main/assets/logo.svg"
+    alt="Bench Node logo"
+  />
+  Bench Node
 </h1>
 
 <p align="center">

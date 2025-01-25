@@ -63,6 +63,7 @@ Simply use the following command to run your benchmark:
 ```bash
 npx bench-node-cli my-benchmark.js
 ```
+
 See the [examples folder](./examples/) for more common usage examples.
 
 ## Table of Contents
@@ -195,10 +196,8 @@ of runs sampled, min...max, and enabled plugins.
 **Example Output**:
 
 ```
-Using delete property               x   7,736,869 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(127.65ns ... 129.97ns)
-Using delete property (proto: null) x  23,849,066 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(41.24ns ... 42.62ns)
-Using undefined assignment          x 114,484,354 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(8.72ns ... 8.78ns)
-...
+single with matcher                           x 710,248 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.40us...1.42us)
+multiple replaces                             x 604,713 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(1.64us...1.70us)
 ```
 
 Here’s how you can explicitly pass it as a reporter:
@@ -221,11 +220,12 @@ per second (ops/sec) value, and displays the results incrementally as they are c
 Example output:
 
 ```
+Node.js version: v23.6.1
 Platform: darwin arm64
 CPU Cores: 8 vCPUs | 16.0GB Mem
 
-single with matcher                           | ██████████████████████████████ | 397,602 ops/sec | 10 samples
-multiple replaces                             | ███████████████████████████--- | 353,166 ops/sec | 11 samples
+single with matcher                           | ██████████████████████████████ | 709,321 ops/sec | 10 samples
+multiple replaces                             | ██████████████████████████---- | 606,401 ops/sec | 11 samples
 ```
 
 Usage:
@@ -428,7 +428,7 @@ The downside is that optimizations like inlining or caching might affect the tim
 Example:
 
 ```cjs
-suite.add('Using includes', function () {
+suite.add('Using includes', () => {
   const text = 'text/html,...';
   const r = text.includes('application/json');
 });
@@ -447,7 +447,7 @@ allowing V8 to over-optimize the entire block.
 Example:
 
 ```cjs
-suite.add('[Managed] Using includes', function (timer) {
+suite.add('[Managed] Using includes', (timer) => {
   timer.start();
   for (let i = 0; i < timer.count; i++) {
     const text = 'text/html,...';

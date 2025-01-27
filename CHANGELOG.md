@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.2](https://github.com/RafaelGSS/bench-node/compare/v0.5.1...v0.5.2) (2025-01-27)
+
+
+### Features
+
+* **chartReport:** include node-v ([#53](https://github.com/RafaelGSS/bench-node/issues/53)) ([695842e](https://github.com/RafaelGSS/bench-node/commit/695842eb58c8b6106598a4cef26fe44a552065c6))
+* improve htmlReport UX ([#60](https://github.com/RafaelGSS/bench-node/issues/60)) ([79ce533](https://github.com/RafaelGSS/bench-node/commit/79ce5335e95d531b90c4e26fde983ec1c6de9502))
+
+
+### Documentation
+
+* **readme:** add badges and links ([f85f809](https://github.com/RafaelGSS/bench-node/commit/f85f809aa0f85987d3b01ef9737ed0a855e46741))
+
+
+### Miscellaneous Chores
+
+* **"branding":** add logo ([#58](https://github.com/RafaelGSS/bench-node/issues/58)) ([3eedd06](https://github.com/RafaelGSS/bench-node/commit/3eedd064791f5804810545db247a509aea618234))
+
 ## [0.5.1](https://github.com/RafaelGSS/bench-node/compare/v0.5.0...v0.5.1) (2025-01-19)
 
 

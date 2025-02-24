@@ -160,6 +160,19 @@ describe("API Interface", () => {
 				);
 			}
 		});
+
+		it("minSamples should be a valid number", () => {
+			for (const r of ["ds", {}, () => {}]) {
+				assert.throws(
+					() => {
+						bench.add("name", { minSamples: r }, noop);
+					},
+					{
+						code: "ERR_INVALID_ARG_TYPE",
+					},
+				);
+			}
+		});
 	});
 });
 

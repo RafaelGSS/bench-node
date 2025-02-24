@@ -116,6 +116,7 @@ const suite = new Suite({ reporter: false });
   * `minTime` {number} Minimum duration for the benchmark to run. **Default:** `0.05` seconds.
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
+  * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.
 * `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
 * Returns: {Suite}
 

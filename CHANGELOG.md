@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.3](https://github.com/RafaelGSS/bench-node/compare/v0.5.2...v0.5.3) (2025-02-24)
+
+
+### Features
+
+* add min samples as param  ([#65](https://github.com/RafaelGSS/bench-node/issues/65)) ([9c6812e](https://github.com/RafaelGSS/bench-node/commit/9c6812e1124f44d95f8d086cba01b5302ec5187e))
+
+
+### Miscellaneous Chores
+
+* **readme:** clean + update ([#61](https://github.com/RafaelGSS/bench-node/issues/61)) ([b5e1e8b](https://github.com/RafaelGSS/bench-node/commit/b5e1e8bb507b9f8b017a91e8c814fb1046908042))
+
 ## [0.5.2](https://github.com/RafaelGSS/bench-node/compare/v0.5.1...v0.5.2) (2025-01-27)
 
 

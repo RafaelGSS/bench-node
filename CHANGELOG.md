@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/RafaelGSS/bench-node/compare/v0.5.3...v0.5.4) (2025-03-13)
+
+
+### Features
+
+* expose histogram sample data to reporters via sampleData property ([#67](https://github.com/RafaelGSS/bench-node/issues/67)) ([833bec1](https://github.com/RafaelGSS/bench-node/commit/833bec16ae8167785e148ec939fc6211a0662822))
+
 ## [0.5.3](https://github.com/RafaelGSS/bench-node/compare/v0.5.2...v0.5.3) (2025-02-24)
 
 

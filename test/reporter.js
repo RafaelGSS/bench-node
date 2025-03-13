@@ -135,6 +135,88 @@ describe("htmlReport should create a file", async (t) => {
 	});
 });
 
+describe("custom reporter should have access to histogram data", async () => {
+	let output = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		process.stdout.write = (data) => {
+			output += data;
+		};
+
+		function customReporter(results) {
+			const json = [];
+			for (const result of results) {
+				// Calculate the median of result.histogram.sampleData:
+				const sorted = [...result.histogram.sampleData].sort((a, b) => a - b);
+				const median =
+					sorted.length % 2 === 0
+						? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
+						: sorted[Math.floor(sorted.length / 2)];
+
+				json.push({
+					name: result.name,
+					low: result.histogram.sampleData.filter((v) => v <= median),
+					high: result.histogram.sampleData.filter((v) => v >= median),
+					median,
+				});
+			}
+			console.log(JSON.stringify(json, null, 2));
+		}
+
+		// Create a new Suite with the custom reporter
+		const suite = new Suite({
+			reporter: customReporter,
+		});
+
+		suite
+			.add("single with matcher", () => {
+				const pattern = /[123]/g;
+				const replacements = { 1: "a", 2: "b", 3: "c" };
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject.replace(pattern, (m) => replacements[m]);
+				assert.ok(r);
+			})
+			.add("Multiple replaces", () => {
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject
+					.replace(/1/g, "a")
+					.replace(/2/g, "b")
+					.replace(/3/g, "c");
+				assert.ok(r);
+			});
+
+		// Run the suite
+		await suite.run();
+
+		// Restore stdout
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should print valid JSON", () => {
+		// Verify if the output can be parsed as JSON
+		let data;
+		try {
+			data = JSON.parse(output);
+		} catch (err) {
+			assert.fail(`Output is not valid JSON: ${err.message}`);
+		}
+
+		assert.ok(Array.isArray(data), "Output should be an array of results");
+	});
+
+	it("should calculate median correctly", () => {
+		const data = JSON.parse(output);
+		for (const result of data) {
+			assert.strictEqual(
+				result.low.length,
+				result.high.length,
+				"Same number of samples above and below median",
+			);
+		}
+	});
+});
+
 describe("jsonReport should produce valid JSON output", async () => {
 	let output = "";
 

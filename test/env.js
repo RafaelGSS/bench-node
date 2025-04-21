@@ -106,6 +106,7 @@ describe("Workers should have parallel context", () => {
 		const bench = new Suite({
 			reporter: () => {},
 			useWorkers: true,
+			benchmarkMode: "ops",
 		});
 
 		bench

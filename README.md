@@ -13,6 +13,7 @@
   <a href="#plugins">Plugins</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#using-reporter">Using Reporter</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#setup-and-teardown">Setup and Teardown</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#benchmark-modes">Benchmark Modes</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#writing-javascript-mistakes">Writing JavaScript Mistakes</a>
 </p>
 
@@ -78,7 +79,9 @@ See the [examples folder](./examples/) for more common usage examples.
     3. [Custom Reporter](#custom-reporter) 
 4. [Setup and Teardown](#setup-and-teardown)
     1. [Managed Benchmarks](#managed-benchmarks)
-
+5. [Benchmark Modes](#benchmark-modes)
+    1. [Operations Mode (Default)](#operations-mode)
+    2. [Time Mode](#time-mode)
 ## Class: `Suite`
 
 > Stability: 1.1 Active Development
@@ -94,6 +97,11 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
       * `opsSec` {string} Operations per second.
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
+  * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
+    * `'ops'` - Measures operations per second (traditional benchmarking).
+    * `'time'` - Measures actual execution time for a single run.
+  * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
+  * `plugins` {Array} Array of plugin instances to use.
 
 If no `reporter` is provided, results are printed to the console.
 
@@ -130,7 +138,8 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
 ### `suite.run()`
 
 * Returns: `{Promise<Array<Object>>}` An array of benchmark results, each containing:
-  * `opsSec` {number} Operations per second.
+  * `opsSec` {number} Operations per second (Only in 'ops' mode).
+  * `totalTime` {number} Total execution time in seconds (Only in 'time' mode).
   * `iterations` {number} Number of executions of `fn`.
   * `histogram` {Histogram} Histogram of benchmark iterations.
   * `name` {string} Benchmark name.
@@ -480,6 +489,79 @@ const suite = new Suite({
   useWorkers: true,
 });
 ```
+
+## Benchmark Modes
+
+`bench-node` supports multiple benchmarking modes to measure code performance in different ways.
+
+### Operations Mode
+
+Operations mode (default) measures how many operations can be performed in a given timeframe. 
+This is the traditional benchmarking approach that reports results in operations per second (ops/sec).
+
+This mode is best for:
+- Comparing relative performance between different implementations
+- Measuring throughput of small, fast operations
+- Traditional microbenchmarking
+
+Example output:
+```
+String concatenation x 12,345,678 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(81ns...85ns)
+```
+
+### Time Mode
+
+Time mode measures the actual time taken to execute a function exactly once. 
+This mode is useful when you want to measure the real execution time for operations that have a known, fixed duration.
+
+This mode is best for:
+- Costly operations where multiple instructions are executed in a single run 
+- Benchmarking operations with predictable timing
+- Verifying performance guarantees for time-sensitive functions
+
+To use time mode, set the `benchmarkMode` option to `'time'` when creating a Suite:
+
+```js
+const { Suite } = require('bench-node');
+
+const timeSuite = new Suite({
+    benchmarkMode: 'time' // Enable time mode
+});
+
+// Create a function that takes a predictable amount of time
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+timeSuite.add('Async Delay 100ms', async () => {
+    await delay(100);
+});
+
+timeSuite.add('Sync Busy Wait 50ms', () => {
+    const start = Date.now();
+    while (Date.now() - start < 50);
+});
+
+// Optional: Run the benchmark multiple times with repeatSuite
+timeSuite.add('Quick Operation with 5 repeats', { repeatSuite: 5 }, () => {
+    // This will run exactly once per repeat (5 times total)
+    // and report the average time
+    let x = 1 + 1;
+});
+
+(async () => {
+    await timeSuite.run();
+})();
+```
+
+In time mode, results include `totalTime` (in seconds) instead of `opsSec`.
+
+Example output:
+```
+Async Delay 100ms x 0.1003s (1 sample) v8-never-optimize=true
+Sync Busy Wait 50ms x 0.0502s (1 sample) v8-never-optimize=true
+Quick Operation with 5 repeats x 0.0000s (5 samples) v8-never-optimize=true
+```
+
+See [examples/time-mode.js](./examples/time-mode.js) for a complete example.
 
 ## Writing JavaScript Mistakes
 

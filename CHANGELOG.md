@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.5](https://github.com/RafaelGSS/bench-node/compare/v0.5.4...v0.5.5) (2025-04-30)
+
+
+### Features
+
+* add time mode benchmark ([#71](https://github.com/RafaelGSS/bench-node/issues/71)) ([9d72044](https://github.com/RafaelGSS/bench-node/commit/9d72044a13a9fd93ae5f1b97fc26ff4a7db7d5f1))
+
+
+### Documentation
+
+* add JSDoc to functions ([#69](https://github.com/RafaelGSS/bench-node/issues/69)) ([e5c6695](https://github.com/RafaelGSS/bench-node/commit/e5c66957ec737f1a8f5ecc4f204e8032daf50aca))
+
 ## [0.5.4](https://github.com/RafaelGSS/bench-node/compare/v0.5.3...v0.5.4) (2025-03-13)
 
 

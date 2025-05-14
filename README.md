@@ -95,6 +95,7 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `results` {Object[]} Array of benchmark results:
       * `name` {string} Benchmark name.
       * `opsSec` {string} Operations per second.
+      * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.

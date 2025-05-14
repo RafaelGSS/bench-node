@@ -204,6 +204,49 @@ describe("simple usage", async () => {
 		assert.ok(bench1.iterations >= 10);
 		assert.ok(bench2.iterations >= 10);
 	});
+
+	it("opsSecPerRun should exist when repeatSuite is 1", async () => {
+		assert.ok(
+			Array.isArray(bench1.opsSecPerRun),
+			"opsSecPerRun should be an array",
+		);
+		assert.ok(
+			Array.isArray(bench2.opsSecPerRun),
+			"opsSecPerRun should be an array",
+		);
+	});
+});
+
+describe("repeat suite", async () => {
+  const repeatCount = 3;
+	const bench = new Suite({ reporter: noop });
+	bench
+    .add("Repeat ops test", { repeatSuite: repeatCount }, () => {
+			// Simple operation
+			const x = 1 + 1;
+		});
+
+	const results = await bench.run();
+
+	it("should include opsSecPerRun when repeatSuite is greater than 1", async () => {
+		assert.strictEqual(results.length, 1);
+		assert.ok(results[0].opsSec !== undefined, "opsSec should be defined");
+		assert.ok(
+			Array.isArray(results[0].opsSecPerRun),
+			"opsSecPerRun should be an array",
+		);
+		assert.strictEqual(
+			results[0].opsSecPerRun.length,
+			repeatCount,
+			`opsSecPerRun should have ${repeatCount} elements`,
+		);
+		for (const opsSec of results[0].opsSecPerRun) {
+			assert.ok(
+				typeof opsSec === "number" && !Number.isNaN(opsSec),
+				"each element should be a valid number",
+			);
+		}
+	});
 });
 
 describe("throws when a benchmark task throw", async () => {

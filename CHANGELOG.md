@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/RafaelGSS/bench-node/compare/v0.6.0...v0.7.0) (2025-05-15)
+
+
+### Features
+
+* add opsSecPerRun result ([#74](https://github.com/RafaelGSS/bench-node/issues/74)) ([34ad9e9](https://github.com/RafaelGSS/bench-node/commit/34ad9e95b23d92d80442955569f04efdafc97655))
+
 ## [0.6.0](https://github.com/RafaelGSS/bench-node/compare/v0.5.4...v0.6.0) (2025-04-30)
 
 

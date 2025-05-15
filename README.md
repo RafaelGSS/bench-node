@@ -95,7 +95,6 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `results` {Object[]} Array of benchmark results:
       * `name` {string} Benchmark name.
       * `opsSec` {string} Operations per second.
-      * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
@@ -140,6 +139,7 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
 
 * Returns: `{Promise<Array<Object>>}` An array of benchmark results, each containing:
   * `opsSec` {number} Operations per second (Only in 'ops' mode).
+  * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
   * `totalTime` {number} Total execution time in seconds (Only in 'time' mode).
   * `iterations` {number} Number of executions of `fn`.
   * `histogram` {Histogram} Histogram of benchmark iterations.

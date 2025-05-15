@@ -218,13 +218,12 @@ describe("simple usage", async () => {
 });
 
 describe("repeat suite", async () => {
-  const repeatCount = 3;
+	const repeatCount = 3;
 	const bench = new Suite({ reporter: noop });
-	bench
-    .add("Repeat ops test", { repeatSuite: repeatCount }, () => {
-			// Simple operation
-			const x = 1 + 1;
-		});
+	bench.add("Repeat ops test", { repeatSuite: repeatCount }, () => {
+		// Simple operation
+		const x = 1 + 1;
+	});
 
 	const results = await bench.run();
 

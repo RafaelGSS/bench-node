@@ -146,5 +146,4 @@ describe("Time-based Benchmarking", () => {
 			code: "ERR_INVALID_ARG_TYPE",
 		});
 	});
-
 });

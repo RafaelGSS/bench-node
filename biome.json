@@ -7,6 +7,9 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
 			"style": {
 				"noParameterAssign": "off",
 				"noUselessElse": "off"

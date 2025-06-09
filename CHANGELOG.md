@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/RafaelGSS/bench-node/compare/v0.7.0...v0.8.0) (2025-06-09)
+
+
+### Features
+
+* export bench-node ts types ([#77](https://github.com/RafaelGSS/bench-node/issues/77)) ([d93f111](https://github.com/RafaelGSS/bench-node/commit/d93f111472515ff19b0fbe57bce588fdc51cfc9d))
+
+
+### Miscellaneous Chores
+
+* drop Node.js v23 and add v24 ([#78](https://github.com/RafaelGSS/bench-node/issues/78)) ([c2dae5f](https://github.com/RafaelGSS/bench-node/commit/c2dae5f038e3ec613aaac753091fbff5ed927b3f))
+
 ## [0.7.0](https://github.com/RafaelGSS/bench-node/compare/v0.6.0...v0.7.0) (2025-05-15)
 
 

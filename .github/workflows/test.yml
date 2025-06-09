@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22, 23]
+        node-version: [18, 20, 22, 24]
 
     env:
       CI: true

@@ -3,8 +3,10 @@
 	"version": "0.7.0",
 	"description": "",
 	"main": "lib/index.js",
+  "types": "index.d.ts",
 	"scripts": {
 		"test": "node --test --allow-natives-syntax",
+    "test:types": "tsd -f test/types.test-d.ts",
 		"lint": "biome lint .",
 		"lint:ci": "biome ci .",
 		"lint:fix": "biome lint --write .",
@@ -35,6 +37,8 @@
 		"piscina": "^4.8.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4"
+		"@biomejs/biome": "1.9.4",
+    	"@types/node": "^20",
+    	"tsd": "^0.31.0"
 	}
 }

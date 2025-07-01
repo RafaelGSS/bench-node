@@ -1,0 +1,52 @@
+name: Cron - Keep Runners Active
+
+on:
+  schedule:
+    # Runs this workflow every Sunday at 12:00 UTC. You can adjust the schedule according to your needs.
+    - cron: "0 12 * * 0"
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+permissions:
+  issues: write
+  contents: read
+  id-token: write
+
+jobs:
+  start_runner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::800406105498:role/RafaelGSS-nodejs-bench-operations
+
+      - name: Start Runner
+        uses: nodesource/aws-eco-runner@v1.0.0-beta.3
+        with:
+          instances_id: '["i-065f0f848eb1615ae"]'
+          action: 'start'
+          aws_default_region: 'us-west-2'
+
+  keep-runner-active:
+    runs-on: [self-hosted]
+    steps:
+      - name: Run task to keep the runner active
+        run: echo "Keep the runner active"
+
+  stop_runner:
+    runs-on: ubuntu-latest
+    needs: keep-runner-active
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::800406105498:role/RafaelGSS-nodejs-bench-operations
+
+      - name: Start Runner
+        uses: nodesource/aws-eco-runner@v1.0.0-beta.3
+        with:
+          instances_id: '["i-065f0f848eb1615ae"]'
+          action: 'stop'
+          aws_default_region: 'us-west-2'

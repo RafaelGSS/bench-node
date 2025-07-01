@@ -8,6 +8,7 @@ const {
 	htmlReport,
 	jsonReport,
 	csvReport,
+	prettyReport,
 } = require("../lib");
 
 describe("chartReport outputs benchmark results as a bar chart", async (t) => {
@@ -132,6 +133,96 @@ describe("htmlReport should create a file", async (t) => {
 	it("htmlContent should not contain replace tags {{}}", () => {
 		assert.ok(htmlContent.includes("{{") === false);
 		assert.ok(htmlContent.includes("}}") === false);
+	});
+});
+
+describe("prettyReport outputs a beautiful report", async (t) => {
+	let output = "";
+	// biome-ignore lint/suspicious/noControlCharactersInRegex: This is required to strip ANSI color codes from the output for testing.
+	const stripAnsi = (str) => str.replace(/\x1b\[[0-9;]*m/g, "");
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		process.stdout.write = (data) => {
+			output += data;
+		};
+
+		const suite = new Suite({
+			reporter: prettyReport,
+		});
+
+		suite
+			.add("suite/single with matcher", () => {
+				const pattern = /[123]/g;
+				const replacements = { 1: "a", 2: "b", 3: "c" };
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject.replace(pattern, (m) => replacements[m]);
+				assert.ok(r);
+			})
+			.add("suite/multiple replaces", () => {
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject
+					.replace(/1/g, "a")
+					.replace(/2/g, "b")
+					.replace(/3/g, "c");
+				assert.ok(r);
+			})
+			.add("suite/nested/deeper/test", () => {
+				assert.ok(true);
+			});
+		await suite.run();
+
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should include system information", () => {
+		assert.ok(output.includes("System Information:"));
+		assert.ok(output.includes("Node.js:"));
+		assert.ok(output.includes("OS:"));
+		assert.ok(output.includes("CPU:"));
+	});
+
+	it("should include benchmark results header", () => {
+		assert.ok(output.includes("Benchmark results"));
+	});
+
+	it("should include tree structure characters", () => {
+		assert.ok(output.includes("└─"));
+		assert.ok(output.includes("├─"));
+	});
+
+	it("should correctly group tests with slashes", () => {
+		const stripped = stripAnsi(output);
+		assert.ok(stripped.includes("suite"));
+		assert.ok(stripped.includes("single with matcher"));
+		assert.ok(stripped.includes("multiple replaces"));
+		assert.ok(stripped.includes("nested"));
+		assert.ok(stripped.includes("deeper"));
+		assert.ok(stripped.includes("test"));
+	});
+});
+
+describe("Suite with pretty: true option", async (t) => {
+	let output = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		process.stdout.write = (data) => {
+			output += data;
+		};
+
+		const suite = new Suite({
+			pretty: true,
+		});
+
+		suite.add("test", () => {});
+		await suite.run();
+
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should use the pretty reporter", () => {
+		assert.ok(output.includes("System Information:"));
 	});
 });
 

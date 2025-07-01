@@ -338,6 +338,55 @@ const suite = new Suite({
 });
 ```
 
+### Pretty Reporter
+
+The `prettyReport` provides a beautiful, hierarchical view of your benchmark results.
+
+**Usage:**
+
+```javascript
+const { Suite } = require('bench-node');
+
+// You can either pass the reporter function directly...
+const suiteWithReporter = new Suite({
+  reporter: prettyReport,
+});
+
+// ...or use the `pretty` option for convenience.
+const suiteWithPrettyOption = new Suite({
+  pretty: true,
+});
+
+suite
+  .add('my-group/my-benchmark', () => {
+    //...
+  })
+  .add('my-group/my-benchmark-2', () => {
+    //...
+  })
+  .add('second-group/baseline', () => {
+    //...
+  })
+  .run();
+```
+
+**Sample Output:**
+
+```
+System Information:
+  Node.js: v22.15.0
+  OS: darwin 24.5.0
+  CPU: Apple M2
+
+Benchmark results (3 total):
+Plugins enabled: V8NeverOptimizePlugin
+├─ my-group
+│ ├─ my-benchmark                                      1,461,380 ops/sec (10 runs sampled) min..max=(682.30ns...685.79ns)
+│ └─ my-benchmark-2                                    2,270,973 ops/sec (10 runs sampled) min..max=(437.22ns...444.12ns)
+└─ second-group
+  └─ baseline                                          637,787 ops/sec (11 runs sampled) min..max=(1.54us...1.59us)
+```
+
 ### Custom Reporter
 
 Customize data reporting by providing a `reporter` function when creating the `Suite`:

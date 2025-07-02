@@ -9,6 +9,7 @@ const {
 	jsonReport,
 	csvReport,
 	prettyReport,
+	textReport,
 } = require("../lib");
 
 describe("chartReport outputs benchmark results as a bar chart", async (t) => {
@@ -199,6 +200,106 @@ describe("prettyReport outputs a beautiful report", async (t) => {
 		assert.ok(stripped.includes("nested"));
 		assert.ok(stripped.includes("deeper"));
 		assert.ok(stripped.includes("test"));
+	});
+});
+
+describe("prettyReport shows baseline comparisons", async (t) => {
+	let output = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		process.stdout.write = (data) => {
+			output += data;
+		};
+
+		// Create a new Suite with the pretty reporter
+		const suite = new Suite({
+			reporter: prettyReport,
+		});
+
+		// Add benchmarks with one being the baseline
+		suite
+			.add("baseline-test", { baseline: true }, () => {
+				// Medium-speed operation
+				for (let i = 0; i < 1000; i++) {}
+			})
+			.add("faster-test", () => {
+				// Faster operation
+				for (let i = 0; i < 100; i++) {}
+			})
+			.add("slower-test", () => {
+				// Slower operation
+				for (let i = 0; i < 10000; i++) {}
+			});
+
+		// Run the suite
+		await suite.run();
+
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should include a summary section", () => {
+		assert.ok(output.includes("Summary (vs. baseline):"));
+	});
+
+	it("should show 'faster' comparison in summary", () => {
+		const summary = output.split("Summary (vs. baseline):")[1];
+		assert.ok(summary.includes("faster"));
+	});
+
+	it("should show 'slower' comparison in summary", () => {
+		const summary = output.split("Summary (vs. baseline):")[1];
+		assert.ok(summary.includes("slower"));
+	});
+});
+
+describe("textReport shows baseline comparisons", async (t) => {
+	let output = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		process.stdout.write = (data) => {
+			output += data;
+		};
+
+		// Create a new Suite with the text reporter
+		const suite = new Suite({
+			reporter: textReport,
+		});
+
+		// Add benchmarks with one being the baseline
+		suite
+			.add("baseline-test", { baseline: true }, () => {
+				// Medium-speed operation
+				for (let i = 0; i < 1000; i++) {}
+			})
+			.add("faster-test", () => {
+				// Faster operation
+				for (let i = 0; i < 100; i++) {}
+			})
+			.add("slower-test", () => {
+				// Slower operation
+				for (let i = 0; i < 10000; i++) {}
+			});
+
+		// Run the suite
+		await suite.run();
+
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should include a summary section", () => {
+		assert.ok(output.includes("Summary (vs. baseline):"));
+	});
+
+	it("should show 'faster' comparison in summary", () => {
+		const summary = output.split("Summary (vs. baseline):")[1];
+		assert.ok(summary.includes("faster"));
+	});
+
+	it("should show 'slower' comparison in summary", () => {
+		const summary = output.split("Summary (vs. baseline):")[1];
+		assert.ok(summary.includes("slower"));
 	});
 });
 

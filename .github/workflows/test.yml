@@ -6,9 +6,32 @@ on:
       - main
   pull_request:
 
+permissions:
+  issues: write
+  contents: read
+  id-token: write
+
 jobs:
-  build:
+  runner-start:
     runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::800406105498:role/RafaelGSS-nodejs-bench-operations
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start Runner
+        uses: nodesource/aws-eco-runner@v1.0.0-beta.3
+        with:
+          instances_id: '["i-065f0f848eb1615ae"]'
+          action: 'start'
+          aws_default_region: 'us-west-2'
+
+  build:
+    runs-on: self-hosted
 
     strategy:
       matrix:

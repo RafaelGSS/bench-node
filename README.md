@@ -82,6 +82,12 @@ See the [examples folder](./examples/) for more common usage examples.
 5. [Benchmark Modes](#benchmark-modes)
     1. [Operations Mode (Default)](#operations-mode)
     2. [Time Mode](#time-mode)
+
+## Sponsors
+
+Test machines are generously sponsored by [NodeSource](https://nodesource.com/).  
+<img src="https://github.com/user-attachments/assets/c30ddaf6-145b-465e-a81f-c9942cb93175" alt="NodeSource logo" width="200"/>
+
 ## Class: `Suite`
 
 > Stability: 1.1 Active Development

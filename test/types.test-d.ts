@@ -4,14 +4,14 @@ import { expectAssignable, expectNotAssignable, expectType } from "tsd";
 /// <reference path="../index.d.ts"/>
 import {
 	Suite,
+	V8GetOptimizationStatus,
+	V8NeverOptimizePlugin,
+	V8OptimizeOnNextCallPlugin,
 	chartReport,
 	csvReport,
 	htmlReport,
 	jsonReport,
 	textReport,
-	V8GetOptimizationStatus,
-	V8NeverOptimizePlugin,
-	V8OptimizeOnNextCallPlugin,
 } from "../lib/index.js";
 
 expectType<BenchNode.Suite>(new Suite());

@@ -6,7 +6,7 @@
   "types": "index.d.ts",
 	"scripts": {
 		"test": "node --test --allow-natives-syntax",
-    "test:types": "tsd -f test/types.test-d.ts",
+    "test:types": "tsd -f types/types.test-d.ts",
 		"lint": "biome lint .",
 		"lint:ci": "biome ci .",
 		"lint:fix": "biome lint --write .",

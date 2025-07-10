@@ -1,17 +1,18 @@
 import type { Histogram } from "node:perf_hooks";
 import { expectAssignable, expectNotAssignable, expectType } from "tsd";
+
+/// <reference path="../index.d.ts"/>
 import {
-	type BenchNode,
 	Suite,
-	V8GetOptimizationStatus,
-	V8NeverOptimizePlugin,
-	V8OptimizeOnNextCallPlugin,
 	chartReport,
 	csvReport,
 	htmlReport,
 	jsonReport,
 	textReport,
-} from "../index";
+	V8GetOptimizationStatus,
+	V8NeverOptimizePlugin,
+	V8OptimizeOnNextCallPlugin,
+} from "../lib/index.js";
 
 expectType<BenchNode.Suite>(new Suite());
 expectType<BenchNode.Suite>(

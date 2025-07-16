@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.8.0](https://github.com/RafaelGSS/bench-node/compare/v0.7.0...v0.8.0) (2025-07-16)
+
+
+### Features
+
+* add baseline and summary to pretty and text reporter ([#83](https://github.com/RafaelGSS/bench-node/issues/83)) ([3aa57cb](https://github.com/RafaelGSS/bench-node/commit/3aa57cb1e487274b141ab79a99e7ed0718cdbf63))
+* add pretty-reporter and shorthand pretty: true ([#82](https://github.com/RafaelGSS/bench-node/issues/82)) ([45efe9c](https://github.com/RafaelGSS/bench-node/commit/45efe9c833cc39e7d8abfd203fbb05a4e84e9daa))
+* export bench-node ts types ([#77](https://github.com/RafaelGSS/bench-node/issues/77)) ([d93f111](https://github.com/RafaelGSS/bench-node/commit/d93f111472515ff19b0fbe57bce588fdc51cfc9d))
+
+
+### Bug Fixes
+
+* fix imports in type test file ([#87](https://github.com/RafaelGSS/bench-node/issues/87)) ([defa158](https://github.com/RafaelGSS/bench-node/commit/defa158ffadceb6b8c660a802445eafe33933db5))
+* use self-hosted runner for test CI ([#81](https://github.com/RafaelGSS/bench-node/issues/81)) ([a65af10](https://github.com/RafaelGSS/bench-node/commit/a65af107859946808ac8458d7b15bb9c887b12da))
+
+
+### Miscellaneous Chores
+
+* drop Node.js v23 and add v24 ([#78](https://github.com/RafaelGSS/bench-node/issues/78)) ([c2dae5f](https://github.com/RafaelGSS/bench-node/commit/c2dae5f038e3ec613aaac753091fbff5ed927b3f))
+
 ## [0.7.0](https://github.com/RafaelGSS/bench-node/compare/v0.6.0...v0.7.0) (2025-05-15)
 
 

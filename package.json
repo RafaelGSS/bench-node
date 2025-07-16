@@ -1,12 +1,12 @@
 {
 	"name": "bench-node",
-	"version": "0.7.0",
+	"version": "0.8.0",
 	"description": "",
 	"main": "lib/index.js",
-  "types": "index.d.ts",
+	"types": "index.d.ts",
 	"scripts": {
 		"test": "node --test --allow-natives-syntax",
-    "test:types": "tsd -f types/types.test-d.ts",
+		"test:types": "tsd -f types/types.test-d.ts",
 		"lint": "biome lint .",
 		"lint:ci": "biome ci .",
 		"lint:fix": "biome lint --write .",
@@ -38,7 +38,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-    	"@types/node": "^20",
-    	"tsd": "^0.31.0"
+		"@types/node": "^20",
+		"tsd": "^0.31.0"
 	}
 }

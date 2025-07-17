@@ -70,6 +70,88 @@ describe("chartReport outputs benchmark results as a bar chart", async (t) => {
 	});
 });
 
+describe("chartReport respects reporterOptions.printHeader", async (t) => {
+	let outputWithHeader = "";
+	let outputWithoutHeader = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+
+		// Test with default settings (printHeader: true)
+		process.stdout.write = (data) => {
+			outputWithHeader += data;
+		};
+
+		const suiteWithHeader = new Suite({
+			reporter: chartReport,
+			reporterOptions: {
+				printHeader: true,
+			},
+		});
+
+		suiteWithHeader.add("test benchmark", () => {
+			const a = 1 + 1;
+			assert.strictEqual(a, 2);
+		});
+		await suiteWithHeader.run();
+
+		// Test with printHeader: false
+		outputWithoutHeader = "";
+		process.stdout.write = (data) => {
+			outputWithoutHeader += data;
+		};
+
+		const suiteWithoutHeader = new Suite({
+			reporter: chartReport,
+			reporterOptions: {
+				printHeader: false,
+			},
+		});
+
+		suiteWithoutHeader.add("test benchmark", () => {
+			const a = 1 + 1;
+			assert.strictEqual(a, 2);
+		});
+		await suiteWithoutHeader.run();
+
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should include Node.js version when printHeader is true", () => {
+		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+		assert.ok(outputWithHeader.match(regex));
+	});
+
+	it("should include Platform when printHeader is true", () => {
+		assert.ok(outputWithHeader.includes("Platform:"));
+	});
+
+	it("should include CPU Cores when printHeader is true", () => {
+		assert.ok(outputWithHeader.includes("CPU Cores:"));
+	});
+
+	it("should NOT include Node.js version when printHeader is false", () => {
+		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+		assert.ok(!outputWithoutHeader.match(regex));
+	});
+
+	it("should NOT include Platform when printHeader is false", () => {
+		assert.ok(!outputWithoutHeader.includes("Platform:"));
+	});
+
+	it("should NOT include CPU Cores when printHeader is false", () => {
+		assert.ok(!outputWithoutHeader.includes("CPU Cores:"));
+	});
+
+	it("should still include benchmark data with or without header", () => {
+		// Both outputs should still have benchmark bars and results
+		assert.ok(outputWithHeader.includes("█"));
+		assert.ok(outputWithoutHeader.includes("█"));
+		assert.ok(outputWithHeader.includes("test benchmark"));
+		assert.ok(outputWithoutHeader.includes("test benchmark"));
+	});
+});
+
 describe("htmlReport should create a file", async (t) => {
 	let output = "";
 	let htmlName = "";

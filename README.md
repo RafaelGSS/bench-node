@@ -97,12 +97,14 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
 ### `new Suite([options])`
 
 * `options` {Object} Configuration options for the suite.
-  * `reporter` {Function} Callback function for reporting results. Receives one argument:
+  * `reporter` {Function} Callback function for reporting results. Receives two arguments:
     * `results` {Object[]} Array of benchmark results:
       * `name` {string} Benchmark name.
       * `opsSec` {string} Operations per second.
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
+    * `reporterOptions` {Object} Reporter-specific options.
+      * `printHeader` {boolean} Whether to print system information header. **Default:** `true`.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
     * `'ops'` - Measures operations per second (traditional benchmarking).
     * `'time'` - Measures actual execution time for a single run.
@@ -252,8 +254,14 @@ const { Suite, chartReport } = require('bench-node');
 
 const suite = new Suite({
   reporter: chartReport,
+  // Optionally control header display
+  reporterOptions: {
+    printHeader: true // Set to false to hide system info header
+  }
 });
 ```
+
+The `reporterOptions.printHeader` setting controls whether the system information (Node.js version, platform, and CPU cores) appears at the top of the output. This is useful when running multiple suites in sequence and you want to avoid duplicate headers.
 
 ### `htmlReport`
 

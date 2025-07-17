@@ -1,21 +1,46 @@
 const { Suite, chartReport } = require('../../lib');
 const assert = require('node:assert');
 
-const suite = new Suite({
-  reporter: chartReport,
-});
+async function runSuiteOne() {
+  const suite = new Suite({
+    reporter: chartReport,
+  });
 
-suite
-  .add('single with matcher', function () {
-    const pattern = /[123]/g
-    const replacements = { 1: 'a', 2: 'b', 3: 'c' }
-    const subject = '123123123123123123123123123123123123123123123123'
-    const r = subject.replace(pattern, m => replacements[m])
-    assert.ok(r);
-  })
-  .add('multiple replaces', function () {
-    const subject = '123123123123123123123123123123123123123123123123'
-    const r = subject.replace(/1/g, 'a').replace(/2/g, 'b').replace(/3/g, 'c')
-    assert.ok(r);
-  })
-  .run();
+  await suite
+    .add('test 1', function () {
+      const pattern = /[123]/g
+    })
+    .add('test 2', function () {
+      const subject = '123123123123123123123123123123123123123123123123'
+      const r = subject.replace(/1/g, 'a').replace(/2/g, 'b').replace(/3/g, 'c')
+    })
+    .run();
+}
+
+async function runSuiteTwo() {
+  const suite = new Suite({
+    reporter: chartReport,
+    reporterOptions: {
+      printHeader: false
+    }
+  });
+
+  await suite
+    .add('test 3', function () {
+      const pattern = /[123]/g
+    })
+    .add('test 4', function () {
+      const subject = '123123123123123123123123123123123123123123123123'
+      const r = subject.replace(/1/g, 'a').replace(/2/g, 'b').replace(/3/g, 'c')
+      assert.ok(r)
+    })
+    .run();
+}
+
+async function main() {
+  await runSuiteOne()
+  process.stdout.write('\n\n')
+  await runSuiteTwo()
+}
+
+main()

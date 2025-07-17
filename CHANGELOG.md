@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/RafaelGSS/bench-node/compare/v0.8.0...v0.9.0) (2025-07-17)
+
+
+### Features
+
+* add reporterOptions support with printHeader opt ([#92](https://github.com/RafaelGSS/bench-node/issues/92)) ([20d34e9](https://github.com/RafaelGSS/bench-node/commit/20d34e90340d179ea20958f760f732f7e1573551))
+
 ## [0.8.0](https://github.com/RafaelGSS/bench-node/compare/v0.7.0...v0.8.0) (2025-07-16)
 
 

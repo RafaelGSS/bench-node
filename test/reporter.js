@@ -285,19 +285,12 @@ describe("prettyReport outputs a beautiful report", async (t) => {
 	});
 });
 
-describe("prettyReport shows baseline comparisons", async (t) => {
-	let output = "";
+describe("baseline comparisons", async (t) => {
+	let results;
 
 	before(async () => {
-		const originalStdoutWrite = process.stdout.write;
-		process.stdout.write = (data) => {
-			output += data;
-		};
-
 		// Create a new Suite with the pretty reporter
-		const suite = new Suite({
-			reporter: prettyReport,
-		});
+		const suite = new Suite({});
 
 		// Add benchmarks with one being the baseline
 		suite
@@ -315,73 +308,91 @@ describe("prettyReport shows baseline comparisons", async (t) => {
 			});
 
 		// Run the suite
-		await suite.run();
-
-		process.stdout.write = originalStdoutWrite;
+		results = await suite.run();
 	});
 
-	it("should include a summary section", () => {
-		assert.ok(output.includes("Summary (vs. baseline):"));
-	});
+	describe("for prettyReport", async (t) => {
+		let output = "";
 
-	it("should show 'faster' comparison in summary", () => {
-		const summary = output.split("Summary (vs. baseline):")[1];
-		assert.ok(summary.includes("faster"));
-	});
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
+			process.stdout.write = (data) => {
+				output += data;
+			};
 
-	it("should show 'slower' comparison in summary", () => {
-		const summary = output.split("Summary (vs. baseline):")[1];
-		assert.ok(summary.includes("slower"));
-	});
-});
-
-describe("textReport shows baseline comparisons", async (t) => {
-	let output = "";
-
-	before(async () => {
-		const originalStdoutWrite = process.stdout.write;
-		process.stdout.write = (data) => {
-			output += data;
-		};
-
-		// Create a new Suite with the text reporter
-		const suite = new Suite({
-			reporter: textReport,
+			prettyReport(results);
+			process.stdout.write = originalStdoutWrite;
 		});
 
-		// Add benchmarks with one being the baseline
-		suite
-			.add("baseline-test", { baseline: true }, () => {
-				// Medium-speed operation
-				for (let i = 0; i < 1000; i++) {}
-			})
-			.add("faster-test", () => {
-				// Faster operation
-				for (let i = 0; i < 100; i++) {}
-			})
-			.add("slower-test", () => {
-				// Slower operation
-				for (let i = 0; i < 10000; i++) {}
-			});
+		it("should include a summary section", () => {
+			assert.ok(output.includes("Summary (vs. baseline):"));
+		});
 
-		// Run the suite
-		await suite.run();
+		it("should show 'faster' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("faster"));
+		});
 
-		process.stdout.write = originalStdoutWrite;
+		it("should show 'slower' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("slower"));
+		});
 	});
 
-	it("should include a summary section", () => {
-		assert.ok(output.includes("Summary (vs. baseline):"));
+	describe("for textReport", async (t) => {
+		let output = "";
+
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
+			process.stdout.write = (data) => {
+				output += data;
+			};
+
+			textReport(results);
+			process.stdout.write = originalStdoutWrite;
+		});
+
+		it("should include a summary section", () => {
+			assert.ok(output.includes("Summary (vs. baseline):"));
+		});
+
+		it("should show 'faster' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("faster"));
+		});
+
+		it("should show 'slower' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("slower"));
+		});
 	});
 
-	it("should show 'faster' comparison in summary", () => {
-		const summary = output.split("Summary (vs. baseline):")[1];
-		assert.ok(summary.includes("faster"));
-	});
+	describe("for chartReport", async (t) => {
+		let output = "";
 
-	it("should show 'slower' comparison in summary", () => {
-		const summary = output.split("Summary (vs. baseline):")[1];
-		assert.ok(summary.includes("slower"));
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
+			process.stdout.write = (data) => {
+				output += data;
+			};
+
+			chartReport(results);
+			process.stdout.write = originalStdoutWrite;
+		});
+
+		it("should include a summary section", () => {
+			assert.ok(output.includes("Summary (vs. baseline):"));
+		});
+
+		it("should show 'faster' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("faster"));
+		});
+
+		it("should show 'slower' comparison in summary", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("slower"));
+		});
 	});
 });
 

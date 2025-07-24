@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.10.0](https://github.com/RafaelGSS/bench-node/compare/v0.9.0...v0.10.0) (2025-07-24)
+
+
+### Features
+
+* Add code coverage to the test code. ([#96](https://github.com/RafaelGSS/bench-node/issues/96)) ([daff350](https://github.com/RafaelGSS/bench-node/commit/daff3509be6731e7415eaa2a8ba0b7464d1b7408))
+* Show bar chart with 2% resolution by using partial width box characters. ([#97](https://github.com/RafaelGSS/bench-node/issues/97)) ([4c65557](https://github.com/RafaelGSS/bench-node/commit/4c65557b6472c8437eba98d4f91b52da8628d614))
+
+
+### Bug Fixes
+
+* cpus().length is broken under docker. ([#100](https://github.com/RafaelGSS/bench-node/issues/100)) ([c423cdd](https://github.com/RafaelGSS/bench-node/commit/c423cdd0220bc7317861fa387c99a230a34076ee))
+
+
+### Styles
+
+* Blue works better on light terminals and still looks good on dark. ([#95](https://github.com/RafaelGSS/bench-node/issues/95)) ([5ec0319](https://github.com/RafaelGSS/bench-node/commit/5ec0319787c08ff69ecd54c8003c715e96eafdc7))
+
 ## [0.9.0](https://github.com/RafaelGSS/bench-node/compare/v0.8.0...v0.9.0) (2025-07-17)
 
 

@@ -12,6 +12,10 @@ const {
 	textReport,
 } = require("../lib");
 
+const {
+	analyze
+} = require("../lib/utils/analyze.js");
+
 describe("chartReport outputs benchmark results as a bar chart", async (t) => {
 	let output = "";
 
@@ -285,6 +289,42 @@ describe("prettyReport outputs a beautiful report", async (t) => {
 	});
 });
 
+describe("analyse", async (t) => {
+	let analysis;
+
+	before(async () => {
+		// Create a new Suite with the pretty reporter
+		const suite = new Suite({});
+
+		// Add benchmarks with one being the baseline
+		suite
+			.add("baseline-test", { baseline: true }, () => {
+				// Medium-speed operation
+				for (let i = 0; i < 10000; i++) {}
+			})
+			.add("other-test", () => {
+				// Faster operation
+				for (let i = 0; i < 1000; i++) {}
+			})
+			.add("faster-test", () => {
+				// Slower operation
+				for (let i = 0; i < 100; i++) {}
+			});
+
+		// Run the suite
+		const results = await suite.run();
+		analysis = analyze(results, false);
+	});
+
+	it("annotates the fastest result", () => {
+		assert.equal(analysis[2].fastest, true, "fastest result");
+	});
+
+	it("annotates the slowest result", () => {
+		assert.equal(analysis[0].slowest, true, "slowest result");
+	});
+});
+
 describe("baseline comparisons", async (t) => {
 	let results;
 
@@ -309,6 +349,22 @@ describe("baseline comparisons", async (t) => {
 
 		// Run the suite
 		results = await suite.run();
+	});
+
+	describe("analyze", () => {
+		let analysis;
+
+		before(() => {
+			analysis = analyze(results);
+		});
+
+		it("annotates the fastest result", () => {
+			assert.equal(results[1].fastest, true, "fastest result");
+		});
+
+		it("annotates the slowest result", () => {
+			assert.equal(results[2].slowest, true, "slowest result");
+		});
 	});
 
 	describe("for prettyReport", async (t) => {

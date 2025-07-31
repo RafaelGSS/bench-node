@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.10.0](https://github.com/RafaelGSS/bench-node/compare/v0.9.0...v0.10.0) (2025-07-31)
+
+
+### Features
+
+* Add code coverage to the test code. ([#96](https://github.com/RafaelGSS/bench-node/issues/96)) ([daff350](https://github.com/RafaelGSS/bench-node/commit/daff3509be6731e7415eaa2a8ba0b7464d1b7408))
+* add fastest/slowest value for feature parity with benchmark.js ([9ad4c94](https://github.com/RafaelGSS/bench-node/commit/9ad4c9461f105f7681a77f80a2c33eea521ddba6))
+* Show bar chart with 2% resolution by using partial width box characters. ([#97](https://github.com/RafaelGSS/bench-node/issues/97)) ([4c65557](https://github.com/RafaelGSS/bench-node/commit/4c65557b6472c8437eba98d4f91b52da8628d614))
+
+
+### Bug Fixes
+
+* cpus().length is broken under docker. ([#100](https://github.com/RafaelGSS/bench-node/issues/100)) ([c423cdd](https://github.com/RafaelGSS/bench-node/commit/c423cdd0220bc7317861fa387c99a230a34076ee))
+
+
+### Styles
+
+* Blue works better on light terminals and still looks good on dark. ([#95](https://github.com/RafaelGSS/bench-node/issues/95)) ([5ec0319](https://github.com/RafaelGSS/bench-node/commit/5ec0319787c08ff69ecd54c8003c715e96eafdc7))
+
+
+### Miscellaneous Chores
+
+* do not stop machine on runner_warmer ([6e0e71d](https://github.com/RafaelGSS/bench-node/commit/6e0e71dd30e4eb3bb5a1902a9eb9e6050bbccef7))
+* run lint:ci on test ([#103](https://github.com/RafaelGSS/bench-node/issues/103)) ([a85e15c](https://github.com/RafaelGSS/bench-node/commit/a85e15cfb6b8bbf90a56c28aea49a3ff2e913567))
+
 ## [0.9.0](https://github.com/RafaelGSS/bench-node/compare/v0.8.0...v0.9.0) (2025-07-17)
 
 

@@ -12,9 +12,7 @@ const {
 	textReport,
 } = require("../lib");
 
-const {
-	analyze
-} = require("../lib/utils/analyze.js");
+const { analyze } = require("../lib/utils/analyze.js");
 
 describe("chartReport outputs benchmark results as a bar chart", async (t) => {
 	let output = "";

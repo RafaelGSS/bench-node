@@ -430,7 +430,7 @@ describe("baseline comparisons", async (t) => {
 				output += data;
 			};
 
-			chartReport(results);
+			chartReport(results, { labelWidth: 30 });
 			process.stdout.write = originalStdoutWrite;
 		});
 
@@ -446,6 +446,11 @@ describe("baseline comparisons", async (t) => {
 		it("should show 'slower' comparison in summary", () => {
 			const summary = output.split("Summary (vs. baseline):")[1];
 			assert.ok(summary.includes("slower"));
+		});
+
+		it("can set a specific column width", () => {
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("baseline-test                  |"));
 		});
 	});
 });

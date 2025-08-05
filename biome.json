@@ -20,6 +20,11 @@
 		"enabled": true
 	},
 	"files": {
-		"ignore": ["examples/*", "test/plugin-api-doc.js", "package.json"]
+		"ignore": [
+			"examples/*",
+			"coverage/*",
+			"test/plugin-api-doc.js",
+			"package.json"
+		]
 	}
 }

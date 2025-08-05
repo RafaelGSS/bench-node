@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/RafaelGSS/bench-node/compare/v0.10.0...v0.11.0) (2025-08-05)
+
+
+### Features
+
+* Allow for configurable column width for the chart output. ([#104](https://github.com/RafaelGSS/bench-node/issues/104)) ([315d551](https://github.com/RafaelGSS/bench-node/commit/315d551209e25827c844c0f4a301afa6e2bc276b))
+
 ## [0.10.0](https://github.com/RafaelGSS/bench-node/compare/v0.9.0...v0.10.0) (2025-07-31)
 
 

@@ -39,7 +39,10 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@types/node": "^20",
+		"benchmark": "^2.1.4",
 		"c8": "^10.1.3",
+		"mitata": "^1.0.34",
+		"tinybench": "^4.1.0",
 		"tsd": "^0.31.0"
 	},
 	"c8": {

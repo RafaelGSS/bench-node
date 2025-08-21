@@ -47,5 +47,9 @@
 	},
 	"c8": {
 		"reporter": "lcov"
-	}
+	},
+	"files": [
+		"lib/",
+		"index.d.ts"
+	]
 }

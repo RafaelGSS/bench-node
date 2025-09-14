@@ -39,6 +39,7 @@ export declare namespace BenchNode {
 
 	type BenchmarkFunction = (timer?: {
 		start: () => void;
+		end: (iterations?: number) => void;
 		count: number;
 	}) => void | Promise<void>;
 
@@ -80,6 +81,7 @@ export declare namespace BenchNode {
 
 export declare const textReport: BenchNode.ReporterFunction;
 export declare const chartReport: BenchNode.ReporterFunction;
+export declare const prettyReport: BenchNode.ReporterFunction;
 export declare const htmlReport: BenchNode.ReporterFunction;
 export declare const jsonReport: BenchNode.ReporterFunction;
 export declare const csvReport: BenchNode.ReporterFunction;

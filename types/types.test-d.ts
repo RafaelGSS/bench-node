@@ -10,6 +10,7 @@ import {
 	csvReport,
 	htmlReport,
 	jsonReport,
+	prettyReport,
 	textReport,
 } from "..";
 
@@ -72,6 +73,7 @@ expectType<BenchNode.Suite>(
 const managedBenchFn: BenchNode.BenchmarkFunction = (timer) => {
 	if (timer) {
 		expectType<() => void>(timer.start);
+		expectType<(iterations?: number) => void>(timer.end);
 		expectType<number>(timer.count);
 		timer.start();
 		for (let i = 0; i < timer.count; i++) {
@@ -121,6 +123,7 @@ expectType<void>(chartReport(sampleResults));
 expectType<void>(htmlReport(sampleResults));
 expectType<void>(jsonReport(sampleResults));
 expectType<void>(csvReport(sampleResults));
+expectType<void>(prettyReport(sampleResults));
 
 // Test Plugins
 const plugin1 = new V8NeverOptimizePlugin();

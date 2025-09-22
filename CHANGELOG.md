@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.11.0](https://github.com/RafaelGSS/bench-node/compare/v0.10.0...v0.11.0) (2025-09-22)
+
+
+### Features
+
+* add comparisson with other benchmark libs ([#106](https://github.com/RafaelGSS/bench-node/issues/106)) ([19de73f](https://github.com/RafaelGSS/bench-node/commit/19de73f3a3fb4f11e8ea1d746154c8f3391d0192))
+* Allow for configurable column width for the chart output. ([#104](https://github.com/RafaelGSS/bench-node/issues/104)) ([315d551](https://github.com/RafaelGSS/bench-node/commit/315d551209e25827c844c0f4a301afa6e2bc276b))
+* reduce NPM package size by adding files field to package.json ([#111](https://github.com/RafaelGSS/bench-node/issues/111)) ([a584269](https://github.com/RafaelGSS/bench-node/commit/a584269c8267a30a3fb9b0bb77fccf201f77381c))
+
+
+### Bug Fixes
+
+* optional iterations count for end(), add type tests ([a4dc145](https://github.com/RafaelGSS/bench-node/commit/a4dc145dee4dd53d331cd294771f83333efba7f6))
+
+
+### Documentation
+
+* add comprehensive library comparison document ([#109](https://github.com/RafaelGSS/bench-node/issues/109)) ([caa18a9](https://github.com/RafaelGSS/bench-node/commit/caa18a914f416be9f53357d2a2c8e2ca8a092c66))
+
+
+### Miscellaneous Chores
+
+* **main:** release 0.11.0.beta-1 ([b234ce7](https://github.com/RafaelGSS/bench-node/commit/b234ce76b8f03db0b4668eaddf531291819bd922))
+* use active versions only for bench comparisson ([#107](https://github.com/RafaelGSS/bench-node/issues/107)) ([bf119c7](https://github.com/RafaelGSS/bench-node/commit/bf119c783df026ad40b7e26209fc7b2368b6a292))
+
 ## [0.10.0](https://github.com/RafaelGSS/bench-node/compare/v0.9.0...v0.10.0) (2025-07-31)
 
 

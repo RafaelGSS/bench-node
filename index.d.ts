@@ -48,8 +48,11 @@ export declare namespace BenchNode {
 		isSupported?(): boolean;
 		beforeClockTemplate?(varNames: PluginHookVarNames): string[];
 		afterClockTemplate?(varNames: PluginHookVarNames): string[];
+		onCompleteClock?(result: BenchmarkResult): string[];
 		onCompleteBenchmark?(result: BenchmarkResult): void;
 		toString?(): string;
+		getReport?(): string;
+		getResult?(benchmarkName: string): Record<string, any>;
 	}
 
 	class Suite {
@@ -63,19 +66,30 @@ export declare namespace BenchNode {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		toString(): string;
+		getReport(): string;
 	}
 
 	class V8GetOptimizationStatus implements Plugin {
 		isSupported(): boolean;
-		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		afterClockTemplate(varNames: PluginHookVarNames): string[];
 		onCompleteBenchmark(result: BenchmarkResult): void;
 		toString(): string;
+		getReport(): string;
+		getResult?(benchmarkName: string): Record<string, any>;
 	}
 
 	class V8OptimizeOnNextCallPlugin implements Plugin {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
+		toString(): string;
+		getReport(): string;
+	}
+
+	class MemoryPlugin implements Plugin {
+		isSupported(): boolean;
+		beforeClockTemplate(varNames: PluginHookVarNames): string[];
+		afterClockTemplate(varNames: PluginHookVarNames): string[];
+		onCompleteBenchmark?(result: BenchmarkResult): void;
 		toString(): string;
 	}
 }
@@ -91,3 +105,4 @@ export declare class Suite extends BenchNode.Suite {}
 export declare class V8NeverOptimizePlugin extends BenchNode.V8NeverOptimizePlugin {}
 export declare class V8GetOptimizationStatus extends BenchNode.V8GetOptimizationStatus {}
 export declare class V8OptimizeOnNextCallPlugin extends BenchNode.V8OptimizeOnNextCallPlugin {}
+export declare class MemoryPlugin extends BenchNode.MemoryPlugin {}

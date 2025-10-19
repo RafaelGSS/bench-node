@@ -73,6 +73,46 @@ describe("chartReport", () => {
 		});
 	});
 
+	describe("with long names", async (t) => {
+		let output = "";
+
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
+			process.stdout.write = (data) => {
+				output += data;
+			};
+
+			const suite = new Suite({
+				reporter: chartReport,
+			});
+
+			suite
+				.add("single with matcher looooooooooooooooooooooooooong", () => {
+					const pattern = /[123]/g;
+					const replacements = { 1: "a", 2: "b", 3: "c" };
+					const subject = "123123123123123123123123123123123123123123123123";
+					const r = subject.replace(pattern, (m) => replacements[m]);
+					assert.ok(r);
+				})
+				.add("multiple replaces", () => {
+					const subject = "123123123123123123123123123123123123123123123123";
+					const r = subject
+						.replace(/1/g, "a")
+						.replace(/2/g, "b")
+						.replace(/3/g, "c");
+					assert.ok(r);
+				});
+			await suite.run();
+
+			process.stdout.write = originalStdoutWrite;
+		});
+
+		it("should pad out benchmark names", () => {
+			assert.ok(output.includes("oong | "));
+			assert.ok(output.includes("multiple replaces".padEnd(51)));
+		});
+	});
+
 	describe("respects reporterOptions.printHeader", async (t) => {
 		let outputWithHeader = "";
 		let outputWithoutHeader = "";

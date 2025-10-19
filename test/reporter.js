@@ -14,143 +14,145 @@ const {
 
 const { analyze } = require("../lib/utils/analyze.js");
 
-describe("chartReport outputs benchmark results as a bar chart", async (t) => {
-	let output = "";
+describe("chartReport", () => {
+	describe("outputs benchmark results as a bar chart", async (t) => {
+		let output = "";
 
-	before(async () => {
-		const originalStdoutWrite = process.stdout.write;
-		process.stdout.write = (data) => {
-			output += data;
-		};
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
+			process.stdout.write = (data) => {
+				output += data;
+			};
 
-		const suite = new Suite({
-			reporter: chartReport,
-		});
-
-		suite
-			.add("single with matcher", () => {
-				const pattern = /[123]/g;
-				const replacements = { 1: "a", 2: "b", 3: "c" };
-				const subject = "123123123123123123123123123123123123123123123123";
-				const r = subject.replace(pattern, (m) => replacements[m]);
-				assert.ok(r);
-			})
-			.add("multiple replaces", () => {
-				const subject = "123123123123123123123123123123123123123123123123";
-				const r = subject
-					.replace(/1/g, "a")
-					.replace(/2/g, "b")
-					.replace(/3/g, "c");
-				assert.ok(r);
+			const suite = new Suite({
+				reporter: chartReport,
 			});
-		await suite.run();
 
-		process.stdout.write = originalStdoutWrite;
-	});
+			suite
+				.add("single with matcher", () => {
+					const pattern = /[123]/g;
+					const replacements = { 1: "a", 2: "b", 3: "c" };
+					const subject = "123123123123123123123123123123123123123123123123";
+					const r = subject.replace(pattern, (m) => replacements[m]);
+					assert.ok(r);
+				})
+				.add("multiple replaces", () => {
+					const subject = "123123123123123123123123123123123123123123123123";
+					const r = subject
+						.replace(/1/g, "a")
+						.replace(/2/g, "b")
+						.replace(/3/g, "c");
+					assert.ok(r);
+				});
+			await suite.run();
 
-	it("should include bar chart chars", () => {
-		assert.ok(output.includes("█"));
-	});
-
-	it("should include ops/sec", () => {
-		assert.ok(output.includes("ops/sec"));
-	});
-
-	it("should include benchmark names", () => {
-		assert.ok(output.includes("single with matcher"));
-		assert.ok(output.includes("multiple replaces"));
-	});
-
-	it("should include sample count", () => {
-		assert.ok(output.includes("samples"));
-	});
-
-	it("should include Node.js version", () => {
-		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
-
-		assert.ok(output.match(regex));
-	});
-});
-
-describe("chartReport respects reporterOptions.printHeader", async (t) => {
-	let outputWithHeader = "";
-	let outputWithoutHeader = "";
-
-	before(async () => {
-		const originalStdoutWrite = process.stdout.write;
-
-		// Test with default settings (printHeader: true)
-		process.stdout.write = (data) => {
-			outputWithHeader += data;
-		};
-
-		const suiteWithHeader = new Suite({
-			reporter: chartReport,
-			reporterOptions: {
-				printHeader: true,
-			},
+			process.stdout.write = originalStdoutWrite;
 		});
 
-		suiteWithHeader.add("test benchmark", () => {
-			const a = 1 + 1;
-			assert.strictEqual(a, 2);
-		});
-		await suiteWithHeader.run();
-
-		// Test with printHeader: false
-		outputWithoutHeader = "";
-		process.stdout.write = (data) => {
-			outputWithoutHeader += data;
-		};
-
-		const suiteWithoutHeader = new Suite({
-			reporter: chartReport,
-			reporterOptions: {
-				printHeader: false,
-			},
+		it("should include bar chart chars", () => {
+			assert.ok(output.includes("█"));
 		});
 
-		suiteWithoutHeader.add("test benchmark", () => {
-			const a = 1 + 1;
-			assert.strictEqual(a, 2);
+		it("should include ops/sec", () => {
+			assert.ok(output.includes("ops/sec"));
 		});
-		await suiteWithoutHeader.run();
 
-		process.stdout.write = originalStdoutWrite;
+		it("should include benchmark names", () => {
+			assert.ok(output.includes("single with matcher"));
+			assert.ok(output.includes("multiple replaces"));
+		});
+
+		it("should include sample count", () => {
+			assert.ok(output.includes("samples"));
+		});
+
+		it("should include Node.js version", () => {
+			const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+
+			assert.ok(output.match(regex));
+		});
 	});
 
-	it("should include Node.js version when printHeader is true", () => {
-		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
-		assert.ok(outputWithHeader.match(regex));
-	});
+	describe("respects reporterOptions.printHeader", async (t) => {
+		let outputWithHeader = "";
+		let outputWithoutHeader = "";
 
-	it("should include Platform when printHeader is true", () => {
-		assert.ok(outputWithHeader.includes("Platform:"));
-	});
+		before(async () => {
+			const originalStdoutWrite = process.stdout.write;
 
-	it("should include CPU Cores when printHeader is true", () => {
-		assert.ok(outputWithHeader.includes("CPU Cores:"));
-	});
+			// Test with default settings (printHeader: true)
+			process.stdout.write = (data) => {
+				outputWithHeader += data;
+			};
 
-	it("should NOT include Node.js version when printHeader is false", () => {
-		const regex = /Node\.js version: v\d+\.\d+\.\d+/;
-		assert.ok(!outputWithoutHeader.match(regex));
-	});
+			const suiteWithHeader = new Suite({
+				reporter: chartReport,
+				reporterOptions: {
+					printHeader: true,
+				},
+			});
 
-	it("should NOT include Platform when printHeader is false", () => {
-		assert.ok(!outputWithoutHeader.includes("Platform:"));
-	});
+			suiteWithHeader.add("test benchmark", () => {
+				const a = 1 + 1;
+				assert.strictEqual(a, 2);
+			});
+			await suiteWithHeader.run();
 
-	it("should NOT include CPU Cores when printHeader is false", () => {
-		assert.ok(!outputWithoutHeader.includes("CPU Cores:"));
-	});
+			// Test with printHeader: false
+			outputWithoutHeader = "";
+			process.stdout.write = (data) => {
+				outputWithoutHeader += data;
+			};
 
-	it("should still include benchmark data with or without header", () => {
-		// Both outputs should still have benchmark bars and results
-		assert.ok(outputWithHeader.includes("█"));
-		assert.ok(outputWithoutHeader.includes("█"));
-		assert.ok(outputWithHeader.includes("test benchmark"));
-		assert.ok(outputWithoutHeader.includes("test benchmark"));
+			const suiteWithoutHeader = new Suite({
+				reporter: chartReport,
+				reporterOptions: {
+					printHeader: false,
+				},
+			});
+
+			suiteWithoutHeader.add("test benchmark", () => {
+				const a = 1 + 1;
+				assert.strictEqual(a, 2);
+			});
+			await suiteWithoutHeader.run();
+
+			process.stdout.write = originalStdoutWrite;
+		});
+
+		it("should include Node.js version when printHeader is true", () => {
+			const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+			assert.ok(outputWithHeader.match(regex));
+		});
+
+		it("should include Platform when printHeader is true", () => {
+			assert.ok(outputWithHeader.includes("Platform:"));
+		});
+
+		it("should include CPU Cores when printHeader is true", () => {
+			assert.ok(outputWithHeader.includes("CPU Cores:"));
+		});
+
+		it("should NOT include Node.js version when printHeader is false", () => {
+			const regex = /Node\.js version: v\d+\.\d+\.\d+/;
+			assert.ok(!outputWithoutHeader.match(regex));
+		});
+
+		it("should NOT include Platform when printHeader is false", () => {
+			assert.ok(!outputWithoutHeader.includes("Platform:"));
+		});
+
+		it("should NOT include CPU Cores when printHeader is false", () => {
+			assert.ok(!outputWithoutHeader.includes("CPU Cores:"));
+		});
+
+		it("should still include benchmark data with or without header", () => {
+			// Both outputs should still have benchmark bars and results
+			assert.ok(outputWithHeader.includes("█"));
+			assert.ok(outputWithoutHeader.includes("█"));
+			assert.ok(outputWithHeader.includes("test benchmark"));
+			assert.ok(outputWithoutHeader.includes("test benchmark"));
+		});
 	});
 });
 

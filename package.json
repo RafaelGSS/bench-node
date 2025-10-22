@@ -5,7 +5,7 @@
 	"main": "lib/index.js",
 	"types": "index.d.ts",
 	"scripts": {
-		"test": "npm run lint:ci && c8 node --test --allow-natives-syntax",
+		"test": "npm run lint:ci && c8 node --test --allow-natives-syntax --expose-gc",
 		"test:types": "tsd -f types/types.test-d.ts",
 		"lint": "biome lint .",
 		"lint:ci": "biome ci .",

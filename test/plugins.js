@@ -3,6 +3,7 @@ const {
 	V8NeverOptimizePlugin,
 	V8GetOptimizationStatus,
 	V8OptimizeOnNextCallPlugin,
+	MemoryPlugin,
 } = require("../lib/index");
 const { describe, it } = require("node:test");
 const assert = require("node:assert");
@@ -108,6 +109,13 @@ describe("Official plugins validation", () => {
 	it("V8OptimizeOnNextCallPlugin validation", () => {
 		const bench = new Suite({
 			plugins: [new V8OptimizeOnNextCallPlugin()],
+		});
+		assert.ok(bench);
+	});
+
+	it("MemoryPlugin validation", () => {
+		const bench = new Suite({
+			plugins: [new MemoryPlugin()],
 		});
 		assert.ok(bench);
 	});

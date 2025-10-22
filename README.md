@@ -69,19 +69,32 @@ See the [examples folder](./examples/) for more common usage examples.
 
 ## Table of Contents
 
-1. [Class `Suite`](#class-suite)
-    1. [`suite.add()`](#suiteaddname-options-fn)
-    2. [`suite.run()`](#suiterun)
-2. [Plugins](#plugins)
-3. [Using Reporter](#using-reporter)
-    1. [Text Reporter](#textreport-default)
-    2. [Chart Reporter](#chartreport)
-    3. [Custom Reporter](#custom-reporter) 
-4. [Setup and Teardown](#setup-and-teardown)
-    1. [Managed Benchmarks](#managed-benchmarks)
-5. [Benchmark Modes](#benchmark-modes)
-    1. [Operations Mode (Default)](#operations-mode)
-    2. [Time Mode](#time-mode)
+- [Install](#install)
+- [Usage](#usage)
+- [Table of Contents](#table-of-contents)
+- [Sponsors](#sponsors)
+- [Class: `Suite`](#class-suite)
+  - [`new Suite([options])`](#new-suiteoptions)
+  - [`suite.add(name[, options], fn)`](#suiteaddname-options-fn)
+  - [`suite.run()`](#suiterun)
+- [Plugins](#plugins)
+  - [Plugin Methods](#plugin-methods)
+  - [Example Plugin](#example-plugin)
+- [Using Reporter](#using-reporter)
+  - [`textReport` (Default)](#textreport-default)
+  - [`chartReport`](#chartreport)
+  - [`htmlReport`](#htmlreport)
+  - [`jsonReport`](#jsonreport)
+  - [CSV Reporter](#csv-reporter)
+  - [Pretty Reporter](#pretty-reporter)
+  - [Custom Reporter](#custom-reporter)
+- [Setup and Teardown](#setup-and-teardown)
+  - [Managed Benchmarks](#managed-benchmarks)
+  - [Worker Threads](#worker-threads)
+- [Benchmark Modes](#benchmark-modes)
+  - [Operations Mode](#operations-mode)
+  - [Time Mode](#time-mode)
+- [Writing JavaScript Mistakes](#writing-javascript-mistakes)
 
 ## Sponsors
 
@@ -171,8 +184,11 @@ See [Plugins](./doc/Plugins.md) for details.
   * `Wrapper` {string} (optional) Function to wrap the benchmark function.
 - **`afterClockTemplate(varNames)`**: Injects code after the benchmark finishes. Returns an array with:
   * `Code` {string} JavaScript code to execute.
-- **`onCompleteBenchmark(result)`**: Called when the benchmark completes, allowing plugins to process results.
+- **`onCompleteBenchmark(result, bench)`**: Called when the benchmark completes, allowing plugins to process results.
 - **`toString()`**: Returns a string identifier for the plugin.
+- **`getReport(benchmarkName)`**: Returns a string to be displayed in the benchmark result line.
+- **`getResult(benchmarkName)`**: Returns the data that can be used by the reporter.
+- **`reset()`**: Resets the plugin state, to avoid carrying over data between benchmarks.
 
 ### Example Plugin
 

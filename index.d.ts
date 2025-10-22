@@ -4,11 +4,36 @@
 import type { Histogram } from "node:perf_hooks";
 
 export declare namespace BenchNode {
+	class Benchmark {
+		name: string;
+		fn: any;
+		minTime: number;
+		maxTime: number;
+		plugins: Plugin[];
+		repeatSuite: number;
+		minSamples: number;
+		baseline: boolean;
+
+		constructor(
+			name: string,
+			fn: any,
+			minTime: number,
+			maxTime: number,
+			plugins: Plugin[],
+			repeatSuite: number,
+			minSamples: number,
+			baseline?: boolean,
+		);
+
+		serializeBenchmark(): void;
+	}
+
 	interface PluginHookVarNames {
 		awaitOrEmpty: string;
-		bench: any; // Can be string during validation, object with 'fn' property during actual run
-		context: any;
-		timer: any;
+		bench: string;
+		context: string;
+		timer: string;
+		managed: boolean;
 	}
 
 	interface BenchmarkResult {
@@ -44,15 +69,28 @@ export declare namespace BenchNode {
 		count: number;
 	}) => void | Promise<void>;
 
+	type OnCompleteBenchmarkResult = [
+		duration: number,
+		count: number,
+		context: Record<string, any>,
+	];
+	type PluginResult = {
+		type: string;
+		[key: string]: any;
+	};
+
 	interface Plugin {
 		isSupported?(): boolean;
 		beforeClockTemplate?(varNames: PluginHookVarNames): string[];
 		afterClockTemplate?(varNames: PluginHookVarNames): string[];
-		onCompleteClock?(result: BenchmarkResult): string[];
-		onCompleteBenchmark?(result: BenchmarkResult): void;
+		onCompleteBenchmark?(
+			result: OnCompleteBenchmarkResult,
+			bench: Benchmark,
+		): void;
 		toString?(): string;
-		getReport?(): string;
-		getResult?(benchmarkName: string): Record<string, any>;
+		getReport?(benchmarkName: string): string;
+		getResult?(benchmarkName: string): PluginResult;
+		reset?(): void;
 	}
 
 	class Suite {
@@ -66,16 +104,16 @@ export declare namespace BenchNode {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		toString(): string;
-		getReport(): string;
+		getReport(benchmarkName: string): string;
 	}
 
 	class V8GetOptimizationStatus implements Plugin {
 		isSupported(): boolean;
 		afterClockTemplate(varNames: PluginHookVarNames): string[];
-		onCompleteBenchmark(result: BenchmarkResult): void;
+		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
 		toString(): string;
-		getReport(): string;
-		getResult?(benchmarkName: string): Record<string, any>;
+		getReport(benchmarkName: string): string;
+		getResult?(benchmarkName: string): PluginResult;
 	}
 
 	class V8OptimizeOnNextCallPlugin implements Plugin {
@@ -89,7 +127,9 @@ export declare namespace BenchNode {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		afterClockTemplate(varNames: PluginHookVarNames): string[];
-		onCompleteBenchmark?(result: BenchmarkResult): void;
+		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
+		getReport(benchmarkName: string): string;
+		getResult(benchmarkName: string): PluginResult;
 		toString(): string;
 	}
 }

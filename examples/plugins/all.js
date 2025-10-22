@@ -3,13 +3,15 @@ const {
   V8GetOptimizationStatus,
   V8NeverOptimizePlugin,
   V8OptimizeOnNextCallPlugin,
+  MemoryPlugin,
 } = require('../../lib');
 
 const suite = new Suite({
   plugins: [
     new V8GetOptimizationStatus(),
     new V8NeverOptimizePlugin(),
-    // new V8OptimizeOnNextCallPlugin(),
+    new MemoryPlugin(),
+    new V8OptimizeOnNextCallPlugin(),
   ],
 });
 

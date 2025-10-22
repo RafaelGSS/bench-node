@@ -2,6 +2,7 @@ import type { Histogram } from "node:perf_hooks";
 import { expectAssignable, expectNotAssignable, expectType } from "tsd";
 
 import {
+	MemoryPlugin,
 	Suite,
 	V8GetOptimizationStatus,
 	V8NeverOptimizePlugin,
@@ -136,8 +137,9 @@ if (plugin1.isSupported?.()) {
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
 		bench: "fn",
-		context: {},
-		timer: {},
+		context: "context",
+		timer: "timer",
+		managed: false,
 	};
 	expectType<string[]>(plugin1.beforeClockTemplate(varNames));
 	expectType<string>(plugin1.toString());
@@ -150,14 +152,13 @@ if (plugin2.isSupported?.()) {
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
 		bench: "fn",
-		context: {},
-		timer: {},
+		context: "context",
+		timer: "timer",
+		managed: false,
 	};
-	expectType<string[]>(plugin2.beforeClockTemplate(varNames));
+	const benchmarkResult: BenchNode.OnCompleteBenchmarkResult = [0, 0, {}];
 	expectType<string[]>(plugin2.afterClockTemplate(varNames));
-	if (plugin2.onCompleteBenchmark) {
-		expectType<void>(plugin2.onCompleteBenchmark(sampleResults[0]));
-	}
+	expectType<void>(plugin2.onCompleteBenchmark(benchmarkResult));
 	expectType<string>(plugin2.toString());
 }
 
@@ -168,11 +169,32 @@ if (plugin3.isSupported?.()) {
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
 		bench: "fn",
-		context: {},
-		timer: {},
+		context: "context",
+		timer: "timer",
+		managed: false,
 	};
 	expectType<string[]>(plugin3.beforeClockTemplate(varNames));
 	expectType<string>(plugin3.toString());
+}
+
+const plugin4 = new MemoryPlugin();
+expectAssignable<BenchNode.Plugin>(plugin4);
+if (plugin4.isSupported?.()) {
+	expectType<boolean>(plugin3.isSupported());
+	const varNames: BenchNode.PluginHookVarNames = {
+		awaitOrEmpty: "",
+		bench: "fn",
+		context: "context",
+		timer: "timer",
+		managed: false,
+	};
+	const benchmarkResult: BenchNode.OnCompleteBenchmarkResult = [0, 0, {}];
+	expectType<string[]>(plugin4.beforeClockTemplate(varNames));
+	expectType<string[]>(plugin4.afterClockTemplate(varNames));
+	expectType<void>(plugin4.onCompleteBenchmark(benchmarkResult));
+	expectType<string>(plugin4.toString());
+	expectType<string>(plugin4.getReport("test"));
+	expectType<BenchNode.PluginResult>(plugin4.getResult("test"));
 }
 
 expectAssignable<BenchNode.Suite>(new Suite());
@@ -183,3 +205,4 @@ expectAssignable<BenchNode.V8GetOptimizationStatus>(
 expectAssignable<BenchNode.V8OptimizeOnNextCallPlugin>(
 	new V8OptimizeOnNextCallPlugin(),
 );
+expectAssignable<BenchNode.MemoryPlugin>(new MemoryPlugin());

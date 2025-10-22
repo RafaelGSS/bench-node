@@ -5,7 +5,7 @@ const assert = require("node:assert");
 
 class ExamplePlugin {
   #aggregation = {};
-  constructor() {}
+  constructor() { }
 
   isSupported() {
     return true;
@@ -48,7 +48,7 @@ class ExamplePlugin {
 
 describe("plugin API", async () => {
   const bench = new Suite({
-    reporter: () => {},
+    reporter: () => { },
     plugins: [captureAll(new ExamplePlugin())],
   });
   bench.add("task1", async () => {
@@ -62,12 +62,13 @@ describe("plugin API", async () => {
   it("matches method signatures", async () => {
     const recordedMethodSignatures = getSignatures();
     assert.deepStrictEqual(recordedMethodSignatures, [
-      "afterClockTemplate({awaitOrEmpty, bench, context, timer})",
-      "beforeClockTemplate({awaitOrEmpty, bench, context, timer})",
+      "afterClockTemplate({awaitOrEmpty, bench, context, managed, timer})",
+      "beforeClockTemplate({awaitOrEmpty, bench, context, managed, timer})",
       "getReport(string)",
       "getResult(string)",
       "isSupported()",
       "onCompleteBenchmark([number, number, object], {baseline, fn, fnStr, hasArg, isAsync, maxTime, minSamples, minTime, name, plugins, repeatSuite})",
+      "reset()",
       "toJSON(string)",
       "toString()",
     ]);
@@ -111,8 +112,7 @@ function printExcerptFromHistory(n = 25) {
   ]
     .map(
       ([name, count, args]) =>
-        `${name} ${count > 1 ? "x" + count : ""}${
-          args ? " with args: " + args : ""
+        `${name} ${count > 1 ? "x" + count : ""}${args ? " with args: " + args : ""
         }`,
     )
     .join("\n| ");

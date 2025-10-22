@@ -4,11 +4,36 @@
 import type { Histogram } from "node:perf_hooks";
 
 export declare namespace BenchNode {
+	class Benchmark {
+		name: string;
+		fn: any;
+		minTime: number;
+		maxTime: number;
+		plugins: Plugin[];
+		repeatSuite: number;
+		minSamples: number;
+		baseline: boolean;
+
+		constructor(
+			name: string,
+			fn: any,
+			minTime: number,
+			maxTime: number,
+			plugins: Plugin[],
+			repeatSuite: number,
+			minSamples: number,
+			baseline?: boolean,
+		);
+
+		serializeBenchmark(): void;
+	}
+
 	interface PluginHookVarNames {
 		awaitOrEmpty: string;
-		bench: any; // Can be string during validation, object with 'fn' property during actual run
-		context: any;
-		timer: any;
+		bench: string;
+		context: string;
+		timer: string;
+		managed: boolean;
 	}
 
 	interface BenchmarkResult {
@@ -43,12 +68,28 @@ export declare namespace BenchNode {
 		count: number;
 	}) => void | Promise<void>;
 
+	type OnCompleteBenchmarkResult = [
+		duration: number,
+		count: number,
+		context: Record<string, any>,
+	];
+	type PluginResult = {
+		type: string;
+		[key: string]: any;
+	};
+
 	interface Plugin {
 		isSupported?(): boolean;
 		beforeClockTemplate?(varNames: PluginHookVarNames): string[];
 		afterClockTemplate?(varNames: PluginHookVarNames): string[];
-		onCompleteBenchmark?(result: BenchmarkResult): void;
+		onCompleteBenchmark?(
+			result: OnCompleteBenchmarkResult,
+			bench: Benchmark,
+		): void;
 		toString?(): string;
+		getReport?(benchmarkName: string): string;
+		getResult?(benchmarkName: string): PluginResult;
+		reset?(): void;
 	}
 
 	class Suite {
@@ -62,19 +103,32 @@ export declare namespace BenchNode {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		toString(): string;
+		getReport(benchmarkName: string): string;
 	}
 
 	class V8GetOptimizationStatus implements Plugin {
 		isSupported(): boolean;
-		beforeClockTemplate(varNames: PluginHookVarNames): string[];
 		afterClockTemplate(varNames: PluginHookVarNames): string[];
-		onCompleteBenchmark(result: BenchmarkResult): void;
+		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
 		toString(): string;
+		getReport(benchmarkName: string): string;
+		getResult?(benchmarkName: string): PluginResult;
 	}
 
 	class V8OptimizeOnNextCallPlugin implements Plugin {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
+		toString(): string;
+		getReport(): string;
+	}
+
+	class MemoryPlugin implements Plugin {
+		isSupported(): boolean;
+		beforeClockTemplate(varNames: PluginHookVarNames): string[];
+		afterClockTemplate(varNames: PluginHookVarNames): string[];
+		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
+		getReport(benchmarkName: string): string;
+		getResult(benchmarkName: string): PluginResult;
 		toString(): string;
 	}
 }
@@ -90,3 +144,4 @@ export declare class Suite extends BenchNode.Suite {}
 export declare class V8NeverOptimizePlugin extends BenchNode.V8NeverOptimizePlugin {}
 export declare class V8GetOptimizationStatus extends BenchNode.V8GetOptimizationStatus {}
 export declare class V8OptimizeOnNextCallPlugin extends BenchNode.V8OptimizeOnNextCallPlugin {}
+export declare class MemoryPlugin extends BenchNode.MemoryPlugin {}

@@ -12,7 +12,7 @@ const {
 	textReport,
 } = require("../lib");
 
-const { analyze } = require("../lib/utils/analyze.js");
+const { analyze, summarize } = require("../lib/utils/analyze.js");
 
 describe("chartReport", () => {
 	describe("outputs benchmark results as a bar chart", async (t) => {
@@ -329,7 +329,7 @@ describe("prettyReport outputs a beautiful report", async (t) => {
 	});
 });
 
-describe("analyse", async (t) => {
+describe("analyze", async (t) => {
 	let analysis;
 
 	before(async () => {
@@ -362,6 +362,61 @@ describe("analyse", async (t) => {
 
 	it("annotates the slowest result", () => {
 		assert.equal(analysis[0].slowest, true, "slowest result");
+	});
+});
+
+describe("summarize", async (t) => {
+	let results;
+
+	before(async () => {
+		// Create a new Suite with the pretty reporter
+		const suite = new Suite({});
+
+		// Add benchmarks with one being the baseline
+		suite
+			.add("baseline-test", { baseline: true }, () => {
+				// Medium-speed operation
+				for (let i = 0; i < 10000; i++) {}
+			})
+			.add("other-test", () => {
+				// Faster operation
+				for (let i = 0; i < 1000; i++) {}
+			})
+			.add("faster-test", () => {
+				// Slower operation
+				for (let i = 0; i < 100; i++) {}
+			});
+
+		// Run the suite
+		results = await suite.run();
+	});
+
+	it("should contain the required benchmark fields", () => {
+		const data = summarize(results);
+
+		// We expect the two benchmarks we added: 'single with matcher' and 'Multiple replaces'
+		assert.strictEqual(data.length, 3, "Should have results for 3 benchmarks");
+
+		for (const entry of data) {
+			// Ensure each entry has expected keys
+			assert.ok(typeof entry.name === "string", "name should be a string");
+			assert.ok(typeof entry.opsSec === "number", "opsSec should be a number");
+			assert.ok(
+				typeof entry.runsSampled === "number",
+				"runsSampled should be a number",
+			);
+			assert.ok(typeof entry.min === "number", "min should be a number");
+			assert.ok(typeof entry.max === "number", "max should be a number");
+			assert.ok(
+				typeof entry.minFormatted === "string",
+				"minFormatted should be a string (formatted time)",
+			);
+			assert.ok(
+				typeof entry.maxFormatted === "string",
+				"maxFormatted should be a string (formatted time)",
+			);
+			assert.ok(Array.isArray(entry.plugins), "plugins should be an array");
+		}
 	});
 });
 

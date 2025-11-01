@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.12.0](https://github.com/RafaelGSS/bench-node/compare/v0.11.0...v0.12.0) (2025-11-01)
+
+
+### Features
+
+* Deduplicate the data summarization code. ([#120](https://github.com/RafaelGSS/bench-node/issues/120)) ([85bfd3e](https://github.com/RafaelGSS/bench-node/commit/85bfd3e8b4a7da047859c70a1ec5e43e81161c10))
+
+
+### Miscellaneous Chores
+
+* typo ([#125](https://github.com/RafaelGSS/bench-node/issues/125)) ([88aff41](https://github.com/RafaelGSS/bench-node/commit/88aff41f3b190a005fd33160b41a888f9227b3b4))
+
+
+### Continuous Integration
+
+* bump ci ([#124](https://github.com/RafaelGSS/bench-node/issues/124)) ([2d7ba17](https://github.com/RafaelGSS/bench-node/commit/2d7ba17eac29328a7d09393efe2692960c84c869))
+
 ## [0.11.0](https://github.com/RafaelGSS/bench-node/compare/v0.10.0...v0.11.0) (2025-09-22)
 
 

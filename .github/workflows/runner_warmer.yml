@@ -3,7 +3,7 @@ name: Cron - Keep Runners Active
 on:
   schedule:
     # Runs this workflow every Sunday at 12:00 UTC. You can adjust the schedule according to your needs.
-    - cron: "0 12 * * 0"
+    - cron: '0 12 * * 0'
   workflow_dispatch: # Allows manual triggering of the workflow
 
 permissions:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::800406105498:role/RafaelGSS-nodejs-bench-operations

@@ -16,12 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: us-west-2
           role-to-assume: arn:aws:iam::800406105498:role/RafaelGSS-nodejs-bench-operations
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Start Runner
         uses: nodesource/aws-eco-runner@v1.0.0-beta.3
@@ -42,10 +42,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 

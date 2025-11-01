@@ -3,17 +3,17 @@ const { Suite } = require("../../lib");
 const suite = new Suite({ reporter: false });
 
 suite
-	.add("Using includes", () => {
+	.add("Using includes", { minSamples: 20 }, () => {
 		const text =
 			"text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8";
 		const r = text.includes("application/json");
 	})
-	.add("Using includes 2", () => {
+	.add("Using includes 2", { minSamples: 20 }, () => {
 		const text =
 			"text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8";
 		const r = text.includes("application/json");
 	})
-	.add("Using includes 3", () => {
+	.add("Using includes 3", { minSamples: 20 }, () => {
 		const text =
 			"text/html,application/xhtml+xml,application/xml;application/json;q=0.9,image/avif,image/webp,*/*;q=0.8";
 		const r = text.includes("application/json");

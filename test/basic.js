@@ -44,6 +44,21 @@ describe("API Interface", () => {
 		}
 	});
 
+	it("suite-level minSamples should be a valid number", () => {
+		for (const r of ["ds", {}, () => {}]) {
+			assert.throws(
+				() => {
+					new Suite({ minSamples: r });
+				},
+				{
+					code: "ERR_INVALID_ARG_TYPE",
+				},
+			);
+		}
+		// doesNotThrow
+		new Suite({ minSamples: 20 });
+	});
+
 	describe("suite.add", () => {
 		const bench = new Suite({ reporter: noop });
 		it("name should be an string", () => {

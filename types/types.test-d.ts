@@ -27,6 +27,7 @@ expectType<BenchNode.Suite>(
 );
 expectType<BenchNode.Suite>(new Suite({ reporter: false }));
 expectType<BenchNode.Suite>(new Suite({ reporter: null }));
+expectType<BenchNode.Suite>(new Suite({ minSamples: 20 }));
 
 expectAssignable<BenchNode.SuiteOptions>({});
 expectAssignable<BenchNode.SuiteOptions>({ reporter: chartReport });
@@ -35,8 +36,10 @@ expectAssignable<BenchNode.SuiteOptions>({ useWorkers: false });
 expectAssignable<BenchNode.SuiteOptions>({
 	plugins: [new V8GetOptimizationStatus()],
 });
+expectAssignable<BenchNode.SuiteOptions>({ minSamples: 20 });
 expectNotAssignable<BenchNode.SuiteOptions>({ unknownOption: "test" });
 expectNotAssignable<BenchNode.SuiteOptions>({ reporter: "not-a-function" });
+expectNotAssignable<BenchNode.SuiteOptions>({ minSamples: "not-a-number" });
 
 expectAssignable<BenchNode.BenchmarkOptions>({});
 expectAssignable<BenchNode.BenchmarkOptions>({ minTime: 0.1 });

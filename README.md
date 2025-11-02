@@ -110,6 +110,7 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `'time'` - Measures actual execution time for a single run.
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
   * `plugins` {Array} Array of plugin instances to use.
+  * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
 
 If no `reporter` is provided, results are printed to the console.
 

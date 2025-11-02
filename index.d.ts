@@ -28,6 +28,7 @@ export declare namespace BenchNode {
 		benchmarkMode?: "ops" | "time";
 		useWorkers?: boolean;
 		plugins?: Plugin[];
+		minSamples?: number; // Minimum number of samples per round for all benchmarks
 	}
 
 	interface BenchmarkOptions {

@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.12.0](https://github.com/RafaelGSS/bench-node/compare/v0.11.0...v0.12.0) (2025-11-03)
+
+
+### Features
+
+* add several code refactor/fixes ([#123](https://github.com/RafaelGSS/bench-node/issues/123)) ([cf96c3d](https://github.com/RafaelGSS/bench-node/commit/cf96c3deaace1086df64dfa0424aeb5bbe90ca5f))
+* Deduplicate the data summarization code. ([#120](https://github.com/RafaelGSS/bench-node/issues/120)) ([85bfd3e](https://github.com/RafaelGSS/bench-node/commit/85bfd3e8b4a7da047859c70a1ec5e43e81161c10))
+* make minSamples option available per Suite creation ([#126](https://github.com/RafaelGSS/bench-node/issues/126)) ([152b945](https://github.com/RafaelGSS/bench-node/commit/152b94571e870246db75311e80b962451e2af9ca))
+
+
+### Bug Fixes
+
+* **plugins:** export plugin memory ([52bb536](https://github.com/RafaelGSS/bench-node/commit/52bb536117460cff49518881a5680b96ef06426c))
+
+
+### Miscellaneous Chores
+
+* **index.d.ts:** update exported types for plugins ([abc828f](https://github.com/RafaelGSS/bench-node/commit/abc828fd7f77fe6bb48aa239155e1ad4ca9f9e63))
+* typo ([#125](https://github.com/RafaelGSS/bench-node/issues/125)) ([88aff41](https://github.com/RafaelGSS/bench-node/commit/88aff41f3b190a005fd33160b41a888f9227b3b4))
+
+
+### Code Refactoring
+
+* **plugins:** enable support for memory & fixes on types ([cd4f96e](https://github.com/RafaelGSS/bench-node/commit/cd4f96e5a48a3381242047c18fc082e293ef7723))
+
+
+### Continuous Integration
+
+* bump ci ([#124](https://github.com/RafaelGSS/bench-node/issues/124)) ([2d7ba17](https://github.com/RafaelGSS/bench-node/commit/2d7ba17eac29328a7d09393efe2692960c84c869))
+
 ## [0.11.0](https://github.com/RafaelGSS/bench-node/compare/v0.10.0...v0.11.0) (2025-09-22)
 
 

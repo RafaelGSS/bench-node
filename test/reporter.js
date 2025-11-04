@@ -1,16 +1,16 @@
 const { describe, it, before } = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");
+const { Suite } = require("../lib");
 
 const {
-	Suite,
 	chartReport,
 	htmlReport,
 	jsonReport,
 	csvReport,
 	prettyReport,
 	textReport,
-} = require("../lib");
+} = require("../lib/report");
 
 const { analyze, summarize } = require("../lib/utils/analyze.js");
 

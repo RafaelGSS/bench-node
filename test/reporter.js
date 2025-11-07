@@ -5,12 +5,16 @@ const { Suite } = require("../lib");
 
 const {
 	chartReport,
+	toChart,
 	htmlReport,
 	jsonReport,
+	toJSON,
 	csvReport,
-	prettyReport,
-	textReport,
 	toCSV,
+	prettyReport,
+	toPretty,
+	textReport,
+	toText,
 } = require("../lib/report");
 
 const { analyze, summarize } = require("../lib/utils/analyze.js");
@@ -463,17 +467,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for prettyReport", async (t) => {
+	describe("for pretty report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			prettyReport(results);
-			process.stdout.write = originalStdoutWrite;
+			output = toPretty(results);
 		});
 
 		it("should include a summary section", () => {
@@ -491,17 +489,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for textReport", async (t) => {
+	describe("for text Report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			textReport(results);
-			process.stdout.write = originalStdoutWrite;
+			output = toText(results);
 		});
 
 		it("should include a summary section", () => {
@@ -519,17 +511,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for chartReport", async (t) => {
+	describe("for chart Report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			chartReport(results, { labelWidth: 30 });
-			process.stdout.write = originalStdoutWrite;
+			output = toChart(results, { labelWidth: 30 });
 		});
 
 		it("should include a summary section", () => {

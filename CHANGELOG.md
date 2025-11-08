@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/RafaelGSS/bench-node/compare/v0.12.0...v0.12.1) (2025-11-08)
+
+
+### Miscellaneous Chores
+
+* Move lint after unit tests. ([e0c019d](https://github.com/RafaelGSS/bench-node/commit/e0c019d48c9bdd77dc934e2c5c15231fd1a3b836))
+
 ## [0.12.0](https://github.com/RafaelGSS/bench-node/compare/v0.11.0...v0.12.0) (2025-11-03)
 
 

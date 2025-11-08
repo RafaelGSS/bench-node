@@ -1,16 +1,21 @@
 const { describe, it, before } = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");
+const { Suite } = require("../lib");
 
 const {
-	Suite,
 	chartReport,
+	toChart,
 	htmlReport,
 	jsonReport,
+	toJSON,
 	csvReport,
+	toCSV,
 	prettyReport,
+	toPretty,
 	textReport,
-} = require("../lib");
+	toText,
+} = require("../lib/report");
 
 const { analyze, summarize } = require("../lib/utils/analyze.js");
 
@@ -462,17 +467,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for prettyReport", async (t) => {
+	describe("for pretty report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			prettyReport(results);
-			process.stdout.write = originalStdoutWrite;
+			output = toPretty(results);
 		});
 
 		it("should include a summary section", () => {
@@ -490,17 +489,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for textReport", async (t) => {
+	describe("for text Report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			textReport(results);
-			process.stdout.write = originalStdoutWrite;
+			output = toText(results);
 		});
 
 		it("should include a summary section", () => {
@@ -518,17 +511,11 @@ describe("baseline comparisons", async (t) => {
 		});
 	});
 
-	describe("for chartReport", async (t) => {
+	describe("for chart Report", async (t) => {
 		let output = "";
 
 		before(async () => {
-			const originalStdoutWrite = process.stdout.write;
-			process.stdout.write = (data) => {
-				output += data;
-			};
-
-			chartReport(results, { labelWidth: 30 });
-			process.stdout.write = originalStdoutWrite;
+			output = toChart(results, { labelWidth: 30 });
 		});
 
 		it("should include a summary section", () => {
@@ -735,6 +722,54 @@ describe("jsonReport should produce valid JSON output", async () => {
 	});
 });
 
+describe("toCSV", () => {
+	it("should generate valid CSV output", async (t) => {
+		const result = toCSV([
+			{
+				opsSec: 749625.5652171721,
+				iterations: 374813,
+				histogram: {
+					samples: 10,
+					min: 1322.2615873857162,
+					max: 1345.4275821344213,
+				},
+				name: "single with matcher",
+				plugins: [
+					{
+						name: "V8NeverOptimizePlugin",
+						result: "enabled",
+						report: "v8-never-optimize=true",
+					},
+				],
+			},
+			{
+				opsSec: 634284.7401772924,
+				iterations: 317148,
+				histogram: {
+					samples: 11,
+					min: 1552.562466504839,
+					max: 1612.7852084972462,
+				},
+				name: "Multiple replaces",
+				plugins: [
+					{
+						name: "V8NeverOptimizePlugin",
+						result: "enabled",
+						report: "v8-never-optimize=true",
+					},
+				],
+			},
+		]);
+
+		assert.deepStrictEqual(
+			result,
+			"name,ops/sec,samples,plugins,min,max\n" +
+				'single with matcher,"749,626",10,"v8-never-optimize=true",1.32us,1.35us\n' +
+				'Multiple replaces,"634,285",11,"v8-never-optimize=true",1.55us,1.61us\n',
+		);
+	});
+});
+
 describe("csvReport", () => {
 	it("should generate valid CSV output", async (t) => {
 		const fn = t.mock.method(process.stdout, "write");
@@ -783,21 +818,11 @@ describe("csvReport", () => {
 			(call) => call.arguments[0],
 		);
 
-		assert.strictEqual(process.stdout.write.mock.callCount(), 13);
+		assert.strictEqual(process.stdout.write.mock.callCount(), 1);
 		assert.deepStrictEqual(callArgs, [
-			"name,ops/sec,samples,plugins,min,max\n",
-			"single with matcher,",
-			'"749,626",',
-			"10,",
-			'"v8-never-optimize=true",',
-			"1.32us,",
-			"1.35us\n",
-			"Multiple replaces,",
-			'"634,285",',
-			"11,",
-			'"v8-never-optimize=true",',
-			"1.55us,",
-			"1.61us\n",
+			"name,ops/sec,samples,plugins,min,max\n" +
+				'single with matcher,"749,626",10,"v8-never-optimize=true",1.32us,1.35us\n' +
+				'Multiple replaces,"634,285",11,"v8-never-optimize=true",1.55us,1.61us\n',
 		]);
 	});
 });

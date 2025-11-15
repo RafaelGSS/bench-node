@@ -54,6 +54,8 @@ export declare namespace BenchNode {
 		useWorkers?: boolean;
 		plugins?: Plugin[];
 		minSamples?: number; // Minimum number of samples per round for all benchmarks
+		detectDeadCodeElimination?: boolean; // Enable DCE detection, default: false
+		dceThreshold?: number; // DCE detection threshold multiplier, default: 10
 	}
 
 	interface BenchmarkOptions {
@@ -132,6 +134,19 @@ export declare namespace BenchNode {
 		getResult(benchmarkName: string): PluginResult;
 		toString(): string;
 	}
+
+	class DeadCodeEliminationDetectionPlugin implements Plugin {
+		constructor(options?: { threshold?: number });
+		isSupported(): boolean;
+		setBaseline(timePerOp: number): void;
+		onCompleteBenchmark(result: OnCompleteBenchmarkResult, bench: Benchmark): void;
+		getWarning(benchmarkName: string): { timePerOp: number; baselineTime: number; ratio: number } | undefined;
+		getAllWarnings(): Array<{ name: string; timePerOp: number; baselineTime: number; ratio: number }>;
+		hasWarning(benchmarkName: string): boolean;
+		emitWarnings(): void;
+		toString(): string;
+		reset(): void;
+	}
 }
 
 export declare const textReport: BenchNode.ReporterFunction;
@@ -146,3 +161,4 @@ export declare class V8NeverOptimizePlugin extends BenchNode.V8NeverOptimizePlug
 export declare class V8GetOptimizationStatus extends BenchNode.V8GetOptimizationStatus {}
 export declare class V8OptimizeOnNextCallPlugin extends BenchNode.V8OptimizeOnNextCallPlugin {}
 export declare class MemoryPlugin extends BenchNode.MemoryPlugin {}
+export declare class DeadCodeEliminationDetectionPlugin extends BenchNode.DeadCodeEliminationDetectionPlugin {}

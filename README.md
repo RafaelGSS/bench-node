@@ -77,6 +77,10 @@ See the [examples folder](./examples/) for more common usage examples.
   - [`new Suite([options])`](#new-suiteoptions)
   - [`suite.add(name[, options], fn)`](#suiteaddname-options-fn)
   - [`suite.run()`](#suiterun)
+- [Dead Code Elimination Detection](#dead-code-elimination-detection)
+  - [How It Works](#how-it-works)
+  - [Configuration](#configuration)
+  - [When DCE Warnings Appear](#when-dce-warnings-appear)
 - [Plugins](#plugins)
   - [Plugin Methods](#plugin-methods)
   - [Example Plugin](#example-plugin)
@@ -131,7 +135,10 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
   * `plugins` {Array} Array of plugin instances to use.
   * `repeatSuite` {number} Number of times to repeat each benchmark. Automatically set to `30` when `ttest: true`. **Default:** `1`.
+  * `plugins` {Array} Array of plugin instances to use. **Default:** `[V8NeverOptimizePlugin]`.
   * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
+  * `detectDeadCodeElimination` {boolean} Enable dead code elimination detection. When enabled, default plugins are disabled to allow V8 optimizations. **Default:** `false`.
+  * `dceThreshold` {number} Threshold multiplier for DCE detection. Benchmarks faster than baseline × threshold will trigger warnings. **Default:** `10`.
 
 If no `reporter` is provided, results are printed to the console.
 
@@ -178,6 +185,78 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
   * `plugins` {Object} Object with plugin results if any plugins are active.
 
 Runs all added benchmarks and returns the results.
+
+## Dead Code Elimination Detection
+
+**bench-node** includes optional detection of dead code elimination (DCE) to help identify benchmarks that may be producing inaccurate results. When the JIT compiler optimizes away your benchmark code, it can run nearly as fast as an empty function, leading to misleading performance measurements.
+
+**Important:** DCE detection is **opt-in**. When enabled, the `V8NeverOptimizePlugin` is automatically disabled to allow V8 optimizations to occur naturally. This helps catch benchmarks that would be optimized away in real-world scenarios.
+
+### How It Works
+
+When enabled, bench-node measures a baseline (empty function) performance before running your benchmarks. After each benchmark completes, it compares the timing against this baseline. If a benchmark runs suspiciously fast (less than 10× slower than the baseline by default), a warning is emitted.
+
+### Example Warning Output
+
+```
+⚠️  Dead Code Elimination Warnings:
+The following benchmarks may have been optimized away by the JIT compiler:
+
+  • array creation
+    Benchmark: 3.98ns/iter
+    Baseline:  0.77ns/iter  
+    Ratio:     5.18x of baseline
+    Suggestion: Ensure the result is used or assign to a variable
+
+ℹ️  These benchmarks are running nearly as fast as an empty function,
+   which suggests the JIT may have eliminated the actual work.
+```
+
+### Configuration
+
+```js
+const { Suite, V8NeverOptimizePlugin } = require('bench-node');
+
+// Enable DCE detection (disables V8NeverOptimizePlugin automatically)
+const suite = new Suite({
+  detectDeadCodeElimination: true
+});
+
+// Enable DCE detection with custom threshold (default is 10x)
+const strictSuite = new Suite({
+  detectDeadCodeElimination: true,
+  dceThreshold: 20 // Only warn if < 20x slower than baseline
+});
+
+// Use both DCE detection AND prevent optimization
+// (helpful for educational purposes to see warnings even when using %NeverOptimizeFunction)
+const educationalSuite = new Suite({
+  plugins: [new V8NeverOptimizePlugin()],
+  detectDeadCodeElimination: true
+});
+```
+
+### When DCE Warnings Appear
+
+Common scenarios that trigger warnings:
+
+```js
+// ❌ Result not used - will be optimized away
+suite.add('computation', () => {
+  const result = Math.sqrt(144);
+  // result is never used
+});
+
+// ✅ Result is used - less likely to be optimized
+suite.add('computation', () => {
+  const result = Math.sqrt(144);
+  if (result !== 12) throw new Error('Unexpected');
+});
+```
+
+**Note:** DCE detection only works in `'ops'` benchmark mode and when not using worker threads. It is automatically disabled for `'time'` mode and worker-based benchmarks.
+
+See [examples/dce-detection/](./examples/dce-detection/) for more examples.
 
 ## Plugins
 

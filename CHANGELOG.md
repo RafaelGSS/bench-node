@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.13.0](https://github.com/RafaelGSS/bench-node/compare/v0.12.0...v0.13.0) (2025-11-27)
+
+
+### Features
+
+* export to&lt;format&gt; functions and rework some of the tests. ([960cb87](https://github.com/RafaelGSS/bench-node/commit/960cb87caf3e73c01550cf93127679991c928ef8))
+
+
+### Miscellaneous Chores
+
+* change printTree to formatTree ([d6ff418](https://github.com/RafaelGSS/bench-node/commit/d6ff418dcc50fbe256b89e9bd562521efc8b7095))
+* Convert json reporter to allow json generation to string. ([cfc464c](https://github.com/RafaelGSS/bench-node/commit/cfc464c4709c1ed4415ff86d486a29dc39556708))
+* Convert printResult to generate a line of output. ([4199a57](https://github.com/RafaelGSS/bench-node/commit/4199a578f29eec173b5c22a21affb80c9b415f07))
+* extract toCSV from csv reporter. ([033dd4b](https://github.com/RafaelGSS/bench-node/commit/033dd4bdd8cd874d0fe985a0f6dae34666452e68))
+* Extract toPretty() method ([c2e54a3](https://github.com/RafaelGSS/bench-node/commit/c2e54a36387ff812c461961724e66aa2389e4358))
+* extract toText from text reporter ([db850ca](https://github.com/RafaelGSS/bench-node/commit/db850ca95b124fd8f4a1ce8dd140868be2f2de5d))
+* Move lint after unit tests. ([e0c019d](https://github.com/RafaelGSS/bench-node/commit/e0c019d48c9bdd77dc934e2c5c15231fd1a3b836))
+* Move short branch to top of conditional block. ([e7254b3](https://github.com/RafaelGSS/bench-node/commit/e7254b35286f58a18622c30aebea7d2e127542b7))
+* Remove duplicate time code in pretty and text printers ([a977b97](https://github.com/RafaelGSS/bench-node/commit/a977b972adab5b947b290bb347c774d93ff011fd))
+* Split out text only chart creation function. ([80538fa](https://github.com/RafaelGSS/bench-node/commit/80538fa6447fe542284a6f58d1d8f08c0d362696))
+* Use report for tests. ([b14db92](https://github.com/RafaelGSS/bench-node/commit/b14db929b058f2a25717a0ff83f5f911c015fb66))
+
 ## [0.12.0](https://github.com/RafaelGSS/bench-node/compare/v0.11.0...v0.12.0) (2025-11-03)
 
 

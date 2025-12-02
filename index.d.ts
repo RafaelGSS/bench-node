@@ -48,12 +48,22 @@ export declare namespace BenchNode {
 
 	type ReporterFunction = (results: BenchmarkResult[]) => void;
 
+	interface ReporterOptions {
+		printHeader?: boolean;
+		labelWidth?: number;
+		ttest?: boolean; // Passed automatically when Suite ttest option is enabled
+		alpha?: number; // Significance level for t-test (default: 0.05)
+	}
+
 	interface SuiteOptions {
 		reporter?: ReporterFunction | false | null;
 		benchmarkMode?: "ops" | "time";
 		useWorkers?: boolean;
 		plugins?: Plugin[];
 		minSamples?: number; // Minimum number of samples per round for all benchmarks
+		repeatSuite?: number; // Number of times to repeat each benchmark (default: 1, or 30 when ttest is enabled)
+		ttest?: boolean; // Enable t-test mode for statistical significance (auto-sets repeatSuite=30)
+		reporterOptions?: ReporterOptions;
 	}
 
 	interface BenchmarkOptions {
@@ -146,3 +156,62 @@ export declare class V8NeverOptimizePlugin extends BenchNode.V8NeverOptimizePlug
 export declare class V8GetOptimizationStatus extends BenchNode.V8GetOptimizationStatus {}
 export declare class V8OptimizeOnNextCallPlugin extends BenchNode.V8OptimizeOnNextCallPlugin {}
 export declare class MemoryPlugin extends BenchNode.MemoryPlugin {}
+
+// Statistical T-Test utilities
+export declare namespace TTest {
+	interface WelchTTestResult {
+		tStatistic: number;
+		degreesOfFreedom: number;
+		pValue: number;
+		significant: boolean;
+		mean1: number;
+		mean2: number;
+		variance1: number;
+		variance2: number;
+	}
+
+	interface CompareBenchmarksResult {
+		significant: boolean;
+		pValue: number;
+		confidence: string;
+		stars: "***" | "**" | "*" | "";
+		difference: "faster" | "slower" | "same";
+		tStatistic: number;
+		degreesOfFreedom: number;
+	}
+}
+
+/**
+ * Returns significance stars based on p-value thresholds.
+ * @param pValue - The p-value from statistical test
+ * @returns Stars indicating significance level ('***', '**', '*', or '')
+ */
+export declare function getSignificanceStars(
+	pValue: number,
+): "***" | "**" | "*" | "";
+
+/**
+ * Performs Welch's t-test for two independent samples.
+ * Does not assume equal variances between the samples.
+ * @param sample1 - First sample array
+ * @param sample2 - Second sample array
+ * @returns Test results including t-statistic, degrees of freedom, p-value, and significance
+ */
+export declare function welchTTest(
+	sample1: number[],
+	sample2: number[],
+): TTest.WelchTTestResult;
+
+/**
+ * Determines if two benchmark results are statistically different
+ * using Welch's t-test at a given significance level.
+ * @param sample1 - Sample data from first benchmark
+ * @param sample2 - Sample data from second benchmark
+ * @param alpha - Significance level (default 0.05 for 95% confidence)
+ * @returns Comparison result with significance info
+ */
+export declare function compareBenchmarks(
+	sample1: number[],
+	sample2: number[],
+	alpha?: number,
+): TTest.CompareBenchmarksResult;

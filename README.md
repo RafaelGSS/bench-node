@@ -94,6 +94,10 @@ See the [examples folder](./examples/) for more common usage examples.
 - [Benchmark Modes](#benchmark-modes)
   - [Operations Mode](#operations-mode)
   - [Time Mode](#time-mode)
+- [Baseline Comparisons](#baseline-comparisons)
+- [Statistical Significance Testing](#statistical-significance-testing)
+  - [Using with Reporters](#using-with-reporters)
+  - [Direct API Usage](#direct-api-usage)
 - [Writing JavaScript Mistakes](#writing-javascript-mistakes)
 
 ## Sponsors
@@ -116,13 +120,17 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
       * `opsSec` {string} Operations per second.
       * `iterations` {Number} Number of iterations.
       * `histogram` {Histogram} Histogram instance.
-    * `reporterOptions` {Object} Reporter-specific options.
-      * `printHeader` {boolean} Whether to print system information header. **Default:** `true`.
+  * `ttest` {boolean} Enable Welch's t-test for statistical significance testing. Automatically sets `repeatSuite=30`. **Default:** `false`.
+  * `reporterOptions` {Object} Reporter-specific options.
+    * `printHeader` {boolean} Whether to print system information header. **Default:** `true`.
+    * `labelWidth` {number} Width for benchmark labels in output. **Default:** `45`.
+    * `alpha` {number} Significance level for t-test (e.g., 0.05 for 95% confidence). **Default:** `0.05`.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
     * `'ops'` - Measures operations per second (traditional benchmarking).
     * `'time'` - Measures actual execution time for a single run.
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
   * `plugins` {Array} Array of plugin instances to use.
+  * `repeatSuite` {number} Number of times to repeat each benchmark. Automatically set to `30` when `ttest: true`. **Default:** `1`.
   * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
 
 If no `reporter` is provided, results are printed to the console.
@@ -147,6 +155,7 @@ const suite = new Suite({ reporter: false });
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
   * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.
+  * `baseline` {boolean} Mark this benchmark as the baseline for comparison. Only one benchmark per suite can be baseline. **Default:** `false`.
 * `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
 * Returns: {Suite}
 
@@ -643,6 +652,150 @@ Quick Operation with 5 repeats x 0.0000s (5 samples) v8-never-optimize=true
 ```
 
 See [examples/time-mode.js](./examples/time-mode.js) for a complete example.
+
+## Baseline Comparisons
+
+You can mark one benchmark as a baseline to compare all other benchmarks against it:
+
+```js
+const { Suite } = require('bench-node');
+
+const suite = new Suite();
+
+suite
+  .add('baseline', { baseline: true }, () => {
+    // baseline implementation
+    const arr = [1, 2, 3];
+    arr.includes(2);
+  })
+  .add('alternative', () => {
+    // alternative implementation
+    const arr = [1, 2, 3];
+    arr.indexOf(2) !== -1;
+  });
+
+suite.run();
+```
+
+Example output with baseline:
+```
+baseline     x 52,832,865 ops/sec (10 runs sampled) min..max=(18.50ns...19.22ns)
+alternative  x 53,550,219 ops/sec (11 runs sampled) min..max=(18.26ns...18.89ns)
+
+Summary (vs. baseline):
+  baseline     (baseline)
+  alternative  (1.01x faster)
+```
+
+## Statistical Significance Testing (T-Test)
+
+> Stability: 1.0 (Experimental)
+
+When comparing benchmarks, especially on machines with high variance (cloud VMs, shared environments),
+raw ops/sec differences may not be meaningful. `bench-node` provides **Welch's t-test** to determine
+if performance differences are statistically significant.
+
+Welch's t-test is preferred over Student's t-test because it doesn't assume equal variances between
+the two samples, which is common in benchmark scenarios.
+
+### Enabling T-Test Mode
+
+Enable t-test mode with `ttest: true`. This automatically sets `repeatSuite=30` to collect enough
+independent samples for reliable statistical analysis (per the Central Limit Theorem):
+
+```js
+const { Suite } = require('bench-node');
+
+const suite = new Suite({
+  ttest: true,  // Enables t-test and auto-sets repeatSuite=30
+});
+
+suite
+  .add('baseline', { baseline: true }, () => {
+    let sum = 0;
+    for (let i = 0; i < 100; i++) sum += i;
+  })
+  .add('optimized', () => {
+    let sum = (99 * 100) / 2; // Gauss formula
+  });
+
+suite.run();
+```
+
+Example output:
+```
+T-Test Mode: Enabled (repeatSuite=30)
+
+baseline   x 1,234,567 ops/sec (300 runs sampled) min..max=(810.05ns...812.45ns)
+optimized  x 9,876,543 ops/sec (305 runs sampled) min..max=(101.23ns...102.87ns)
+
+Summary (vs. baseline):
+  baseline   (baseline)
+  optimized  (8.00x faster) ***
+
+  Significance: * p<0.05, ** p<0.01, *** p<0.001
+```
+
+The asterisks indicate significance level:
+- `***` = p < 0.001 (0.1% risk of false positive)
+- `**` = p < 0.01 (1% risk of false positive)
+- `*` = p < 0.05 (5% risk of false positive)
+- (no stars) = not statistically significant
+
+This helps identify when a benchmark shows a difference due to random variance vs. a real performance improvement.
+
+**How it works**: With `ttest: true`, each benchmark runs 30 times independently (via `repeatSuite=30`). The t-test compares the 30 ops/sec values from the baseline against the 30 ops/sec values from each test benchmark. This accounts for run-to-run variance within that benchmark session.
+
+**Note**: Running the entire benchmark suite multiple times may still show variance in absolute numbers due to system-level factors (CPU frequency scaling, thermal throttling, background processes). The t-test helps determine if differences are statistically significant within each benchmark session, but results can vary between separate benchmark runs due to changing system conditions.
+
+### Direct API Usage
+
+You can also use the t-test utilities directly for custom analysis:
+
+```js
+const { welchTTest, compareBenchmarks } = require('bench-node');
+
+// Raw sample data from two benchmarks (e.g., timing samples in nanoseconds)
+const baseline = [100, 102, 99, 101, 100, 98, 103, 99, 100, 101];
+const optimized = [50, 51, 49, 52, 50, 48, 51, 49, 50, 51];
+
+// High-level comparison
+const result = compareBenchmarks(optimized, baseline, 0.05);
+console.log(result);
+// {
+//   significant: true,
+//   pValue: 0.00001,
+//   confidence: '99.99%',
+//   stars: '***',
+//   difference: 'faster',
+//   tStatistic: 45.2,
+//   degreesOfFreedom: 17.8
+// }
+
+// Low-level Welch's t-test
+const ttest = welchTTest(optimized, baseline);
+console.log(ttest);
+// {
+//   tStatistic: 45.2,
+//   degreesOfFreedom: 17.8,
+//   pValue: 0.00001,
+//   significant: true,
+//   mean1: 50.1,
+//   mean2: 100.3,
+//   variance1: 1.43,
+//   variance2: 2.23
+// }
+```
+
+#### Interpreting Results
+
+- **`significant: true`** - The performance difference is statistically significant at the given alpha level
+- **`pValue`** - Probability that the observed difference occurred by chance (lower = more confident)
+- **`confidence`** - Confidence level (e.g., "99.95%" means 99.95% confident the difference is real)
+- **`stars`** - Visual indicator of significance: `'***'` (p<0.001), `'**'` (p<0.01), `'*'` (p<0.05), or `''` (not significant)
+- **`difference`** - Whether the first sample is `'faster'`, `'slower'`, or `'same'` as the second
+
+A common threshold is `alpha = 0.05` (95% confidence). If `pValue < alpha`, the difference is significant.
 
 ## Writing JavaScript Mistakes
 

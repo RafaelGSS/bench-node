@@ -113,7 +113,7 @@ describe("chartReport", () => {
 		});
 
 		it("should pad out benchmark names", () => {
-			assert.ok(output.includes("oong | "));
+			assert.ok(output.includes("oong ▏█"));
 			assert.ok(output.includes("multiple replaces".padEnd(51)));
 		});
 	});
@@ -534,7 +534,7 @@ describe("baseline comparisons", async (t) => {
 
 		it("can set a specific column width", () => {
 			const summary = output.split("Summary (vs. baseline):")[1];
-			assert.ok(summary.includes("baseline-test                  |"));
+			assert.ok(summary.includes("baseline-test                  ▏"));
 		});
 	});
 });

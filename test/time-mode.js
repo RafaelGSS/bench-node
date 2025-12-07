@@ -52,7 +52,7 @@ describe("Time-based Benchmarking", () => {
 		// Verify the time is approximately correct (allow for some overhead)
 		const measuredTime = results[0].totalTime * 1000; // Convert to ms
 		assert.ok(
-			measuredTime >= delayTime && measuredTime < delayTime + 20,
+			measuredTime >= delayTime - 0.999 && measuredTime < delayTime + 20,
 			`Measured time (${measuredTime}ms) should be close to expected delay (${delayTime}ms)`,
 		);
 

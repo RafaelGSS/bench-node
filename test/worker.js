@@ -21,7 +21,19 @@ describe("Using worker_threads", () => {
 			})
 			.add("Import without node: prefix", () => {
 				return import("node:fs");
+			})
+			.add("async test", async () => {
+				return import("node:fs");
+			})
+			.add("async with timer", async (timer) => {
+				timer.start();
+				let i = 0;
+				while (i++ < timer.count) {
+					await import("node:fs");
+				}
+				timer.end(timer.count);
 			});
+
 		await bench.run();
 	});
 
@@ -29,7 +41,7 @@ describe("Using worker_threads", () => {
 		mock.restoreAll();
 	});
 
-	it("should create a new Worker 2 times", () => {
-		assert.strictEqual(workerThreads.Worker.mock.calls.length, 2);
+	it("should create a new Worker 4 times", () => {
+		assert.strictEqual(workerThreads.Worker.mock.calls.length, 4);
 	});
 });

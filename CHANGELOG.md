@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/RafaelGSS/bench-node/compare/v0.13.0...v0.13.1) (2025-12-09)
+
+
+### Bug Fixes
+
+* Clock inaccuracy in libuv is causing flaky tests. ([cad6bfa](https://github.com/RafaelGSS/bench-node/commit/cad6bfac1b03f270da38c81f3d1703db95a7b0f4))
+* implement support to timers to workers ([35eb144](https://github.com/RafaelGSS/bench-node/commit/35eb144908e76b73667ef6de9131c4d37425974b))
+
 ## [0.13.0](https://github.com/RafaelGSS/bench-node/compare/v0.12.0...v0.13.0) (2025-11-27)
 
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.14.0](https://github.com/RafaelGSS/bench-node/compare/v0.13.0...v0.14.0) (2025-12-17)
+
+
+### Features
+
+* add dce detection plugin ([#131](https://github.com/RafaelGSS/bench-node/issues/131)) ([2e2a6be](https://github.com/RafaelGSS/bench-node/commit/2e2a6be87e7dc7562952dd53b9e34017e0822b8e))
+* add t-test mode for statistical significance testing ([#133](https://github.com/RafaelGSS/bench-node/issues/133)) ([53e20aa](https://github.com/RafaelGSS/bench-node/commit/53e20aae67fbd747a05465b6ad824f56483e231a))
+* Narrow the bar display by another couple of characters by using ANSI line drawing. ([#134](https://github.com/RafaelGSS/bench-node/issues/134)) ([814e88e](https://github.com/RafaelGSS/bench-node/commit/814e88e905da60d00615a2b95cfeed23b6034c7d))
+
+
+### Bug Fixes
+
+* Clock inaccuracy in libuv is causing flaky tests. ([cad6bfa](https://github.com/RafaelGSS/bench-node/commit/cad6bfac1b03f270da38c81f3d1703db95a7b0f4))
+* implement support to timers to workers ([35eb144](https://github.com/RafaelGSS/bench-node/commit/35eb144908e76b73667ef6de9131c4d37425974b))
+
+
+### Miscellaneous Chores
+
+* Localize op/sec in text reporter ([#146](https://github.com/RafaelGSS/bench-node/issues/146)) ([18302e3](https://github.com/RafaelGSS/bench-node/commit/18302e369b3f430d35fe856177d0fd0a55592eaf))
+
 ## [0.13.0](https://github.com/RafaelGSS/bench-node/compare/v0.12.0...v0.13.0) (2025-11-27)
 
 

@@ -64,6 +64,8 @@ export declare namespace BenchNode {
 		repeatSuite?: number; // Number of times to repeat each benchmark (default: 1, or 30 when ttest is enabled)
 		ttest?: boolean; // Enable t-test mode for statistical significance (auto-sets repeatSuite=30)
 		reporterOptions?: ReporterOptions;
+		detectDeadCodeElimination?: boolean; // Enable DCE detection, default: false
+		dceThreshold?: number; // DCE detection threshold multiplier, default: 10
 	}
 
 	interface BenchmarkOptions {
@@ -142,6 +144,29 @@ export declare namespace BenchNode {
 		getResult(benchmarkName: string): PluginResult;
 		toString(): string;
 	}
+
+	class DeadCodeEliminationDetectionPlugin implements Plugin {
+		constructor(options?: { threshold?: number });
+		isSupported(): boolean;
+		setBaseline(timePerOp: number): void;
+		onCompleteBenchmark(
+			result: OnCompleteBenchmarkResult,
+			bench: Benchmark,
+		): void;
+		getWarning(
+			benchmarkName: string,
+		): { timePerOp: number; baselineTime: number; ratio: number } | undefined;
+		getAllWarnings(): Array<{
+			name: string;
+			timePerOp: number;
+			baselineTime: number;
+			ratio: number;
+		}>;
+		hasWarning(benchmarkName: string): boolean;
+		emitWarnings(): void;
+		toString(): string;
+		reset(): void;
+	}
 }
 
 export declare const textReport: BenchNode.ReporterFunction;
@@ -215,3 +240,5 @@ export declare function compareBenchmarks(
 	sample2: number[],
 	alpha?: number,
 ): TTest.CompareBenchmarksResult;
+
+export declare class DeadCodeEliminationDetectionPlugin extends BenchNode.DeadCodeEliminationDetectionPlugin {}

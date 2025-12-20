@@ -158,7 +158,7 @@ const suite = new Suite({ reporter: false });
 
 * `name` {string} The name of the benchmark, displayed when reporting results.
 * `options` {Object} Configuration options for the benchmark. Supported properties:
-  * `minTime` {number} Minimum duration for the benchmark to run. **Default:** `0.05` seconds.
+  * `minTime` {number} The minimum duration of each sampling interval. **Default:** `0.05` seconds.
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
   * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.

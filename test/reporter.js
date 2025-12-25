@@ -515,7 +515,7 @@ describe("baseline comparisons", async (t) => {
 		let output = "";
 
 		before(async () => {
-			output = toChart(results, { labelWidth: 30 });
+			output = toChart(results, {});
 		});
 
 		it("should include a summary section", () => {
@@ -532,9 +532,42 @@ describe("baseline comparisons", async (t) => {
 			assert.ok(summary.includes("slower"));
 		});
 
-		it("can set a specific column width", () => {
+		it("uses the default column width for the name", () => {
 			const summary = output.split("Summary (vs. baseline):")[1];
-			assert.ok(summary.includes("baseline-test                  ▏"));
+			assert.ok(
+				//                123456789012345678901234567890123456789012345 ▏
+				summary.includes("baseline-test                                 ▏"),
+			);
+		});
+
+		it("can adjust the display widths to suite", () => {
+			const inputs = [
+				{
+					iterations: 1635480,
+					histogram: {
+						samples: 11,
+						min: 301.5006542361793,
+						max: 313.07250487172166,
+						sampleData: [
+							301.5006542361793, 301.5593469278305, 302.8870084803949,
+							304.6617804001423, 304.71883159667146, 305.0352153017722,
+							306.6694294422758, 306.9953128406366, 309.27860394347147,
+							310.3016037436935, 313.07250487172166,
+						],
+					},
+					name: "baseline-test",
+					baseline: true,
+					opsSec: 3268352.671656186,
+					opsSecPerRun: [3268352.671656186],
+				},
+			];
+
+			output = toChart(inputs, { labelWidth: 20, barWidth: 10 });
+
+			const summary = output.split("Summary (vs. baseline):")[1];
+
+			//                          12345678901234567890 ▏1234567890 ▏
+			assert.ok(summary.includes("baseline-test        ▏██████████▕ "));
 		});
 	});
 });

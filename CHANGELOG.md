@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.15.0](https://github.com/RafaelGSS/bench-node/compare/v0.14.0...v0.15.0) (2026-01-02)
+
+
+### Features
+
+* Expose bar width flag. ([#152](https://github.com/RafaelGSS/bench-node/issues/152)) ([83ddc1d](https://github.com/RafaelGSS/bench-node/commit/83ddc1d720feb7746598dbde9a887e96766531a2))
+* Support benchmark warmup with useWorkers=true ([#154](https://github.com/RafaelGSS/bench-node/issues/154)) ([f73ed33](https://github.com/RafaelGSS/bench-node/commit/f73ed3366300993aa7189fef306df417c3da173e))
+
+
+### Code Refactoring
+
+* Clarify the purpose and units of various numbers in lifecycle.js ([#151](https://github.com/RafaelGSS/bench-node/issues/151)) ([28e872e](https://github.com/RafaelGSS/bench-node/commit/28e872eab08a92a8c364f1885a76f1a57f7de141))
+
 ## [0.14.0](https://github.com/RafaelGSS/bench-node/compare/v0.13.0...v0.14.0) (2025-12-17)
 
 

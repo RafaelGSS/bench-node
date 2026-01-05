@@ -272,7 +272,7 @@ describe("T-Test Integration with analyze", () => {
 		assert.ok(typeof testResult.significanceTest.confidence === "string");
 	});
 
-	it("should not include significanceTest without sufficient samples", () => {
+	it("should mark significanceTest as failed without samples", () => {
 		const results = [
 			{
 				name: "baseline",
@@ -288,8 +288,7 @@ describe("T-Test Integration with analyze", () => {
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		// Should not throw, and significanceTest should not be set (no samples)
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 
 	it("should not include significanceTest when samples < 30", () => {
@@ -310,8 +309,7 @@ describe("T-Test Integration with analyze", () => {
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		// Should not throw, and significanceTest should not be set (not enough samples)
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 
 	it("should detect significant difference between clearly different benchmarks", () => {
@@ -424,6 +422,6 @@ describe("Statistical significance requires repeatSuite >= 30", () => {
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 });

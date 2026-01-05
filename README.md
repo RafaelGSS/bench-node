@@ -99,8 +99,7 @@ See the [examples folder](./examples/) for more common usage examples.
   - [Operations Mode](#operations-mode)
   - [Time Mode](#time-mode)
 - [Baseline Comparisons](#baseline-comparisons)
-- [Statistical Significance Testing](#statistical-significance-testing)
-  - [Using with Reporters](#using-with-reporters)
+- [Statistical Significance Testing](#statistical-significance-testing-t-test)
   - [Direct API Usage](#direct-api-usage)
 - [Writing JavaScript Mistakes](#writing-javascript-mistakes)
 

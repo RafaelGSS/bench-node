@@ -238,13 +238,13 @@ describe("T-Test Integration with analyze", () => {
 		assert.strictEqual(testResult.significanceTest, undefined);
 	});
 
-	it("should include significanceTest when ttest is true and opsSecPerRun >= 30", () => {
-		// Generate 30+ opsSecPerRun samples (from repeatSuite)
-		const baselineOpsSecPerRun = Array.from(
+	it("should include significanceTest when ttest is true and samples >= 30", () => {
+		// Generate 30+ samples
+		const baselineSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 100 + (i % 3) - 1,
 		);
-		const testOpsSecPerRun = Array.from(
+		const testSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 200 + (i % 3) - 1,
 		);
@@ -254,12 +254,12 @@ describe("T-Test Integration with analyze", () => {
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: baselineOpsSecPerRun,
+				histogram: { sampleData: baselineSampleData },
 			},
 			{
 				name: "test",
 				opsSec: 200,
-				opsSecPerRun: testOpsSecPerRun,
+				histogram: { sampleData: testSampleData },
 			},
 		];
 
@@ -272,7 +272,7 @@ describe("T-Test Integration with analyze", () => {
 		assert.ok(typeof testResult.significanceTest.confidence === "string");
 	});
 
-	it("should not include significanceTest without opsSecPerRun", () => {
+	it("should mark significanceTest as failed without samples", () => {
 		const results = [
 			{
 				name: "baseline",
@@ -288,39 +288,37 @@ describe("T-Test Integration with analyze", () => {
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		// Should not throw, and significanceTest should not be set (no opsSecPerRun)
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 
-	it("should not include significanceTest when opsSecPerRun < 30", () => {
+	it("should not include significanceTest when samples < 30", () => {
 		const results = [
 			{
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: Array.from({ length: 10 }, () => 100),
+				histogram: { samples: Array.from({ length: 10 }, () => 100) },
 			},
 			{
 				name: "test",
 				opsSec: 200,
-				opsSecPerRun: Array.from({ length: 10 }, () => 200),
+				histogram: { samples: Array.from({ length: 10 }, () => 200) },
 			},
 		];
 
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		// Should not throw, and significanceTest should not be set (not enough samples)
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 
 	it("should detect significant difference between clearly different benchmarks", () => {
-		// Generate 30+ opsSecPerRun with clearly different means
-		const baselineOpsSecPerRun = Array.from(
+		// Generate 30+ samples with clearly different means
+		const baselineSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 100 + (i % 5) - 2,
 		);
-		const fastOpsSecPerRun = Array.from(
+		const fastSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 200 + (i % 5) - 2,
 		);
@@ -330,12 +328,12 @@ describe("T-Test Integration with analyze", () => {
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: baselineOpsSecPerRun,
+				histogram: { sampleData: baselineSampleData },
 			},
 			{
 				name: "fast",
 				opsSec: 200,
-				opsSecPerRun: fastOpsSecPerRun,
+				histogram: { sampleData: fastSampleData },
 			},
 		];
 
@@ -348,12 +346,12 @@ describe("T-Test Integration with analyze", () => {
 
 	it("should not mark as significant when differences are within noise", () => {
 		// Same benchmark run twice - should have similar results with high variance overlap
-		// Generate 30+ opsSecPerRun with overlapping distributions
-		const baselineOpsSecPerRun = Array.from(
+		// Generate 30+ samples with overlapping distributions
+		const baselineSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 100 + ((i % 5) - 2) * 2,
 		);
-		const similarOpsSecPerRun = Array.from(
+		const similarSampleData = Array.from(
 			{ length: 30 },
 			(_, i) => 101 + ((i % 5) - 2) * 2,
 		);
@@ -363,12 +361,12 @@ describe("T-Test Integration with analyze", () => {
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: baselineOpsSecPerRun,
+				histogram: { sampleData: baselineSampleData },
 			},
 			{
 				name: "similar",
 				opsSec: 101, // Very close to baseline
-				opsSecPerRun: similarOpsSecPerRun,
+				histogram: { sampleData: similarSampleData },
 			},
 		];
 
@@ -384,18 +382,18 @@ describe("Statistical significance requires repeatSuite >= 30", () => {
 	const { analyze } = require("../lib/utils/analyze");
 
 	it("should only compute significance when repeatSuite provides 30+ samples", () => {
-		// With 30+ opsSecPerRun, significance should be computed
+		// With 30+ samples, significance should be computed
 		const results = [
 			{
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: Array.from({ length: 30 }, () => 100),
+				histogram: { sampleData: Array.from({ length: 30 }, () => 100) },
 			},
 			{
 				name: "test",
 				opsSec: 200,
-				opsSecPerRun: Array.from({ length: 30 }, () => 200),
+				histogram: { sampleData: Array.from({ length: 30 }, () => 200) },
 			},
 		];
 
@@ -406,24 +404,24 @@ describe("Statistical significance requires repeatSuite >= 30", () => {
 	});
 
 	it("should not compute significance when repeatSuite < 30", () => {
-		// With fewer than 30 opsSecPerRun, significance should not be computed
+		// With fewer than 30 samples, significance should not be computed
 		const results = [
 			{
 				name: "baseline",
 				opsSec: 100,
 				baseline: true,
-				opsSecPerRun: Array.from({ length: 10 }, () => 100),
+				histogram: { sampleData: Array.from({ length: 10 }, () => 100) },
 			},
 			{
 				name: "test",
 				opsSec: 200,
-				opsSecPerRun: Array.from({ length: 10 }, () => 200),
+				histogram: { sampleData: Array.from({ length: 10 }, () => 200) },
 			},
 		];
 
 		const analyzed = analyze(results, true, { ttest: true });
 		const testResult = analyzed.find((r) => r.name === "test");
 
-		assert.strictEqual(testResult.significanceTest, undefined);
+		assert.deepEqual(testResult.significanceTest, { significant: false});
 	});
 });

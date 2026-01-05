@@ -16,6 +16,7 @@ const { Suite } = require('../../lib');
 // Enable t-test mode - this automatically sets repeatSuite=30 for all benchmarks
 const suite = new Suite({
   ttest: true,
+  minSamples: 30
 });
 
 // Baseline: Simple array sum using for loop

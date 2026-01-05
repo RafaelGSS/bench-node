@@ -41,6 +41,10 @@ If you change the `minTime` up or down, that will alter the number of iterations
 results. You can also try increasing `minSamples` to get more samples. But also take this as a suggestion that your code
 may have a performance bug that is worth prioritizing.
 
+Forcing GC in the teardown or setup methods between subsequent tests in a single Suite may help with some situations
+when reordering the tests results in differences in runtime, but for the more general case, you may need to review the
+code under test to make it 'play well' both with benchmarking and in production systems.
+
 In production code, particularly where p9# values are used as a fitness test, it is sometimes better to chose the
 algorithm with more consistent runtime over the one with supposedly better average runtime. This can also be true where
 DDOS scenarios are possible - the attacker will always chose the worst, most assymetric request to send to your machine,

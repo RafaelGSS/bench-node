@@ -779,14 +779,15 @@ the two samples, which is common in benchmark scenarios.
 
 ### Enabling T-Test Mode
 
-Enable t-test mode with `ttest: true`. This automatically sets `repeatSuite=30` to collect enough
-independent samples for reliable statistical analysis (per the Central Limit Theorem):
+Enable t-test mode with `ttest: true`. Requires 30 independent samples for reliable statistical analysis (per the 
+Central Limit Theorem):
 
 ```js
 const { Suite } = require('bench-node');
 
 const suite = new Suite({
-  ttest: true,  // Enables t-test and auto-sets repeatSuite=30
+  ttest: true,  // Enables t-test, which requires 30, preferably 40 samples for statistical significance
+  minSamples: 40 // sample count is >= minSamples x repeatSuite 
 });
 
 suite

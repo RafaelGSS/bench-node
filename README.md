@@ -101,6 +101,7 @@ See the [examples folder](./examples/) for more common usage examples.
 - [Baseline Comparisons](#baseline-comparisons)
 - [Statistical Significance Testing](#statistical-significance-testing-t-test)
   - [Direct API Usage](#direct-api-usage)
+  - [Fixing Inconclusive Tests](#fixing-inconclusive-tests)
 - [Writing JavaScript Mistakes](#writing-javascript-mistakes)
 
 ## Sponsors
@@ -825,6 +826,8 @@ This helps identify when a benchmark shows a difference due to random variance v
 **How it works**: With `ttest: true`, each benchmark runs 30 times independently (via `repeatSuite=30`). The t-test compares the 30 ops/sec values from the baseline against the 30 ops/sec values from each test benchmark. This accounts for run-to-run variance within that benchmark session.
 
 **Note**: Running the entire benchmark suite multiple times may still show variance in absolute numbers due to system-level factors (CPU frequency scaling, thermal throttling, background processes). The t-test helps determine if differences are statistically significant within each benchmark session, but results can vary between separate benchmark runs due to changing system conditions.
+
+See also: [Fixing Inconclusive Tests](doc/Inconclusive.md).
 
 ### Direct API Usage
 

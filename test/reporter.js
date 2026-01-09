@@ -678,7 +678,81 @@ describe("custom reporter should have access to histogram data", async () => {
 	});
 });
 
-describe("jsonReport should produce valid JSON output", async () => {
+describe("toJSON", () => {
+	let results;
+
+	before(async () => {
+		const suite = new Suite({});
+
+		suite
+			.add("single with matcher", () => {
+				const pattern = /[123]/g;
+				const replacements = { 1: "a", 2: "b", 3: "c" };
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject.replace(pattern, (m) => replacements[m]);
+				assert.ok(r);
+			})
+			.add("Multiple replaces", () => {
+				const subject = "123123123123123123123123123123123123123123123123";
+				const r = subject
+					.replace(/1/g, "a")
+					.replace(/2/g, "b")
+					.replace(/3/g, "c");
+				assert.ok(r);
+			});
+
+		// Run the suite
+		results = await suite.run();
+	});
+
+	it("should run", () => {
+		toJSON(results);
+	});
+
+	it("should print valid JSON", () => {
+		const output = toJSON(results);
+		const data = JSON.parse(output);
+
+		assert.ok(Array.isArray(data), "Output should be an array of results");
+	});
+
+	it("should contain the required benchmark fields", () => {
+		const output = toJSON(results);
+		const data = JSON.parse(output);
+
+		// We expect the two benchmarks we added: 'single with matcher' and 'Multiple replaces'
+		assert.strictEqual(data.length, 2, "Should have results for 2 benchmarks");
+
+		for (const entry of data) {
+			// Ensure each entry has expected keys
+			assert.ok(typeof entry.name === "string", "name should be a string");
+			assert.ok(typeof entry.opsSec === "number", "opsSec should be a number");
+			assert.ok(
+				typeof entry.runsSampled === "number",
+				"runsSampled should be a number",
+			);
+			assert.ok(
+				typeof entry.min === "string",
+				"min should be a string (formatted time)",
+			);
+			assert.ok(
+				typeof entry.minNS === "number",
+				"minNS should be a number (time in NS)",
+			);
+			assert.ok(
+				typeof entry.max === "string",
+				"max should be a string (formatted time)",
+			);
+			assert.ok(
+				typeof entry.maxNS === "number",
+				"maxNS should be a number (time in NS)",
+			);
+			assert.ok(Array.isArray(entry.plugins), "plugins should be an array");
+		}
+	});
+});
+
+describe("jsonReport", () => {
 	let output = "";
 
 	before(async () => {
@@ -726,32 +800,6 @@ describe("jsonReport should produce valid JSON output", async () => {
 		}
 
 		assert.ok(Array.isArray(data), "Output should be an array of results");
-	});
-
-	it("should contain the required benchmark fields", () => {
-		const data = JSON.parse(output);
-
-		// We expect the two benchmarks we added: 'single with matcher' and 'Multiple replaces'
-		assert.strictEqual(data.length, 2, "Should have results for 2 benchmarks");
-
-		for (const entry of data) {
-			// Ensure each entry has expected keys
-			assert.ok(typeof entry.name === "string", "name should be a string");
-			assert.ok(typeof entry.opsSec === "number", "opsSec should be a number");
-			assert.ok(
-				typeof entry.runsSampled === "number",
-				"runsSampled should be a number",
-			);
-			assert.ok(
-				typeof entry.min === "string",
-				"min should be a string (formatted time)",
-			);
-			assert.ok(
-				typeof entry.max === "string",
-				"max should be a string (formatted time)",
-			);
-			assert.ok(Array.isArray(entry.plugins), "plugins should be an array");
-		}
 	});
 });
 

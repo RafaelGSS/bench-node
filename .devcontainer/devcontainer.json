@@ -1,0 +1,6 @@
+{
+	"name": "Bench-node Container",
+	"build": {
+		"dockerfile": "../Dockerfile"
+	}
+}

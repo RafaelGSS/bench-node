@@ -613,9 +613,11 @@ suite.add('Using includes', () => {
 });
 ```
 
-Here, `%DoNotOptimize` is being called inside the loop for regular benchmarks (assuming V8NeverOptimizePlugin is being used),
-ensuring that the operation is not overly optimized within each loop iteration.
-This prevents V8 from optimizing away the operation (e.g., skipping certain steps because the result is not used or the function is too trivial).
+Here, `DoNotOptimize` is called inside the generated loop for regular benchmarks
+(assuming `V8NeverOptimizePlugin` is being used), and the benchmark function is
+also marked with `%NeverOptimizeFunction`.
+Together, these prevent V8 from optimizing the benchmark function and from
+treating the returned value as irrelevant.
 
 Managed benchmarks explicitly handle timing through `start()` and `end()` calls around the benchmarked code.
 This encapsulates the entire set of iterations in one timed block,
@@ -637,9 +639,10 @@ suite.add('[Managed] Using includes', (timer) => {
 });
 ```
 
-In this case, `%DoNotOptimize` is being applied outside the loop, so it does not protect each iteration from
-excessive optimization. This can result in higher operation counts because V8 might optimize away repetitive tasks.
-That's why an `assert.ok(r)` has been used. To avoid V8 optimizing the entire block as the `r` var was not being used.
+In this case, `DoNotOptimize` is applied to the benchmark function's return value,
+outside the user-managed loop. It does not consume the local `r` value from each
+iteration. That's why `assert.ok(r)` has been used: it makes the per-iteration
+result observable inside the timed block.
 
 > [!NOTE]
 > V8 assumptions can change any time soon. Therefore, it's crucial to investigate
@@ -889,9 +892,10 @@ and hidden class transformations can all distort your measurements, leading to o
 claims about performance improvements that might never materialize in production.
 
 That’s why **bench-node** was created—to provide a stable and consistent way to compare
-small snippets of code. By default, it tells V8 to never optimize your code with a
-snippet like `%NeverOptimizeFunction(DoNotOptimize)`, ensuring the JIT compiler doesn’t
-remove dead code. However, even this approach can’t fully replicate real-world scenarios
+small snippets of code. By default, it tells V8 to never optimize the benchmark
+function with `%NeverOptimizeFunction(bench.fn)` and consumes the returned value
+with a non-optimized `DoNotOptimize` helper so the JIT compiler doesn’t remove
+dead code. However, even this approach can’t fully replicate real-world scenarios
 in which V8 optimizations and unpredictable workloads impact performance. Think of
 bench-node as a helpful tool for quick comparisons rather than a guarantee of what you’ll
 see in production.

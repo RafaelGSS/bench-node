@@ -60,12 +60,13 @@ The wrapped function provides a powerful way to manipulate how the benchmark
 is run without directly modifying the benchmark logic.
 
 ```js
-beforeClockTemplate() {
+beforeClockTemplate({ bench }) {
   let code = '';
 
   code += `
 function DoNotOptimize(x) {}
-// Prevent DoNotOptimize from optimizing or being inlined.
+// Prevent the benchmark function and result consumer from optimizing or being inlined.
+%NeverOptimizeFunction(${bench}.fn);
 %NeverOptimizeFunction(DoNotOptimize);
 `
   return [code, 'DoNotOptimize'];
@@ -73,7 +74,14 @@ function DoNotOptimize(x) {}
 ```
 
 In this example, the plugin injects the `DoNotOptimize` function and also
-provides it as a wrapper for the benchmark function.
+provides it as a wrapper for the benchmark function result. The benchmark
+function itself is marked with `%NeverOptimizeFunction(${bench}.fn)`, while the
+`DoNotOptimize` wrapper consumes the returned value so the benchmark expression
+does not become observationally irrelevant.
+
+These two protections address different parts of the generated code:
+`%NeverOptimizeFunction(${bench}.fn)` targets the function under test, and
+`DoNotOptimize(bench.fn())` targets the value returned by each call.
 
 ### `afterClockTemplate(varNames)`
 
@@ -160,8 +168,8 @@ benchmarks.
 ### Class: `V8NeverOptimizePlugin`
 
 The `V8NeverOptimizePlugin` prevents the V8 engine from optimizing or inlining
-a function, useful when you want to benchmark functions without any
-optimization.
+the benchmark function. It also wraps the benchmark result in a non-optimized
+`DoNotOptimize` helper so V8 cannot treat an unused return value as irrelevant.
 
 ### Class: `V8GetOptimizationStatus`
 

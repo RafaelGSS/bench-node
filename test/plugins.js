@@ -101,6 +101,21 @@ describe("Official plugins validation", () => {
 		});
 		assert.ok(bench);
 	});
+
+	it("V8NeverOptimizePlugin prevents benchmark function optimization", () => {
+		const plugin = new V8NeverOptimizePlugin();
+		const [code, wrapper] = plugin.beforeClockTemplate({
+			bench: "bench",
+			awaitOrEmpty: "",
+			context: "context",
+			timer: "timer",
+		});
+
+		assert.strictEqual(wrapper, "DoNotOptimize");
+		assert.match(code, /%NeverOptimizeFunction\(bench\.fn\);/);
+		assert.match(code, /%NeverOptimizeFunction\(DoNotOptimize\);/);
+	});
+
 	it("V8GetOptimizationStatus validation", () => {
 		const bench = new Suite({
 			plugins: [new V8GetOptimizationStatus()],

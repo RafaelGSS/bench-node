@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.15.0](https://github.com/RafaelGSS/bench-node/compare/v0.14.0...v0.15.0) (2026-05-08)
+
+
+### Features
+
+* Add fixed-unit time format to JSON min/max output for use in ([#157](https://github.com/RafaelGSS/bench-node/issues/157)) ([38d10d1](https://github.com/RafaelGSS/bench-node/commit/38d10d1ad5bb56d66fc60e764b7eb54eaa1f5d1e))
+* Expose bar width flag. ([#152](https://github.com/RafaelGSS/bench-node/issues/152)) ([83ddc1d](https://github.com/RafaelGSS/bench-node/commit/83ddc1d720feb7746598dbde9a887e96766531a2))
+* Support benchmark warmup with useWorkers=true ([#154](https://github.com/RafaelGSS/bench-node/issues/154)) ([f73ed33](https://github.com/RafaelGSS/bench-node/commit/f73ed3366300993aa7189fef306df417c3da173e))
+
+
+### Bug Fixes
+
+* **plugin:** make V8NeverOptimizePlugin target benchmark functions ([#163](https://github.com/RafaelGSS/bench-node/issues/163)) ([c0975c8](https://github.com/RafaelGSS/bench-node/commit/c0975c80d35edafa8820a375e744339de772fe30))
+
+
+### Miscellaneous Chores
+
+* --test flag propagation appears to be fixed. ([#162](https://github.com/RafaelGSS/bench-node/issues/162)) ([8750bfc](https://github.com/RafaelGSS/bench-node/commit/8750bfc7b7580cd2199f8c62e75fe96462aea6e5))
+* add node v25 to test matrix ([#144](https://github.com/RafaelGSS/bench-node/issues/144)) ([08526ea](https://github.com/RafaelGSS/bench-node/commit/08526ea0e561328a72862d2c0cd42717884cd6a2))
+* add node v25 to test matrix ([#159](https://github.com/RafaelGSS/bench-node/issues/159)) ([946bbdc](https://github.com/RafaelGSS/bench-node/commit/946bbdc068a6f955e631470acea608648e868665))
+
+
+### Code Refactoring
+
+* Clarify the purpose and units of various numbers in lifecycle.js ([#151](https://github.com/RafaelGSS/bench-node/issues/151)) ([28e872e](https://github.com/RafaelGSS/bench-node/commit/28e872eab08a92a8c364f1885a76f1a57f7de141))
+
 ## [0.14.0](https://github.com/RafaelGSS/bench-node/compare/v0.13.0...v0.14.0) (2025-12-17)
 
 

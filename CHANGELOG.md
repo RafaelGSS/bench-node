@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Bug Fixes
+
+* **lifecycle:** respect `minSamples` in time mode — each sample is one execution of the benchmark function; `totalTime` reports the mean across all collected samples
+
 ## [0.15.0](https://github.com/RafaelGSS/bench-node/compare/v0.14.0...v0.15.0) (2026-05-08)
 
 

@@ -131,12 +131,12 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `alpha` {number} Significance level for t-test (e.g., 0.05 for 95% confidence). **Default:** `0.05`.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
     * `'ops'` - Measures operations per second (traditional benchmarking).
-    * `'time'` - Measures actual execution time for a single run.
+    * `'time'` - Measures execution time per run, collecting `minSamples` independent measurements.
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
   * `plugins` {Array} Array of plugin instances to use.
   * `repeatSuite` {number} Number of times to repeat each benchmark. Automatically set to `30` when `ttest: true`. **Default:** `1`.
   * `plugins` {Array} Array of plugin instances to use. **Default:** `[V8NeverOptimizePlugin]`.
-  * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
+  * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. In time mode, each sample is one execution of the benchmark function. **Default:** `10` samples.
   * `detectDeadCodeElimination` {boolean} Enable dead code elimination detection. When enabled, default plugins are disabled to allow V8 optimizations. **Default:** `false`.
   * `dceThreshold` {number} Threshold multiplier for DCE detection. Benchmarks faster than baseline × threshold will trigger warnings. **Default:** `10`.
 
@@ -161,7 +161,7 @@ const suite = new Suite({ reporter: false });
   * `minTime` {number} The minimum duration of each sampling interval. **Default:** `0.05` seconds.
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
-  * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.
+  * `minSamples` {number} Minimum number of samples per round. In time mode, each sample is one execution of the benchmark function. **Default:** `10` samples.
   * `baseline` {boolean} Mark this benchmark as the baseline for comparison. Only one benchmark per suite can be baseline. **Default:** `false`.
 * `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
 * Returns: {Suite}
@@ -178,7 +178,7 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
 * Returns: `{Promise<Array<Object>>}` An array of benchmark results, each containing:
   * `opsSec` {number} Operations per second (Only in 'ops' mode).
   * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
-  * `totalTime` {number} Total execution time in seconds (Only in 'time' mode).
+  * `totalTime` {number} Mean execution time in seconds per sample (only in `'time'` mode).
   * `iterations` {number} Number of executions of `fn`.
   * `histogram` {Histogram} Histogram of benchmark iterations.
   * `name` {string} Benchmark name.
@@ -683,13 +683,39 @@ String concatenation x 12,345,678 ops/sec (11 runs sampled) v8-never-optimize=tr
 
 ### Time Mode
 
-Time mode measures the actual time taken to execute a function exactly once. 
-This mode is useful when you want to measure the real execution time for operations that have a known, fixed duration.
+Time mode measures the actual time taken to execute a function once per sample.
+Each sample is a single, independent execution of the benchmark function.
+This mode is useful when you want to measure real execution time for operations that have a known, fixed duration.
 
 This mode is best for:
 - Costly operations where multiple instructions are executed in a single run 
 - Benchmarking operations with predictable timing
 - Verifying performance guarantees for time-sensitive functions
+
+#### `minSamples` in time mode
+
+Like operations mode, time mode respects the `minSamples` option (default: `10`).
+For each round, the benchmark function runs once per sample until `minSamples` measurements are collected.
+`totalTime` reports the mean execution time across all collected samples, and `iterations` equals the total number of samples (`minSamples` × `repeatSuite`).
+
+Use `minSamples: 1` when you only need a single measurement per round (for example, long-running async operations):
+
+```js
+timeSuite.add('Async Delay 100ms', { minSamples: 1 }, async () => {
+    await delay(100);
+});
+```
+
+To collect more samples for statistical confidence on fast operations, increase `minSamples`:
+
+```js
+timeSuite.add('Quick operation', { minSamples: 30 }, () => {
+    let x = 1 + 1;
+});
+```
+
+When combined with `repeatSuite`, each repeat round collects its own `minSamples` measurements.
+For example, `{ minSamples: 5, repeatSuite: 4 }` runs the function 20 times total (5 samples × 4 rounds).
 
 To use time mode, set the `benchmarkMode` option to `'time'` when creating a Suite:
 
@@ -703,19 +729,17 @@ const timeSuite = new Suite({
 // Create a function that takes a predictable amount of time
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-timeSuite.add('Async Delay 100ms', async () => {
+timeSuite.add('Async Delay 100ms', { minSamples: 1 }, async () => {
     await delay(100);
 });
 
-timeSuite.add('Sync Busy Wait 50ms', () => {
+timeSuite.add('Sync Busy Wait 50ms', { minSamples: 1 }, () => {
     const start = Date.now();
     while (Date.now() - start < 50);
 });
 
-// Optional: Run the benchmark multiple times with repeatSuite
-timeSuite.add('Quick Operation with 5 repeats', { repeatSuite: 5 }, () => {
-    // This will run exactly once per repeat (5 times total)
-    // and report the average time
+// Collect minSamples per round; repeatSuite runs multiple independent rounds
+timeSuite.add('Quick Operation with 5 repeats', { repeatSuite: 5, minSamples: 1 }, () => {
     let x = 1 + 1;
 });
 

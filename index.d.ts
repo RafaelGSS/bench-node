@@ -60,7 +60,7 @@ export declare namespace BenchNode {
 		benchmarkMode?: "ops" | "time";
 		useWorkers?: boolean;
 		plugins?: Plugin[];
-		minSamples?: number; // Minimum number of samples per round for all benchmarks
+		minSamples?: number; // Minimum samples per round; in time mode each sample is one execution
 		repeatSuite?: number; // Number of times to repeat each benchmark (default: 1, or 30 when ttest is enabled)
 		ttest?: boolean; // Enable t-test mode for statistical significance (auto-sets repeatSuite=30)
 		reporterOptions?: ReporterOptions;
@@ -72,7 +72,7 @@ export declare namespace BenchNode {
 		minTime?: number; // Minimum duration in seconds
 		maxTime?: number; // Maximum duration in seconds
 		repeatSuite?: number; // Number of times to repeat benchmark
-		minSamples?: number; // Minimum number of samples per round
+		minSamples?: number; // Minimum samples per round; in time mode each sample is one execution
 	}
 
 	type BenchmarkFunction = (timer?: {

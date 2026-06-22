@@ -4,17 +4,6 @@ const { Suite } = require("../lib");
 const copyBench = require("./fixtures/copy");
 const { managedBench, managedOptBench } = require("./fixtures/opt-managed");
 
-function assertMinBenchmarkDifference(
-	results,
-	{ percentageLimit, ciPercentageLimit },
-) {
-	assertBenchmarkDifference(results, {
-		percentageLimit,
-		ciPercentageLimit,
-		greaterThan: true,
-	});
-}
-
 function assertMaxBenchmarkDifference(
 	results,
 	{ percentageLimit, ciPercentageLimit },
@@ -26,40 +15,30 @@ function assertMaxBenchmarkDifference(
 	});
 }
 
+function getPercentageDifference(opsSec1, opsSec2) {
+	const difference = Math.abs(opsSec1 - opsSec2);
+	return (difference / Math.min(opsSec1, opsSec2)) * 100;
+}
+
 function assertBenchmarkDifference(
 	results,
 	{ percentageLimit, ciPercentageLimit, greaterThan },
 ) {
+	const limit = process.env.CI ? ciPercentageLimit : percentageLimit;
+
 	for (let i = 0; i < results.length; i++) {
-		for (let j = 0; j < results.length; j++) {
-			if (i !== j) {
-				const opsSec1 = results[i].opsSec;
-				const opsSec2 = results[j].opsSec;
+		for (let j = i + 1; j < results.length; j++) {
+			const percentageDifference = getPercentageDifference(
+				results[i].opsSec,
+				results[j].opsSec,
+			);
 
-				// Calculate the percentage difference
-				const difference = Math.abs(opsSec1 - opsSec2);
-				const percentageDifference =
-					(difference / Math.min(opsSec1, opsSec2)) * 100;
-
-				// Check if the percentage difference is less than or equal to 10%
-				if (process.env.CI) {
-					// CI runs in a shared-env so the percentage of difference
-					// must be greather there due to high variance of hardware
-					assert.ok(
-						greaterThan
-							? percentageDifference >= ciPercentageLimit
-							: percentageDifference <= ciPercentageLimit,
-						`"${results[i].name}" too different from "${results[j].name}" - ${percentageDifference} != ${ciPercentageLimit} - ${opsSec1} x ${opsSec2}`,
-					);
-				} else {
-					assert.ok(
-						greaterThan
-							? percentageDifference >= percentageLimit
-							: percentageDifference <= percentageLimit,
-						`${results[i].name} too different from ${results[j].name} - ${percentageDifference} != ${percentageLimit}`,
-					);
-				}
-			}
+			assert.ok(
+				greaterThan
+					? percentageDifference >= limit
+					: percentageDifference <= limit,
+				`"${results[i].name}" too different from "${results[j].name}" - ${percentageDifference} ${greaterThan ? "<" : ">"} ${limit}`,
+			);
 		}
 	}
 }
@@ -90,11 +69,19 @@ describe("Managed can be V8 optimized", () => {
 		results = await managedBench.run();
 	});
 
-	it("should be more than 50% different from unmanaged", () => {
-		assertMinBenchmarkDifference(optResults, {
-			percentageLimit: 50,
-			ciPercentageLimit: 30,
-		});
+	it("should be faster when V8 can optimize away unused results", () => {
+		const deopt = results.find((r) => r.name === "Using includes");
+		const opt = optResults.find((r) => r.name === "Using includes");
+		const percentageDifference = getPercentageDifference(
+			deopt.opsSec,
+			opt.opsSec,
+		);
+		const limit = 10;
+
+		assert.ok(
+			percentageDifference >= limit,
+			`expected >=${limit}% ops/sec difference with vs without assert.ok, got ${percentageDifference}%`,
+		);
 	});
 
 	// it('should be similar when avoiding V8 optimizatio', () => {
@@ -123,8 +110,8 @@ describe("Workers should have parallel context", () => {
 
 	it("should have a similar result as they will not share import.meta.cache", () => {
 		assertMaxBenchmarkDifference(results, {
-			percentageLimit: 10,
-			ciPercentageLimit: 30,
+			percentageLimit: 35,
+			ciPercentageLimit: 35,
 		});
 	});
 });

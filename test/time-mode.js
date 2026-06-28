@@ -105,8 +105,7 @@ describe("Time-based Benchmarking", () => {
 		});
 
 		suite.add("minSamples time test", { minSamples: 30 }, () => {
-			let x;
-      x += 1;
+			const x = 1 + 1;
 		});
 
 		const results = await suite.run();

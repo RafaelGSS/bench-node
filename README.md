@@ -106,7 +106,7 @@ See the [examples folder](./examples/) for more common usage examples.
 
 ## Sponsors
 
-Test machines are generously sponsored by [NodeSource](https://nodesource.com/).  
+Test machines are generously sponsored by [NodeSource](https://nodesource.com/).
 <img src="https://github.com/user-attachments/assets/c30ddaf6-145b-465e-a81f-c9942cb93175" alt="NodeSource logo" width="200"/>
 
 ## Class: `Suite`
@@ -131,12 +131,12 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `alpha` {number} Significance level for t-test (e.g., 0.05 for 95% confidence). **Default:** `0.05`.
   * `benchmarkMode` {string} Benchmark mode to use. Can be 'ops' or 'time'. **Default:** `'ops'`.
     * `'ops'` - Measures operations per second (traditional benchmarking).
-    * `'time'` - Measures execution time per run, collecting `minSamples` independent measurements.
+    * `'time'` - Measures actual execution time for a single run.
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
   * `plugins` {Array} Array of plugin instances to use.
   * `repeatSuite` {number} Number of times to repeat each benchmark. Automatically set to `30` when `ttest: true`. **Default:** `1`.
   * `plugins` {Array} Array of plugin instances to use. **Default:** `[V8NeverOptimizePlugin]`.
-  * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. In time mode, each sample is one execution of the benchmark function. **Default:** `10` samples.
+  * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
   * `detectDeadCodeElimination` {boolean} Enable dead code elimination detection. When enabled, default plugins are disabled to allow V8 optimizations. **Default:** `false`.
   * `dceThreshold` {number} Threshold multiplier for DCE detection. Benchmarks faster than baseline × threshold will trigger warnings. **Default:** `10`.
 
@@ -161,9 +161,9 @@ const suite = new Suite({ reporter: false });
   * `minTime` {number} The minimum duration of each sampling interval. **Default:** `0.05` seconds.
   * `maxTime` {number} Maximum duration for the benchmark to run. **Default:** `0.5` seconds.
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
-  * `minSamples` {number} Minimum number of samples per round. In time mode, each sample is one execution of the benchmark function. **Default:** `10` samples.
+  * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.
   * `baseline` {boolean} Mark this benchmark as the baseline for comparison. Only one benchmark per suite can be baseline. **Default:** `false`.
-* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
+* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous.
 * Returns: {Suite}
 
 Adds a benchmark function to the suite.
@@ -204,7 +204,7 @@ The following benchmarks may have been optimized away by the JIT compiler:
 
   • array creation
     Benchmark: 3.98ns/iter
-    Baseline:  0.77ns/iter  
+    Baseline:  0.77ns/iter
     Ratio:     5.18x of baseline
     Suggestion: Ensure the result is used or assign to a variable
 
@@ -260,7 +260,7 @@ See [examples/dce-detection/](./examples/dce-detection/) for more examples.
 
 ## Plugins
 
-Plugins extend the functionality of the benchmark module. 
+Plugins extend the functionality of the benchmark module.
 
 See [Plugins](./doc/Plugins.md) for details.
 
@@ -390,7 +390,7 @@ const suite = new Suite({
 
 ### `jsonReport`
 
-The `jsonReport` plugin provides benchmark results in **JSON format**.  
+The `jsonReport` plugin provides benchmark results in **JSON format**.
 It includes key performance metrics—such as `opsSec`, `runsSampled`, `min`
 and `max` times, and any reporter data from your **plugins**—so you can easily
 store, parse, or share the information.
@@ -668,7 +668,7 @@ const suite = new Suite({
 
 ### Operations Mode
 
-Operations mode (default) measures how many operations can be performed in a given timeframe. 
+Operations mode (default) measures how many operations can be performed in a given timeframe.
 This is the traditional benchmarking approach that reports results in operations per second (ops/sec).
 
 This mode is best for:
@@ -683,12 +683,11 @@ String concatenation x 12,345,678 ops/sec (11 runs sampled) v8-never-optimize=tr
 
 ### Time Mode
 
-Time mode measures the actual time taken to execute a function once per sample.
-Each sample is a single, independent execution of the benchmark function.
-This mode is useful when you want to measure real execution time for operations that have a known, fixed duration.
+Time mode measures the actual time taken to execute a function exactly once.
+This mode is useful when you want to measure the real execution time for operations that have a known, fixed duration.
 
 This mode is best for:
-- Costly operations where multiple instructions are executed in a single run 
+- Costly operations where multiple instructions are executed in a single run
 - Benchmarking operations with predictable timing
 - Verifying performance guarantees for time-sensitive functions
 

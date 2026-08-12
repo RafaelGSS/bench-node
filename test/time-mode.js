@@ -36,7 +36,7 @@ describe("Time-based Benchmarking", () => {
 
 		const delayTime = 50; // 50ms delay
 
-		suite.add("Time mode test", async () => {
+		suite.add("Time mode test", { minSamples: 1 }, async () => {
 			await delay(delayTime);
 		});
 
@@ -73,10 +73,14 @@ describe("Time-based Benchmarking", () => {
 		const repeatCount = 5;
 
 		// A very fast operation that should be consistent
-		suite.add("Repeat time test", { repeatSuite: repeatCount }, () => {
-			// Simple operation
-			const x = 1 + 1;
-		});
+		suite.add(
+			"Repeat time test",
+			{ repeatSuite: repeatCount, minSamples: 1 },
+			() => {
+				// Simple operation
+				const x = 1 + 1;
+			},
+		);
 
 		const results = await suite.run();
 
@@ -91,6 +95,48 @@ describe("Time-based Benchmarking", () => {
 			results[0].histogram.samples,
 			repeatCount,
 			`Should have exactly ${repeatCount} samples with repeatSuite=${repeatCount}`,
+		);
+	});
+
+	it("should respect minSamples in time mode", async () => {
+		const suite = new Suite({
+			reporter: false,
+			benchmarkMode: "time",
+		});
+
+		suite.add("minSamples time test", { minSamples: 30 }, () => {
+			const x = 1 + 1;
+		});
+
+		const results = await suite.run();
+
+		assert.strictEqual(
+			results[0].iterations,
+			30,
+			"Should collect exactly minSamples samples in time mode",
+		);
+	});
+
+	it("should collect minSamples per repeat in time mode", async () => {
+		const suite = new Suite({
+			reporter: false,
+			benchmarkMode: "time",
+		});
+
+		suite.add(
+			"minSamples x repeatSuite",
+			{ minSamples: 5, repeatSuite: 4 },
+			() => {
+				const x = 1 + 1;
+			},
+		);
+
+		const results = await suite.run();
+
+		assert.strictEqual(
+			results[0].iterations,
+			20,
+			"Should collect minSamples * repeatSuite samples in time mode",
 		);
 	});
 

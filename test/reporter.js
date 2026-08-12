@@ -425,6 +425,45 @@ describe("summarize", async (t) => {
 	});
 });
 
+describe("time mode reporting", () => {
+	it("should format totalTime in text and pretty reports", async () => {
+		const suite = new Suite({
+			reporter: false,
+			benchmarkMode: "time",
+		});
+
+		suite.add("time benchmark", { minSamples: 1 }, () => {
+			const x = 1 + 1;
+		});
+
+		const results = await suite.run();
+		const summary = summarize(results);
+
+		assert.strictEqual(typeof summary[0].totalTimeFormatted, "string");
+		assert.ok(summary[0].totalTimeFormatted.length > 0);
+
+		const textOutput = toText(results);
+		assert.ok(
+			textOutput.includes("total time"),
+			"text report should include formatted total time",
+		);
+		assert.ok(
+			!textOutput.includes("undefined"),
+			"text report should not contain undefined",
+		);
+
+		const prettyOutput = toPretty(results);
+		assert.ok(
+			prettyOutput.includes("total time"),
+			"pretty report should include formatted total time",
+		);
+		assert.ok(
+			!prettyOutput.includes("undefined"),
+			"pretty report should not contain undefined",
+		);
+	});
+});
+
 describe("baseline comparisons", async (t) => {
 	let results;
 

@@ -106,7 +106,7 @@ See the [examples folder](./examples/) for more common usage examples.
 
 ## Sponsors
 
-Test machines are generously sponsored by [NodeSource](https://nodesource.com/).  
+Test machines are generously sponsored by [NodeSource](https://nodesource.com/).
 <img src="https://github.com/user-attachments/assets/c30ddaf6-145b-465e-a81f-c9942cb93175" alt="NodeSource logo" width="200"/>
 
 ## Class: `Suite`
@@ -163,7 +163,7 @@ const suite = new Suite({ reporter: false });
   * `repeatSuite` {number} Number of times to repeat benchmark to run. **Default:** `1` times.
   * `minSamples` {number} Number minimum of samples the each round. **Default:** `10` samples.
   * `baseline` {boolean} Mark this benchmark as the baseline for comparison. Only one benchmark per suite can be baseline. **Default:** `false`.
-* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous. 
+* `fn` {Function|AsyncFunction} The benchmark function. Can be synchronous or asynchronous.
 * Returns: {Suite}
 
 Adds a benchmark function to the suite.
@@ -178,7 +178,7 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
 * Returns: `{Promise<Array<Object>>}` An array of benchmark results, each containing:
   * `opsSec` {number} Operations per second (Only in 'ops' mode).
   * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
-  * `totalTime` {number} Total execution time in seconds (Only in 'time' mode).
+  * `totalTime` {number} Mean execution time in seconds per sample (only in `'time'` mode).
   * `iterations` {number} Number of executions of `fn`.
   * `histogram` {Histogram} Histogram of benchmark iterations.
   * `name` {string} Benchmark name.
@@ -204,7 +204,7 @@ The following benchmarks may have been optimized away by the JIT compiler:
 
   • array creation
     Benchmark: 3.98ns/iter
-    Baseline:  0.77ns/iter  
+    Baseline:  0.77ns/iter
     Ratio:     5.18x of baseline
     Suggestion: Ensure the result is used or assign to a variable
 
@@ -260,7 +260,7 @@ See [examples/dce-detection/](./examples/dce-detection/) for more examples.
 
 ## Plugins
 
-Plugins extend the functionality of the benchmark module. 
+Plugins extend the functionality of the benchmark module.
 
 See [Plugins](./doc/Plugins.md) for details.
 
@@ -390,7 +390,7 @@ const suite = new Suite({
 
 ### `jsonReport`
 
-The `jsonReport` plugin provides benchmark results in **JSON format**.  
+The `jsonReport` plugin provides benchmark results in **JSON format**.
 It includes key performance metrics—such as `opsSec`, `runsSampled`, `min`
 and `max` times, and any reporter data from your **plugins**—so you can easily
 store, parse, or share the information.
@@ -668,7 +668,7 @@ const suite = new Suite({
 
 ### Operations Mode
 
-Operations mode (default) measures how many operations can be performed in a given timeframe. 
+Operations mode (default) measures how many operations can be performed in a given timeframe.
 This is the traditional benchmarking approach that reports results in operations per second (ops/sec).
 
 This mode is best for:
@@ -683,13 +683,38 @@ String concatenation x 12,345,678 ops/sec (11 runs sampled) v8-never-optimize=tr
 
 ### Time Mode
 
-Time mode measures the actual time taken to execute a function exactly once. 
+Time mode measures the actual time taken to execute a function exactly once.
 This mode is useful when you want to measure the real execution time for operations that have a known, fixed duration.
 
 This mode is best for:
-- Costly operations where multiple instructions are executed in a single run 
+- Costly operations where multiple instructions are executed in a single run
 - Benchmarking operations with predictable timing
 - Verifying performance guarantees for time-sensitive functions
+
+#### `minSamples` in time mode
+
+Like operations mode, time mode respects the `minSamples` option (default: `10`).
+For each round, the benchmark function runs once per sample until `minSamples` measurements are collected.
+`totalTime` reports the mean execution time across all collected samples, and `iterations` equals the total number of samples (`minSamples` × `repeatSuite`).
+
+Use `minSamples: 1` when you only need a single measurement per round (for example, long-running async operations):
+
+```js
+timeSuite.add('Async Delay 100ms', { minSamples: 1 }, async () => {
+    await delay(100);
+});
+```
+
+To collect more samples for statistical confidence on fast operations, increase `minSamples`:
+
+```js
+timeSuite.add('Quick operation', { minSamples: 30 }, () => {
+    let x = 1 + 1;
+});
+```
+
+When combined with `repeatSuite`, each repeat round collects its own `minSamples` measurements.
+For example, `{ minSamples: 5, repeatSuite: 4 }` runs the function 20 times total (5 samples × 4 rounds).
 
 To use time mode, set the `benchmarkMode` option to `'time'` when creating a Suite:
 
@@ -703,19 +728,17 @@ const timeSuite = new Suite({
 // Create a function that takes a predictable amount of time
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-timeSuite.add('Async Delay 100ms', async () => {
+timeSuite.add('Async Delay 100ms', { minSamples: 1 }, async () => {
     await delay(100);
 });
 
-timeSuite.add('Sync Busy Wait 50ms', () => {
+timeSuite.add('Sync Busy Wait 50ms', { minSamples: 1 }, () => {
     const start = Date.now();
     while (Date.now() - start < 50);
 });
 
-// Optional: Run the benchmark multiple times with repeatSuite
-timeSuite.add('Quick Operation with 5 repeats', { repeatSuite: 5 }, () => {
-    // This will run exactly once per repeat (5 times total)
-    // and report the average time
+// Collect minSamples per round; repeatSuite runs multiple independent rounds
+timeSuite.add('Quick Operation with 5 repeats', { repeatSuite: 5, minSamples: 1 }, () => {
     let x = 1 + 1;
 });
 

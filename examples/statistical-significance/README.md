@@ -20,7 +20,8 @@ Enable t-test mode with `ttest: true`:
 const { Suite } = require('bench-node');
 
 const suite = new Suite({
-  ttest: true,  // Automatically sets repeatSuite=30
+  ttest: true,
+  minSamples: 30, // minSamples x repeatSuite must be > 30
 });
 
 suite.add('baseline', { baseline: true }, () => {

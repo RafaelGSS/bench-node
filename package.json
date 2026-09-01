@@ -4,8 +4,11 @@
 	"description": "",
 	"main": "lib/index.js",
 	"types": "index.d.ts",
+	"engines": {
+		"node": ">=27.0.0-0"
+	},
 	"scripts": {
-		"test": "c8 node --test --allow-natives-syntax --expose-gc && npm run lint:ci",
+		"test": "npm run lint:ci && c8 node --test --test-isolation=none --test-concurrency=1 --allow-natives-syntax --expose-gc",
 		"test:types": "tsd -f types/types.test-d.ts",
 		"lint": "biome lint .",
 		"lint:ci": "biome ci .",
@@ -33,9 +36,6 @@
 		"url": "https://github.com/RafaelGSS/bench-node/issues"
 	},
 	"homepage": "https://github.com/RafaelGSS/bench-node#readme",
-	"dependencies": {
-		"piscina": "^4.8.0"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@types/node": "^20",

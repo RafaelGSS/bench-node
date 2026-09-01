@@ -1,4 +1,3 @@
-import type { Histogram } from "node:perf_hooks";
 import { expectAssignable, expectNotAssignable, expectType } from "tsd";
 
 import {
@@ -24,6 +23,8 @@ expectType<BenchNode.Suite>(
 		benchmarkMode: "ops",
 		useWorkers: true,
 		plugins: [new V8NeverOptimizePlugin()],
+		pretty: false,
+		reporterOptions: { printHeader: true },
 	}),
 );
 expectType<BenchNode.Suite>(new Suite({ reporter: false }));
@@ -47,6 +48,7 @@ expectAssignable<BenchNode.BenchmarkOptions>({ minTime: 0.1 });
 expectAssignable<BenchNode.BenchmarkOptions>({ maxTime: 1 });
 expectAssignable<BenchNode.BenchmarkOptions>({ repeatSuite: 2 });
 expectAssignable<BenchNode.BenchmarkOptions>({ minSamples: 5 });
+expectAssignable<BenchNode.BenchmarkOptions>({ baseline: true });
 expectNotAssignable<BenchNode.BenchmarkOptions>({ minTime: "not-a-number" });
 
 // Test Suite.add method
@@ -99,14 +101,11 @@ suite.run().then((results) => {
 		expectType<number[] | undefined>(result.opsSecPerRun);
 		expectType<number | undefined>(result.totalTime);
 		expectType<number>(result.iterations);
-		expectType<Histogram>(result.histogram);
-		expectType<Record<string, any> | undefined>(result.plugins);
+		expectType<BenchNode.BenchmarkHistogram>(result.histogram);
+		expectType<BenchNode.BenchmarkPluginResult[]>(result.plugins);
+		expectType<boolean>(result.baseline);
 
-		if (result.plugins?.V8GetOptimizationStatus) {
-			expectType<any>(
-				result.plugins.V8GetOptimizationStatus.optimizationStatuses,
-			);
-		}
+		expectType<string>(result.plugins[0].name);
 	}
 });
 
@@ -115,11 +114,12 @@ const sampleResults: BenchNode.BenchmarkResult[] = [
 	{
 		name: "sample",
 		iterations: 100,
-		histogram: {} as Histogram, // Cast for simplicity in type test
+		histogram: {} as BenchNode.BenchmarkHistogram,
 		opsSec: 10000,
 		opsSecPerRun: [10000],
 		totalTime: 0.1,
-		plugins: { MyPlugin: { data: "value" } },
+		plugins: [{ name: "MyPlugin", result: { data: "value" }, report: "" }],
+		baseline: false,
 	},
 ];
 expectType<void>(textReport(sampleResults));
@@ -136,7 +136,7 @@ if (plugin1.isSupported?.()) {
 	expectType<boolean>(plugin1.isSupported());
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
-		bench: "fn",
+		bench: "bench",
 		context: "context",
 		timer: "timer",
 		managed: false,
@@ -151,14 +151,15 @@ if (plugin2.isSupported?.()) {
 	expectType<boolean>(plugin2.isSupported());
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
-		bench: "fn",
+		bench: "bench",
 		context: "context",
 		timer: "timer",
 		managed: false,
 	};
-	const benchmarkResult: BenchNode.OnCompleteBenchmarkResult = [0, 0, {}];
 	expectType<string[]>(plugin2.afterClockTemplate(varNames));
-	expectType<void>(plugin2.onCompleteBenchmark(benchmarkResult));
+	expectAssignable<BenchNode.Plugin["onCompleteBenchmark"]>(
+		plugin2.onCompleteBenchmark,
+	);
 	expectType<string>(plugin2.toString());
 }
 
@@ -168,7 +169,7 @@ if (plugin3.isSupported?.()) {
 	expectType<boolean>(plugin3.isSupported());
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
-		bench: "fn",
+		bench: "bench",
 		context: "context",
 		timer: "timer",
 		managed: false,
@@ -183,7 +184,7 @@ if (plugin4.isSupported?.()) {
 	expectType<boolean>(plugin3.isSupported());
 	const varNames: BenchNode.PluginHookVarNames = {
 		awaitOrEmpty: "",
-		bench: "fn",
+		bench: "bench",
 		context: "context",
 		timer: "timer",
 		managed: false,

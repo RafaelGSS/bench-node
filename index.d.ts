@@ -1,33 +1,6 @@
 // Type definitions for bench-node
 
-/// <reference types="node" />
-import type { Histogram } from "node:perf_hooks";
-
 export declare namespace BenchNode {
-	class Benchmark {
-		name: string;
-		fn: any;
-		minTime: number;
-		maxTime: number;
-		plugins: Plugin[];
-		repeatSuite: number;
-		minSamples: number;
-		baseline: boolean;
-
-		constructor(
-			name: string,
-			fn: any,
-			minTime: number,
-			maxTime: number,
-			plugins: Plugin[],
-			repeatSuite: number,
-			minSamples: number,
-			baseline?: boolean,
-		);
-
-		serializeBenchmark(): void;
-	}
-
 	interface PluginHookVarNames {
 		awaitOrEmpty: string;
 		bench: string;
@@ -36,17 +9,75 @@ export declare namespace BenchNode {
 		managed: boolean;
 	}
 
+	interface BenchmarkHistogram {
+		samples: number;
+		min: number;
+		max: number;
+		sampleData: number[];
+	}
+
+	interface BenchmarkPluginResult {
+		name: string;
+		result: any;
+		report: string;
+	}
+
+	interface PluginResult {
+		type: string;
+		[key: string]: any;
+	}
+
+	interface BenchmarkMetadata {
+		name: string;
+		fn: BenchmarkFunction;
+		fnStr: string;
+		minTime: number;
+		maxTime: number;
+		plugins: Plugin[];
+		repeatSuite: number;
+		minSamples: number;
+		baseline: boolean;
+		hasArg: boolean;
+		isAsync: boolean;
+	}
+
+	class Benchmark implements BenchmarkMetadata {
+		name: string;
+		fn: BenchmarkFunction;
+		fnStr: string;
+		minTime: number;
+		maxTime: number;
+		plugins: Plugin[];
+		repeatSuite: number;
+		minSamples: number;
+		baseline: boolean;
+		hasArg: boolean;
+		isAsync: boolean;
+
+		constructor(
+			name: string,
+			fn: BenchmarkFunction,
+			minTime: number,
+			maxTime: number,
+			plugins: Plugin[],
+			repeatSuite: number,
+			minSamples: number,
+			baseline?: boolean,
+		);
+
+		serializeBenchmark(): Record<string, unknown>;
+	}
+
 	interface BenchmarkResult {
 		name: string;
 		opsSec?: number; // Only in 'ops' mode
 		opsSecPerRun?: number[]; // Useful when repeatSuite > 1
-		totalTime?: number; // Total execution time in seconds (Only in 'time' mode)
+		totalTime?: number; // Mean execution time in seconds per sample in 'time' mode
 		iterations: number;
-		histogram: Histogram;
-		plugins?: Record<string, any>; // Object with plugin results
+		histogram: BenchmarkHistogram;
+		plugins: BenchmarkPluginResult[];
+		baseline: boolean;
 	}
-
-	type ReporterFunction = (results: BenchmarkResult[]) => void;
 
 	interface ReporterOptions {
 		printHeader?: boolean;
@@ -54,6 +85,11 @@ export declare namespace BenchNode {
 		ttest?: boolean; // Passed automatically when Suite ttest option is enabled
 		alpha?: number; // Significance level for t-test (default: 0.05)
 	}
+
+	type ReporterFunction = (
+		results: BenchmarkResult[],
+		options?: ReporterOptions,
+	) => void;
 
 	interface SuiteOptions {
 		reporter?: ReporterFunction | false | null;
@@ -63,6 +99,7 @@ export declare namespace BenchNode {
 		minSamples?: number; // Minimum number of samples per round for all benchmarks
 		repeatSuite?: number; // Number of times to repeat each benchmark (default: 1, or 30 when ttest is enabled)
 		ttest?: boolean; // Enable t-test mode for statistical significance (auto-sets repeatSuite=30)
+		pretty?: boolean;
 		reporterOptions?: ReporterOptions;
 		detectDeadCodeElimination?: boolean; // Enable DCE detection, default: false
 		dceThreshold?: number; // DCE detection threshold multiplier, default: 10
@@ -72,7 +109,8 @@ export declare namespace BenchNode {
 		minTime?: number; // Minimum duration in seconds
 		maxTime?: number; // Maximum duration in seconds
 		repeatSuite?: number; // Number of times to repeat benchmark
-		minSamples?: number; // Minimum number of timed samples collected per round (the benchmark fn runs at least this many times per round)
+		minSamples?: number; // Minimum number of timed samples collected per round
+		baseline?: boolean;
 	}
 
 	type BenchmarkFunction = (timer?: {
@@ -83,26 +121,22 @@ export declare namespace BenchNode {
 
 	type OnCompleteBenchmarkResult = [
 		duration: number,
-		count: number,
+		iterations: number,
 		context: Record<string, any>,
 	];
-	type PluginResult = {
-		type: string;
-		[key: string]: any;
-	};
 
 	interface Plugin {
-		isSupported?(): boolean;
+		isSupported(): boolean;
 		beforeClockTemplate?(varNames: PluginHookVarNames): string[];
 		afterClockTemplate?(varNames: PluginHookVarNames): string[];
 		onCompleteBenchmark?(
 			result: OnCompleteBenchmarkResult,
-			bench: Benchmark,
+			benchmark: BenchmarkMetadata,
 		): void;
-		toString?(): string;
 		getReport?(benchmarkName: string): string;
-		getResult?(benchmarkName: string): PluginResult;
+		getResult?(benchmarkName: string): any;
 		reset?(): void;
+		toString(): string;
 	}
 
 	class Suite {
@@ -115,24 +149,25 @@ export declare namespace BenchNode {
 	class V8NeverOptimizePlugin implements Plugin {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
-		toString(): string;
 		getReport(benchmarkName: string): string;
+		toString(): string;
 	}
 
 	class V8GetOptimizationStatus implements Plugin {
 		isSupported(): boolean;
 		afterClockTemplate(varNames: PluginHookVarNames): string[];
 		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
-		toString(): string;
 		getReport(benchmarkName: string): string;
-		getResult?(benchmarkName: string): PluginResult;
+		getResult(benchmarkName: string): PluginResult;
+		reset(): void;
+		toString(): string;
 	}
 
 	class V8OptimizeOnNextCallPlugin implements Plugin {
 		isSupported(): boolean;
 		beforeClockTemplate(varNames: PluginHookVarNames): string[];
-		toString(): string;
 		getReport(): string;
+		toString(): string;
 	}
 
 	class MemoryPlugin implements Plugin {
@@ -142,7 +177,14 @@ export declare namespace BenchNode {
 		onCompleteBenchmark(result: OnCompleteBenchmarkResult): void;
 		getReport(benchmarkName: string): string;
 		getResult(benchmarkName: string): PluginResult;
+		reset(): void;
 		toString(): string;
+	}
+
+	interface DceWarning {
+		timePerOp: number;
+		baselineTime: number;
+		ratio: number;
 	}
 
 	class DeadCodeEliminationDetectionPlugin implements Plugin {
@@ -151,21 +193,14 @@ export declare namespace BenchNode {
 		setBaseline(timePerOp: number): void;
 		onCompleteBenchmark(
 			result: OnCompleteBenchmarkResult,
-			bench: Benchmark,
+			benchmark: BenchmarkMetadata,
 		): void;
-		getWarning(
-			benchmarkName: string,
-		): { timePerOp: number; baselineTime: number; ratio: number } | undefined;
-		getAllWarnings(): Array<{
-			name: string;
-			timePerOp: number;
-			baselineTime: number;
-			ratio: number;
-		}>;
+		getWarning(benchmarkName: string): DceWarning | undefined;
+		getAllWarnings(): Array<DceWarning & { name: string }>;
 		hasWarning(benchmarkName: string): boolean;
 		emitWarnings(): void;
-		toString(): string;
 		reset(): void;
+		toString(): string;
 	}
 }
 
@@ -181,8 +216,8 @@ export declare class V8NeverOptimizePlugin extends BenchNode.V8NeverOptimizePlug
 export declare class V8GetOptimizationStatus extends BenchNode.V8GetOptimizationStatus {}
 export declare class V8OptimizeOnNextCallPlugin extends BenchNode.V8OptimizeOnNextCallPlugin {}
 export declare class MemoryPlugin extends BenchNode.MemoryPlugin {}
+export declare class DeadCodeEliminationDetectionPlugin extends BenchNode.DeadCodeEliminationDetectionPlugin {}
 
-// Statistical T-Test utilities
 export declare namespace TTest {
 	interface WelchTTestResult {
 		tStatistic: number;
@@ -208,8 +243,6 @@ export declare namespace TTest {
 
 /**
  * Returns significance stars based on p-value thresholds.
- * @param pValue - The p-value from statistical test
- * @returns Stars indicating significance level ('***', '**', '*', or '')
  */
 export declare function getSignificanceStars(
 	pValue: number,
@@ -217,10 +250,6 @@ export declare function getSignificanceStars(
 
 /**
  * Performs Welch's t-test for two independent samples.
- * Does not assume equal variances between the samples.
- * @param sample1 - First sample array
- * @param sample2 - Second sample array
- * @returns Test results including t-statistic, degrees of freedom, p-value, and significance
  */
 export declare function welchTTest(
 	sample1: number[],
@@ -228,17 +257,10 @@ export declare function welchTTest(
 ): TTest.WelchTTestResult;
 
 /**
- * Determines if two benchmark results are statistically different
- * using Welch's t-test at a given significance level.
- * @param sample1 - Sample data from first benchmark
- * @param sample2 - Sample data from second benchmark
- * @param alpha - Significance level (default 0.05 for 95% confidence)
- * @returns Comparison result with significance info
+ * Determines if two benchmark results are statistically different.
  */
 export declare function compareBenchmarks(
 	sample1: number[],
 	sample2: number[],
 	alpha?: number,
 ): TTest.CompareBenchmarksResult;
-
-export declare class DeadCodeEliminationDetectionPlugin extends BenchNode.DeadCodeEliminationDetectionPlugin {}

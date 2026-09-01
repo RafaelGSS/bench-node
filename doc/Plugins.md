@@ -7,6 +7,11 @@ plugins within the benchmarking framework.
 
 [V8NeverOptimizePlugin](#class-v8neveroptimizeplugin) is enabled by default.
 
+Plugin templates are compiled around the callback executed by `node:bench`.
+For unmanaged benchmarks, setup runs before `BenchContext.start()` and teardown
+runs after `BenchContext.end()`. Managed benchmarks report their explicit timer
+through `BenchContext.record()`.
+
 To observe how a plugin is used, see the `plugin-api-doc.js` file in tests and explore its results.
 
 ## Structure
@@ -42,10 +47,11 @@ this method ensures the environment supports them.
   * `context` {string} - Name for the context variable.
   * `timer` {string} - Name for the timer variable.
   * `awaitOrEmpty` {string} - A string with `await` or empty string (`''`).
+  * `managed` {boolean} - Whether the benchmark uses the explicit timer API.
 
-Some plugins need to modify or prepare the code before the benchmark starts.
-The `beforeClockTemplate()` method allows you to inject code before the timing
-process begins.
+Some plugins need to modify or prepare the code before a benchmark sample
+starts. The `beforeClockTemplate()` method allows you to inject code before the
+timed region of each native warmup and measurement callback.
 
 This method must return an array where:
 
@@ -90,9 +96,10 @@ These two protections address different parts of the generated code:
   * `context` {string} - Name for the context variable.
   * `timer` {string} - Name for the timer variable.
   * `awaitOrEmpty` {string} - A string with `await` or empty string (`''`).
+  * `managed` {boolean} - Whether the benchmark uses the explicit timer API.
 
-After the benchmark runs, this method can inject code to gather performance data
-or reset configurations. It must return an array where:
+After each benchmark sample runs, this method can inject code to gather
+performance data or reset configurations. It must return an array where:
 
 * The first element is a string containing the JavaScript code to be executed
 after the benchmark finishes.
@@ -101,15 +108,18 @@ Unlike `beforeClockTemplate`, `afterClockTemplate` does not support a second
 element in the returned array, as it only runs cleanup or data collection code
 after the benchmark is executed.
 
-### `onCompleteBenchmark(result)`
+### `onCompleteBenchmark(result, benchmark)`
 
-* `result` {Object}
-  * `duration` {number}  - Benchmark duration
-  * `count` {number} - Number of iterations
-  * `context` {Object} - A object used to store results after the benchmark clock
+* `result` {Array}
+  * `result[0]` {number} - Sample duration in nanoseconds.
+  * `result[1]` {number} - Number of operations in the sample.
+  * `result[2]` {Object} - Context populated by plugin templates.
+* `benchmark` {Object} Benchmark metadata.
 
-This method is called when the benchmark completes. Plugins can collect and
-process data from the benchmark results in this step.
+This method is called after each native warmup or measurement sample. Plugins
+can collect and process data from the sample in this step. In worker mode, the
+context must be structured-cloneable because the hook is replayed in the parent
+thread.
 
 ### `toString()` (required)
 
@@ -124,19 +134,27 @@ Here are examples of plugins that follow the required structure and functionalit
 class V8OptimizeOnNextCallPlugin {
   isSupported() {
     try {
-      new Function(`%OptimizeFunctionOnNextCall(() => {})`)();
+      new Function(`
+        const fn = () => {};
+        %PrepareFunctionForOptimization(fn);
+        fn();
+        fn();
+        %OptimizeFunctionOnNextCall(fn);
+        fn();
+      `)();
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  beforeClockTemplate({ awaitOrEmpty, bench }) {
+  beforeClockTemplate({ awaitOrEmpty, bench, timer }) {
     let code = '';
 
+    code += `%PrepareFunctionForOptimization(${ bench }.fn);\n`;
+    code += `${ awaitOrEmpty }${ bench }.fn(${ timer });\n`;
+    code += `${ awaitOrEmpty }${ bench }.fn(${ timer });\n`;
     code += `%OptimizeFunctionOnNextCall(${ bench }.fn);\n`;
-    code += `${ awaitOrEmpty }${ bench }.fn();\n`;
-    code += `${ awaitOrEmpty }${ bench }.fn();\n`;
 
     return [code];
   }

@@ -22,13 +22,15 @@
 [![Downloads][downloads-img]][downloads-url]
 [![Issues][issues-img]][issues-url]
 
-The `bench-node` module allows you to measure operations per second of Node.js code blocks.
+The `bench-node` module allows you to measure operations per second of Node.js code blocks. Its benchmark execution and sample lifecycle are powered by the built-in `node:bench` module.
 
 ## Install
 
 ```bash
 $ npm install bench-node
 ```
+
+`bench-node` requires Node.js 27 or a development build that provides `node:bench`.
 
 ## Usage
 
@@ -49,12 +51,30 @@ suite.add('Using delete property', () => {
 suite.run()
 ```
 
+Run the file directly to use the suite's configured reporter:
+
+```bash
+node --allow-natives-syntax my-benchmark.js
+```
+
+The same file can be run by Node's native benchmark CLI. In this mode, Node's
+reporter options control output and the `Suite` reporter is not invoked:
+
+```bash
+node --allow-natives-syntax --bench --bench-reporter=spec my-benchmark.js
+```
+
+When using `--bench`, call `suite.run()` while the benchmark module is being
+evaluated; do not block module evaluation with top-level `await`. If
+`useWorkers` is enabled, the native CLI's process isolation takes precedence
+and the benchmarks execute in its managed child process.
+
 ```bash
 $ node --allow-natives-syntax my-benchmark.js
 Using delete property x 3,326,913 ops/sec (11 runs sampled) v8-never-optimize=true min..max=(0ns ... 0ns) p75=0ns p99=0ns
 ```
 
-This module uses V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks -- but not realistic.
+This module uses `node:bench` for measurement and V8 deoptimization to help ensure that the code block is not optimized away, producing accurate benchmarks -- but not realistic.
 See the [Writing JavaScript Microbenchmark Mistakes](#writing-javascript-mistakes) section for more details.
 
 The [`bench-node-cli`](https://github.com/RafaelGSS/bench-node-cli) tool allows you to execute a `bench-node` benchmark
@@ -121,9 +141,10 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
   * `reporter` {Function} Callback function for reporting results. Receives two arguments:
     * `results` {Object[]} Array of benchmark results:
       * `name` {string} Benchmark name.
-      * `opsSec` {string} Operations per second.
+      * `opsSec` {number} Operations per second.
       * `iterations` {Number} Number of iterations.
-      * `histogram` {Histogram} Histogram instance.
+      * `histogram` {Object} Normalized histogram data with `samples`, `min`,
+        `max`, and `sampleData` properties.
   * `ttest` {boolean} Enable Welch's t-test for statistical significance testing. Automatically sets `repeatSuite=30`. **Default:** `false`.
   * `reporterOptions` {Object} Reporter-specific options.
     * `printHeader` {boolean} Whether to print system information header. **Default:** `true`.
@@ -133,10 +154,10 @@ A `Suite` manages and executes benchmark functions. It provides two methods: `ad
     * `'ops'` - Measures operations per second (traditional benchmarking).
     * `'time'` - Measures actual execution time for a single run.
   * `useWorkers` {boolean} Whether to run benchmarks in worker threads. **Default:** `false`.
-  * `plugins` {Array} Array of plugin instances to use.
   * `repeatSuite` {number} Number of times to repeat each benchmark. Automatically set to `30` when `ttest: true`. **Default:** `1`.
   * `plugins` {Array} Array of plugin instances to use. **Default:** `[V8NeverOptimizePlugin]`.
   * `minSamples` {number} Minimum number of samples per round for all benchmarks in the suite. Can be overridden per benchmark. **Default:** `10` samples.
+  * `pretty` {boolean} Use the pretty reporter when no explicit reporter is provided. **Default:** `false`.
   * `detectDeadCodeElimination` {boolean} Enable dead code elimination detection. When enabled, default plugins are disabled to allow V8 optimizations. **Default:** `false`.
   * `dceThreshold` {number} Threshold multiplier for DCE detection. Benchmarks faster than baseline × threshold will trigger warnings. **Default:** `10`.
 
@@ -180,9 +201,9 @@ Using delete property x 5,853,505 ops/sec (10 runs sampled) min..max=(169ns ... 
   * `opsSecPerRun` {Array} Array of operations per second (useful when repeatSuite > 1).
   * `totalTime` {number} Mean execution time in seconds per sample (only in `'time'` mode).
   * `iterations` {number} Number of executions of `fn`.
-  * `histogram` {Histogram} Histogram of benchmark iterations.
+  * `histogram` {Object} Normalized histogram of nanoseconds per operation.
   * `name` {string} Benchmark name.
-  * `plugins` {Object} Object with plugin results if any plugins are active.
+  * `plugins` {Object[]} Plugin results if any plugins are active.
 
 Runs all added benchmarks and returns the results.
 
@@ -254,7 +275,7 @@ suite.add('computation', () => {
 });
 ```
 
-**Note:** DCE detection only works in `'ops'` benchmark mode and when not using worker threads. It is automatically disabled for `'time'` mode and worker-based benchmarks.
+**Note:** DCE detection only works in direct `'ops'` mode. It is automatically disabled for `'time'` mode, worker-based benchmarks, and the native `--bench` CLI.
 
 See [examples/dce-detection/](./examples/dce-detection/) for more examples.
 
@@ -284,18 +305,26 @@ See [Plugins](./doc/Plugins.md) for details.
 class V8OptimizeOnNextCallPlugin {
   isSupported() {
     try {
-      new Function(`%OptimizeFunctionOnNextCall(() => {})`)();
+      new Function(`
+        const fn = () => {};
+        %PrepareFunctionForOptimization(fn);
+        fn();
+        fn();
+        %OptimizeFunctionOnNextCall(fn);
+        fn();
+      `)();
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  beforeClockTemplate({ awaitOrEmpty, bench }) {
+  beforeClockTemplate({ awaitOrEmpty, bench, timer }) {
     let code = '';
+    code += `%PrepareFunctionForOptimization(${bench}.fn);\n`;
+    code += `${awaitOrEmpty}${bench}.fn(${timer});\n`;
+    code += `${awaitOrEmpty}${bench}.fn(${timer});\n`;
     code += `%OptimizeFunctionOnNextCall(${bench}.fn);\n`;
-    code += `${awaitOrEmpty}${bench}.fn();\n`;
-    code += `${awaitOrEmpty}${bench}.fn();\n`;
     return [code];
   }
 
@@ -661,6 +690,13 @@ const suite = new Suite({
   useWorkers: true,
 });
 ```
+
+When the file is launched with `node --bench`, Node's benchmark-file isolation
+takes precedence and `useWorkers` does not create a nested worker. Use the
+native CLI's `--bench-concurrency` option to run benchmark files concurrently.
+For direct runs, worker benchmark functions are serialized and therefore cannot
+close over variables from the declaring module. Plugin sample context must be
+structured-cloneable so it can be returned to the parent thread.
 
 ## Benchmark Modes
 

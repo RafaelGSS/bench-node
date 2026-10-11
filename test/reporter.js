@@ -946,3 +946,47 @@ describe("csvReport", () => {
 		]);
 	});
 });
+
+describe("plugin reports", () => {
+	const results = [
+		{
+			opsSec: 749625.5652171721,
+			iterations: 374813,
+			histogram: {
+				samples: 10,
+				min: 1322.2615873857162,
+				max: 1345.4275821344213,
+			},
+			name: "single with matcher",
+			plugins: [
+				{
+					name: "V8NeverOptimizePlugin",
+					result: "enabled",
+					report: "v8-never-optimize=true",
+				},
+				{
+					name: "NoReportPlugin",
+					result: "enabled",
+				},
+			],
+		},
+	];
+
+	it("toText should include plugin reports", () => {
+		const output = toText(results);
+		assert.ok(
+			output.includes("v8-never-optimize=true"),
+			"text output should include the plugin report",
+		);
+		assert.ok(
+			output.indexOf("v8-never-optimize=true") < output.indexOf("min..max="),
+			"plugin report should come before min..max",
+		);
+		assert.ok(!output.includes("undefined"));
+	});
+
+	it("toJSON should include plugin reports", () => {
+		const data = JSON.parse(toJSON(results));
+		assert.deepStrictEqual(data[0].plugins, ["v8-never-optimize=true"]);
+	});
+});

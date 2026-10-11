@@ -405,7 +405,7 @@ Example output:
     "runsSampled": 50,
     "min": "13.20μs",
     "max": "82.57μs",
-    "plugins": []
+    "plugins": ["v8-never-optimize=true"]
   },
   {
     "name": "Multiple replaces",
@@ -413,7 +413,7 @@ Example output:
     "runsSampled": 50,
     "min": "15.31μs",
     "max": "77.49μs",
-    "plugins": []
+    "plugins": ["v8-never-optimize=true"]
   }
 ]
 ```

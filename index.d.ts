@@ -73,6 +73,7 @@ export declare namespace BenchNode {
 		maxTime?: number; // Maximum duration in seconds
 		repeatSuite?: number; // Number of times to repeat benchmark
 		minSamples?: number; // Minimum number of timed samples collected per round (the benchmark fn runs at least this many times per round)
+		baseline?: boolean; // Mark this benchmark as the baseline for comparison (only one per suite)
 	}
 
 	type BenchmarkFunction = (timer?: {

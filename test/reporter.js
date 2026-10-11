@@ -257,14 +257,67 @@ describe("htmlReport should create a file", async (t) => {
 		assert.ok(htmlContent.length > 100);
 	});
 
-	it("htmlContent bench suite should be used as class name", () => {
-		assert.ok(htmlContent.includes("circle-Multiple-replaces"));
-		assert.ok(htmlContent.includes("circle-single-with-matcher"));
+	it("htmlContent should use index-based element ids", () => {
+		assert.ok(htmlContent.includes('id="circle-bench-0"'));
+		assert.ok(htmlContent.includes('id="circle-bench-1"'));
+		assert.ok(htmlContent.includes('id="label-bench-0"'));
+		assert.ok(htmlContent.includes('id="label-bench-1"'));
+	});
+
+	it("htmlContent should display the original benchmark names", () => {
+		assert.ok(htmlContent.includes("single with matcher("));
+		assert.ok(htmlContent.includes("Multiple replaces("));
 	});
 
 	it("htmlContent should not contain replace tags {{}}", () => {
 		assert.ok(htmlContent.includes("{{") === false);
 		assert.ok(htmlContent.includes("}}") === false);
+	});
+});
+
+describe("htmlReport handles names with special characters", async (t) => {
+	let htmlContent = "";
+
+	before(async () => {
+		const originalStdoutWrite = process.stdout.write;
+		const originalWriteFileSync = fs.writeFileSync;
+
+		fs.writeFileSync = (name, content) => {
+			htmlContent = content;
+		};
+		process.stdout.write = () => {};
+
+		const suite = new Suite({
+			reporter: htmlReport,
+		});
+
+		suite.add("a/b (c: d) <x> $& </script>", () => {
+			assert.ok(true);
+		});
+		await suite.run();
+
+		fs.writeFileSync = originalWriteFileSync;
+		process.stdout.write = originalStdoutWrite;
+	});
+
+	it("should style the circle with a valid selector", () => {
+		assert.match(
+			htmlContent,
+			/#circle-bench-0 \{\s*background-color: \w+;\s*top: \d+px;/,
+		);
+		assert.match(htmlContent, /#label-bench-0 \{\s*top: \d+px;/);
+	});
+
+	it("should escape the name in the label", () => {
+		assert.ok(
+			htmlContent.includes("a/b (c: d) &lt;x&gt; $&amp; &lt;/script&gt;("),
+		);
+		assert.ok(!htmlContent.includes("<x>"));
+	});
+
+	it("should not close the script tag from the embedded data", () => {
+		assert.strictEqual(htmlContent.match(/<\/script>/g).length, 1);
+		assert.ok(htmlContent.includes("\\u003cx>"));
 	});
 });
 

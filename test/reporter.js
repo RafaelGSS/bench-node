@@ -517,6 +517,45 @@ describe("time mode reporting", () => {
 	});
 });
 
+describe("time mode with baseline", () => {
+	let results;
+
+	before(async () => {
+		const suite = new Suite({
+			reporter: false,
+			benchmarkMode: "time",
+		});
+
+		suite
+			.add("baseline-test", { baseline: true, minSamples: 1 }, () => {
+				const x = 1 + 1;
+			})
+			.add("other-test", { minSamples: 1 }, () => {
+				const x = 2 + 2;
+			});
+
+		results = await suite.run();
+	});
+
+	it("pretty report should not throw", () => {
+		let output;
+		assert.doesNotThrow(() => {
+			output = toPretty(results);
+		});
+		assert.ok(output.includes("(baseline)"));
+		assert.ok(!output.includes("undefined"));
+	});
+
+	it("chart report should not throw", () => {
+		let output;
+		assert.doesNotThrow(() => {
+			output = toChart(results, {});
+		});
+		assert.ok(output.includes("(baseline)"));
+		assert.ok(!output.includes("undefined"));
+	});
+});
+
 describe("baseline comparisons", async (t) => {
 	let results;
 

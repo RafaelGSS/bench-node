@@ -47,7 +47,9 @@ expectAssignable<BenchNode.BenchmarkOptions>({ minTime: 0.1 });
 expectAssignable<BenchNode.BenchmarkOptions>({ maxTime: 1 });
 expectAssignable<BenchNode.BenchmarkOptions>({ repeatSuite: 2 });
 expectAssignable<BenchNode.BenchmarkOptions>({ minSamples: 5 });
+expectAssignable<BenchNode.BenchmarkOptions>({ baseline: true });
 expectNotAssignable<BenchNode.BenchmarkOptions>({ minTime: "not-a-number" });
+expectNotAssignable<BenchNode.BenchmarkOptions>({ baseline: "yes" });
 
 // Test Suite.add method
 const suite = new Suite();
@@ -72,6 +74,11 @@ expectType<BenchNode.Suite>(
 			/* ... */
 		},
 	),
+);
+expectType<BenchNode.Suite>(
+	suite.add("baseline benchmark", { baseline: true }, () => {
+		/* ... */
+	}),
 );
 
 const managedBenchFn: BenchNode.BenchmarkFunction = (timer) => {

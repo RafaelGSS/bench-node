@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.15.1](https://github.com/RafaelGSS/bench-node/compare/v0.15.0...v0.15.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* benchmarkMode=time respect minSamples ([#165](https://github.com/RafaelGSS/bench-node/issues/165)) ([feea514](https://github.com/RafaelGSS/bench-node/commit/feea514f2e899943a7194d6a86c21ee81a0a223a))
+* **reporter:** avoid crash in pretty and chart reporters with baseline in time mode ([#174](https://github.com/RafaelGSS/bench-node/issues/174)) ([c7bb03f](https://github.com/RafaelGSS/bench-node/commit/c7bb03facfc307d95a708112113d5529cb94abad))
+* **reporter:** restore plugin reports in text and json reporters ([5836f31](https://github.com/RafaelGSS/bench-node/commit/5836f31e3be068bddfd67e8a6470bf7435df1235))
+* **reporter:** use valid element ids in html reporter ([#173](https://github.com/RafaelGSS/bench-node/issues/173)) ([0564830](https://github.com/RafaelGSS/bench-node/commit/0564830a50511a3dce1c9562d33e88340f087c1e))
+* **types:** add baseline to BenchmarkOptions ([#171](https://github.com/RafaelGSS/bench-node/issues/171)) ([6de053a](https://github.com/RafaelGSS/bench-node/commit/6de053a0b949ca8e0f95319dcfb7e9b8509ab048))
+
+
+### Miscellaneous Chores
+
+* remove accidentally committed package tarball ([08d6fc8](https://github.com/RafaelGSS/bench-node/commit/08d6fc817fdcf8a0106ceb3c0ddfddde87143ad5))
+
 ## [0.15.0](https://github.com/RafaelGSS/bench-node/compare/v0.14.0...v0.15.0) (2026-05-08)
 
 

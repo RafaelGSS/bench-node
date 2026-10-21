@@ -980,6 +980,57 @@ describe("toCSV", () => {
 				'Multiple replaces,"634,285",11,"v8-never-optimize=true",1.55us,1.61us\n',
 		);
 	});
+
+	it("should escape commas in names and quotes in plugin reports", () => {
+		const result = toCSV([
+			{
+				name: "a,b",
+				opsSec: 1,
+				histogram: { samples: 1, min: 1, max: 1 },
+				plugins: [{ report: 'x="y"' }],
+			},
+		]);
+
+		assert.strictEqual(
+			result,
+			"name,ops/sec,samples,plugins,min,max\n" +
+				'"a,b","1",1,"x=""y""",0.00us,0.00us\n',
+		);
+	});
+
+	it("should escape quotes in names", () => {
+		const result = toCSV([
+			{
+				name: 'say "hi"',
+				opsSec: 1,
+				histogram: { samples: 1, min: 1, max: 1 },
+				plugins: [],
+			},
+		]);
+
+		assert.strictEqual(
+			result,
+			"name,ops/sec,samples,plugins,min,max\n" +
+				'"say ""hi""","1",1,"",0.00us,0.00us\n',
+		);
+	});
+
+	it("should escape names in time mode", () => {
+		const result = toCSV([
+			{
+				name: "a,b",
+				totalTime: 1,
+				histogram: { samples: 1, min: 1, max: 1 },
+				plugins: [],
+			},
+		]);
+
+		assert.strictEqual(
+			result,
+			"name,total time,samples,plugins,min,max\n" +
+				'"a,b",1.00 s,1,"",0.00us,0.00us\n',
+		);
+	});
 });
 
 describe("csvReport", () => {

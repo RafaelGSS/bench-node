@@ -161,9 +161,31 @@ describe("T-Test Utilities", () => {
 			const result005 = compareBenchmarks(sample1, sample2, 0.05);
 			const result001 = compareBenchmarks(sample1, sample2, 0.01);
 
-			// With alpha=0.05, might be significant; with alpha=0.01, might not be
-			// The exact behavior depends on the p-value
 			assert.ok(result005.pValue === result001.pValue);
+
+			// The p-value (~1.5e-5) is below 0.05 but above 1e-6
+			assert.strictEqual(result005.significant, true);
+			assert.strictEqual(result005.difference, "faster");
+
+			const strict = compareBenchmarks(sample1, sample2, 1e-6);
+			assert.strictEqual(strict.significant, false);
+			assert.strictEqual(strict.difference, "same");
+		});
+
+		it("should keep difference consistent with significant for any alpha", () => {
+			const different1 = [100, 101, 102, 99, 100];
+			const different2 = [50, 51, 49, 50, 52];
+			const never = compareBenchmarks(different1, different2, 0);
+
+			assert.strictEqual(never.significant, false);
+			assert.strictEqual(never.difference, "same");
+
+			const similar1 = [100, 102, 98, 101, 99, 100, 101, 99, 100, 102];
+			const similar2 = [99, 101, 100, 98, 102, 100, 99, 101, 100, 98];
+			const always = compareBenchmarks(similar1, similar2, 1);
+
+			assert.strictEqual(always.significant, true);
+			assert.strictEqual(always.difference, "faster");
 		});
 
 		it("should include confidence percentage in result", () => {

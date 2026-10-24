@@ -595,7 +595,7 @@ suite.run();
 > the benchmark function, the results may not match.
 > See: [Deleting Properties Example](./examples/deleting-properties/node.js).
 
-Ensure you call `.start()` and `.end()` methods when using the timer argument, or an `ERR_BENCHMARK_MISSING_OPERATION` error will be thrown.
+Ensure you call `.start()` and `.end()` methods when using the timer argument, otherwise an error (`You forgot to call .start()` or `You forgot to call .end(count)`) will be thrown.
 
 ### Managed Benchmarks
 

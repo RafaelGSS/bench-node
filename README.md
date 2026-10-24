@@ -464,17 +464,17 @@ The `prettyReport` provides a beautiful, hierarchical view of your benchmark res
 **Usage:**
 
 ```javascript
-const { Suite } = require('bench-node');
+const { Suite, prettyReport } = require('bench-node');
 
 // You can either pass the reporter function directly...
-const suiteWithReporter = new Suite({
+const suite = new Suite({
   reporter: prettyReport,
 });
 
 // ...or use the `pretty` option for convenience.
-const suiteWithPrettyOption = new Suite({
-  pretty: true,
-});
+// const suite = new Suite({
+//   pretty: true,
+// });
 
 suite
   .add('my-group/my-benchmark', () => {

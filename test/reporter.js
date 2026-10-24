@@ -1082,3 +1082,29 @@ describe("plugin reports", () => {
 		assert.deepStrictEqual(data[0].plugins, ["v8-never-optimize=true"]);
 	});
 });
+
+describe("t-test banner", () => {
+	const results = [
+		{
+			opsSec: 1000,
+			iterations: 500,
+			opsSecPerRun: Array.from({ length: 50 }, () => 1000),
+			histogram: { samples: 10, min: 1, max: 2 },
+			name: "baseline",
+			baseline: true,
+			plugins: [],
+		},
+	];
+
+	it("toText should not hardcode repeatSuite", () => {
+		const output = toText(results, { ttest: true });
+		assert.ok(output.includes("T-Test Mode: Enabled"));
+		assert.ok(!output.includes("repeatSuite=30"));
+	});
+
+	it("toPretty should not hardcode repeatSuite", () => {
+		const output = toPretty(results, { ttest: true });
+		assert.ok(output.includes("T-Test Mode: Enabled"));
+		assert.ok(!output.includes("repeatSuite=30"));
+	});
+});

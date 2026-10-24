@@ -829,7 +829,7 @@ suite.run();
 
 Example output:
 ```
-T-Test Mode: Enabled (repeatSuite=30)
+T-Test Mode: Enabled
 
 baseline   x 1,234,567 ops/sec (300 runs sampled) min..max=(810.05ns...812.45ns)
 optimized  x 9,876,543 ops/sec (305 runs sampled) min..max=(101.23ns...102.87ns)

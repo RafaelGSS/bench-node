@@ -263,6 +263,32 @@ describe("repeat suite", async () => {
 	});
 });
 
+describe("repeat suite with minSamples in ops mode", async () => {
+	const repeatCount = 3;
+	const minSamples = 10;
+	const bench = new Suite({ reporter: noop });
+	bench.add(
+		"slow",
+		{ repeatSuite: repeatCount, minSamples, maxTime: 0.05, minTime: 0.01 },
+		() => {
+			const start = Date.now();
+			while (Date.now() - start < 20);
+		},
+	);
+
+	const results = await bench.run();
+
+	it("should collect at least minSamples in every round", () => {
+		// Each sample runs a single iteration since an operation takes longer
+		// than minTime, so iterations equals the samples before outlier removal.
+		assert.ok(
+			results[0].iterations >= repeatCount * minSamples,
+			`expected at least ${repeatCount * minSamples} samples, got ${results[0].iterations}`,
+		);
+		assert.strictEqual(results[0].opsSecPerRun.length, repeatCount);
+	});
+});
+
 describe("throws when a benchmark task throw", async () => {
 	const bench = new Suite();
 	const err = new Error();

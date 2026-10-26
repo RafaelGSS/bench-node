@@ -464,17 +464,17 @@ The `prettyReport` provides a beautiful, hierarchical view of your benchmark res
 **Usage:**
 
 ```javascript
-const { Suite } = require('bench-node');
+const { Suite, prettyReport } = require('bench-node');
 
 // You can either pass the reporter function directly...
-const suiteWithReporter = new Suite({
+const suite = new Suite({
   reporter: prettyReport,
 });
 
 // ...or use the `pretty` option for convenience.
-const suiteWithPrettyOption = new Suite({
-  pretty: true,
-});
+// const suite = new Suite({
+//   pretty: true,
+// });
 
 suite
   .add('my-group/my-benchmark', () => {
@@ -595,7 +595,7 @@ suite.run();
 > the benchmark function, the results may not match.
 > See: [Deleting Properties Example](./examples/deleting-properties/node.js).
 
-Ensure you call `.start()` and `.end()` methods when using the timer argument, or an `ERR_BENCHMARK_MISSING_OPERATION` error will be thrown.
+Ensure you call `.start()` and `.end()` methods when using the timer argument, otherwise an error (`You forgot to call .start()` or `You forgot to call .end(count)`) will be thrown.
 
 ### Managed Benchmarks
 
@@ -829,7 +829,7 @@ suite.run();
 
 Example output:
 ```
-T-Test Mode: Enabled (repeatSuite=30)
+T-Test Mode: Enabled
 
 baseline   x 1,234,567 ops/sec (300 runs sampled) min..max=(810.05ns...812.45ns)
 optimized  x 9,876,543 ops/sec (305 runs sampled) min..max=(101.23ns...102.87ns)

@@ -701,6 +701,52 @@ describe("baseline comparisons", async (t) => {
 			assert.ok(summary.includes("baseline-test        ▏██████████▕ "));
 		});
 	});
+
+	describe("for chart Report with ttest", () => {
+		const makeRuns = (center) =>
+			Array.from({ length: 30 }, (_, i) => center + (i % 5) - 2);
+
+		const makeInputs = (baselineRuns, testRuns, testOpsSec) => [
+			{
+				name: "baseline-test",
+				baseline: true,
+				opsSec: 100,
+				opsSecPerRun: baselineRuns,
+				histogram: { samples: baselineRuns.length },
+			},
+			{
+				name: "other-test",
+				opsSec: testOpsSec,
+				opsSecPerRun: testRuns,
+				histogram: { samples: testRuns.length },
+			},
+		];
+
+		it("should show stars and legend for significant differences", () => {
+			const inputs = makeInputs(makeRuns(100), makeRuns(200), 200);
+			const output = toChart(inputs, { ttest: true });
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("***"));
+			assert.ok(summary.includes("Significance:"));
+		});
+
+		it("should not show stars for non-significant differences", () => {
+			const runs = makeRuns(100);
+			const output = toChart(makeInputs(runs, runs, 101), { ttest: true });
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(summary.includes("faster"));
+			assert.ok(!/ \*/.test(summary.split("Significance:")[0]));
+			assert.ok(summary.includes("Significance:"));
+		});
+
+		it("should not run the t-test without the ttest option", () => {
+			const inputs = makeInputs(makeRuns(100), makeRuns(200), 200);
+			const output = toChart(inputs, {});
+			const summary = output.split("Summary (vs. baseline):")[1];
+			assert.ok(!summary.includes("*"));
+			assert.ok(!summary.includes("Significance:"));
+		});
+	});
 });
 
 describe("Suite with pretty: true option", async (t) => {

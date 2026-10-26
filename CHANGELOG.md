@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.15.1](https://github.com/RafaelGSS/bench-node/compare/v0.15.0...v0.15.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* benchmarkMode=time respect minSamples ([#165](https://github.com/RafaelGSS/bench-node/issues/165)) ([feea514](https://github.com/RafaelGSS/bench-node/commit/feea514f2e899943a7194d6a86c21ee81a0a223a))
+* **lifecycle:** honor minSamples per round in ops mode with repeatSuite ([#182](https://github.com/RafaelGSS/bench-node/issues/182)) ([a9281f9](https://github.com/RafaelGSS/bench-node/commit/a9281f9f685f10b5c55f087b8d7fa242eef076e1))
+* **reporter:** avoid crash in pretty and chart reporters with baseline in time mode ([#174](https://github.com/RafaelGSS/bench-node/issues/174)) ([c7bb03f](https://github.com/RafaelGSS/bench-node/commit/c7bb03facfc307d95a708112113d5529cb94abad))
+* **reporter:** escape benchmark names and plugin reports in csv reporter ([#180](https://github.com/RafaelGSS/bench-node/issues/180)) ([89a9a35](https://github.com/RafaelGSS/bench-node/commit/89a9a350f937fa90aad5d6cb143a1079f9c1ecd4))
+* **reporter:** honor ttest and alpha in chart reporter ([#179](https://github.com/RafaelGSS/bench-node/issues/179)) ([21a555e](https://github.com/RafaelGSS/bench-node/commit/21a555eda76f512a44b0588fef885fa5b7f15eca))
+* **reporter:** restore plugin reports in text and json reporters ([5836f31](https://github.com/RafaelGSS/bench-node/commit/5836f31e3be068bddfd67e8a6470bf7435df1235))
+* **reporter:** use valid element ids in html reporter ([#173](https://github.com/RafaelGSS/bench-node/issues/173)) ([0564830](https://github.com/RafaelGSS/bench-node/commit/0564830a50511a3dce1c9562d33e88340f087c1e))
+* **ttest:** use alpha to compute difference in compareBenchmarks ([#181](https://github.com/RafaelGSS/bench-node/issues/181)) ([d596459](https://github.com/RafaelGSS/bench-node/commit/d596459bc740caf6f17918c13b7fdef8c3d52b4a))
+* **types:** add baseline to BenchmarkOptions ([#171](https://github.com/RafaelGSS/bench-node/issues/171)) ([6de053a](https://github.com/RafaelGSS/bench-node/commit/6de053a0b949ca8e0f95319dcfb7e9b8509ab048))
+* **worker:** serialize the whole benchmark function instead of its body ([#172](https://github.com/RafaelGSS/bench-node/issues/172)) ([0efef3a](https://github.com/RafaelGSS/bench-node/commit/0efef3a29f76e9bd6005178d9bfcdc557c501230))
+
+
+### Miscellaneous Chores
+
+* drop unused piscina dependency ([#178](https://github.com/RafaelGSS/bench-node/issues/178)) ([ff14628](https://github.com/RafaelGSS/bench-node/commit/ff146281192a79cf2ea4448581eb558e451ae074))
+* remove accidentally committed package tarball ([08d6fc8](https://github.com/RafaelGSS/bench-node/commit/08d6fc817fdcf8a0106ceb3c0ddfddde87143ad5))
+
 ## [0.15.0](https://github.com/RafaelGSS/bench-node/compare/v0.14.0...v0.15.0) (2026-05-08)
 
 

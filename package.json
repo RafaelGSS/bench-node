@@ -33,9 +33,6 @@
 		"url": "https://github.com/RafaelGSS/bench-node/issues"
 	},
 	"homepage": "https://github.com/RafaelGSS/bench-node#readme",
-	"dependencies": {
-		"piscina": "^4.8.0"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@types/node": "^20",
